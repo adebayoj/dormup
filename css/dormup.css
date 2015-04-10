@@ -1,1 +1,21 @@
-/* Insert CSS here */
+.mainHeading{
+	font-size: 42px;
+}
+.secondaryHeading{
+	font-size: 30px;
+}
+.thirdHeading{
+	font-size: 20px;
+}
+.labels{
+	font-size: 20px;
+}
+.wizard{
+	visibility: hidden;
+}
+.largeButton{
+	font-size: 30px;
+}
+.smallButton{
+	font-size: 12px;
+}
