@@ -33,7 +33,9 @@
 	var checkName;
 	var deleteTemporary;
 	var searchTemporary = [];
+	var searchTemporaryPointers = [];
 	var searchCount;
+	var searchCheck;
 
 
 	$(document).ready(function(){
@@ -41,7 +43,7 @@
 		//Upload the list of residents
 		for (i=0; i<listOfResidents.length; i++){
 			$(".listOfNumbers").append((i+1)+'<br>');
-			$(".listOfNames").append('<a>'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+			$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
 			$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
 		}
 		pickResident();
@@ -70,7 +72,7 @@
 				pickedResident = listOfPackages[pickedPointer];
 				//Fill the list of packages in the interface
 				for (i=0; i<pickedResident.length; i++){
-					$(".listOfID").append('<a>'+pickedResident[i][0]+'</a>'+'<br>');
+					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+pickedResident[i][0]+'</a>'+'<br>');
 					$(".listOfCompanies").append(pickedResident[i][1]+'<br>');
 					$(".listOfConditions").append(pickedResident[i][2]+'<br>');
 				}
@@ -119,7 +121,7 @@
 				//Fill the list of packages in the interface
 				for (i=0; i<listOfPackages[listOfPointers[checkName]].length; i++){
 					deleteTemporary = listOfPackages[listOfPointers[checkName]][i];
-					$(".listOfID").append('<a>'+deleteTemporary[0]+'</a>'+'<br>');
+					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+deleteTemporary[0]+'</a>'+'<br>');
 					$(".listOfCompanies").append(deleteTemporary[1]+'<br>');
 					$(".listOfConditions").append(deleteTemporary[2]+'<br>');
 				}
@@ -146,7 +148,7 @@
 				//Add the package to this resident
 				listOfPackages[listOfPointers[checkName]].push([packageID,packageCompany,packageCondition]);
 				//Update the list of packages in the interface
-				$(".listOfID").append('<a>'+packageID+'</a>'+'<br>');
+				$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+packageID+'</a>'+'<br>');
 				$(".listOfCompanies").append(packageCompany+'<br>');
 				$(".listOfConditions").append(packageCondition+'<br>');
 				//Delete the values in the input fields
@@ -172,6 +174,8 @@
 		//Operations for Search button
 		$("#buttonSearch").click(function() {
 			searchCount = 1;
+			searchTemporaryPointers = [];
+			searchCheck = false;
 			$(".listOfNumbers").empty();
 			$(".listOfNames").empty();
 			$(".listOfRooms").empty();
@@ -179,10 +183,18 @@
 			for (i=0; i<listOfResidents.length; i++){
 				for (j=0; j<searchTemporary.length; j++){
 					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
-						$(".listOfNumbers").append(searchCount+'<br>');
-						$(".listOfNames").append('<a>'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
-						$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
-						searchCount = searchCount + 1;
+						for (k=0; k<searchTemporaryPointers.length; k++){
+							if (searchTemporaryPointers[k]==listOfResidents[i][3]){
+								searchCheck = true;
+							}
+						}
+						if (searchCheck==false){
+							searchTemporaryPointers.push(listOfResidents[i][3]);
+							$(".listOfNumbers").append(searchCount+'<br>');
+							$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+							$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+							searchCount = searchCount + 1;
+						}
 					}
 				}
 			}
