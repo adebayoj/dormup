@@ -1,5 +1,9 @@
 .mainHeading{
 	font-size: 42px;
+	background-color: #92B8E9;
+	text-align: center;
+	font-weight: bold;
+	color:white;
 }
 .secondaryHeading{
 	font-size: 30px;
@@ -16,6 +20,22 @@
 .largeButton{
 	font-size: 30px;
 }
-.smallButton{
-	font-size: 12px;
+
+.smallButton {
+	background-color:#7892c2;
+	-webkit-border-radius:23px;
+	border:3px solid #4e6096;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:12px;
+	padding:5px 10px;
 }
+.smallButton:hover {
+	background-color:#476e9e;
+}
+.smallButton:active {
+	position:relative;
+	top:1px;
+}
+
