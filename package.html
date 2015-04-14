@@ -8,10 +8,12 @@
 
 <title>PackageManagement</title>
 
-<link rel="stylesheet" type="text/css" href="css/dormup.css" />
-<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link href="css/dormup.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="js/dormup.js"></script>
 
 <script type="text/javascript">
 	var listOfResidents=[["Konstantinos","Mentzelos","205",0],["Julius","Adebayo","118",1],["Cecilia","Pacheco","304",2],["Athina","Lentza","121",3],["Argiro","Lentza","121",4],["George","Avramopoulos","205",5],["Konstantinos","Karamanlis","109",6]];
@@ -36,6 +38,8 @@
 	var searchTemporaryPointers = [];
 	var searchCount;
 	var searchCheck;
+
+
 
 
 	$(document).ready(function(){
@@ -212,9 +216,9 @@
 		});
 
 		//Operations for Home button
-		$("#buttonHome").click(function() {
-			window.location = ".html";
-		});
+		// $("#buttonHome").click(function() {
+		// 	window.location = "index.html";
+		// });
 
 		//Operations for No Filter button
 		$("#buttonNoFilter").click(function() {
@@ -269,19 +273,42 @@
 </script>
 </head>
 
-<body>
+<body onload="startTime()">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="collapse navbar-collapse" id="top-navbar-collapse">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span></a></li>
+        <li><a href="#">Settings</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span id="clock"></span></a></li>
+        <li><a href="#">Log Out<br></a></li>
+    </ul>
+  </div>
+</nav>
+<div class="bs-docs-header dark-header" id="content" tabindex="-1">
+      <div class="container">
+        <h1>Package Management</h1>
+      </div>
+</div>
+	<!-- <nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <div class="navbar-header mainHeading"> Package Management
+	    </div>
+	  </div>
+	</nav> -->
 	<div class="container">
-		<div class="mainHeading">Package Management</div>
-		<div class="row">
+		<!-- <div class="mainHeading">Package Management</div> -->
+		<!-- <div class="row">
 			<div class="col-md-11" style="background-color:white;"></div>
     		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonHome"><div class="smallButton">Home</div></button></div>
-  		</div>
+  		</div> -->
 		<div class="row">
     		<div class="col-md-3" style="background-color:white;"><input type="text" class="form-control" id="nameSearch" style="font-size:20px;"></div>
-    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonSearch"><div class="smallButton">Search</div></button></div>
-    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonNoFilter"><div class="smallButton">No Filter</div></button></div>
+    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonSearch">Search</button></div>
+    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonNoFilter">No Filter</button></div>
     		<div class="col-md-1" style="background-color:white;"></div>
-    		<div class="col-md-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard"><div class="smallButton">Open Wizard</div></button></div>
+    		<div class="col-md-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard">Open Wizard</button></div>
     		<div class="col-md-4" style="background-color:white;"></div>
   		</div>
   		<div class="row">

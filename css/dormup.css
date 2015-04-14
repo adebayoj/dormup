@@ -1,21 +1,23 @@
 body { 
 	padding-top: 70px; 
+	/*background-color: #E3F2FD;*/
 }
 
-p{
+/*p{
         padding: 50px;
         font-size: 32px;
         font-weight: bold;
         text-align: center;
         background: #f2f2f2;
-}
+}*/
 
 .mainHeading{
 	font-size: 42px;
-	background-color: #92B8E9;
+	/*background-color: #92B8E9;*/
 	text-align: center;
-	font-weight: bold;
-	color:white;
+	/*font-weight: bold;*/
+	/*color:white;*/
+	width: 100%;
 }
 .secondaryHeading{
 	font-size: 30px;
@@ -59,3 +61,25 @@ p{
 	height: 200px;
 	margin-top: 30px;
 }
+
+.row{
+	margin-top: 10px;
+}
+
+.bs-docs-header{
+  background-color: #6f5499;
+}
+
+.bs-docs-header h1 {
+  color: #fff;
+  text-align: center;
+}
+
+/*.navbar-option{
+	background-color: #BBDEFB;
+}
+
+.navbar-option-active{
+	background-color: #90CAF9;
+}*/
+/*
