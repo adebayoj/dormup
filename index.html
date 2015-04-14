@@ -14,23 +14,7 @@
     <script src="js/jquery-1.11.2.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/dormup.js"></script>
-    <script type="text/javascript"> 
-
-    function startTime() {
-        var today=new Date();
-        var h=today.getHours();
-        var m=today.getMinutes();
-        m = checkTime(m);
-        document.getElementById('clock').innerHTML = h+":"+m;
-        var t = setTimeout(function(){startTime()},30000);
-    }
-
-    function checkTime(i) {
-        if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
-        return i;
-    }
-
-    </script>
+    
 </head>
 
 <body onload="startTime()">
@@ -55,7 +39,7 @@
               <div class="col-xs-4 col-xs-height col-full-height">
                 <div class="item">
                     <div class="content">
-                        <button type="button" class="btn btn-default btn-lg btn-block btn-xheight">Package Registry</button>
+                        <button type="button" class="btn btn-default btn-lg btn-block btn-xheight" id="btnPackage">Package Registry</button>
                     </div>
                 </div>
               </div>
