@@ -14,7 +14,7 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-	var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
+	var listOfResidents=[["Konstantinos","Mentzelos","205",0],["Julius","Adebayo","118",1],["Cecilia","Pacheco","304",2],["Athina","Lentza","121",3],["Argiro","Lentza","121",4],["George","Avramopoulos","205",5],["Konstantinos","Karamanlis","109",6]];
 	var listOfPointers={
 		"Konstantinos Mentzelos":0,
 		"Julius Adebayo":1,
@@ -133,6 +133,45 @@
 			pickPackage();
 		});
 
+		//Operations for Deliver button
+		$("#buttonDeliver").click(function() {
+			//Take the values from the input fields
+			residentFirstName = $("#residentFirstName").val();
+			residentLastName = $("#residentLastName").val();
+			residentRoom = $("#residentRoom").val();
+			checkName = residentFirstName+" "+residentLastName;
+			packageID = $("#packageID").val();
+			packageCompany = $("#packageCompany").val();
+			packageCondition = $("#packageCondition").val();
+			//Find the pointer of the resident name
+			if (checkName in listOfPointers){
+				//Check all the packages of the resident
+				for (i=0; i<listOfPackages[listOfPointers[checkName]].length; i++){
+					deleteTemporary = listOfPackages[listOfPointers[checkName]][i];
+					//Find and Delete the specific package
+					if(deleteTemporary[0]==packageID){
+						listOfPackages[listOfPointers[checkName]].splice(i, 1);
+					}
+				}
+				//Empty the list of packages in the interface
+				$(".listOfID").empty();
+				$(".listOfCompanies").empty();
+				$(".listOfConditions").empty();
+				//Fill the list of packages in the interface
+				for (i=0; i<listOfPackages[listOfPointers[checkName]].length; i++){
+					deleteTemporary = listOfPackages[listOfPointers[checkName]][i];
+					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+deleteTemporary[0]+'</a>'+'<br>');
+					$(".listOfCompanies").append(deleteTemporary[1]+'<br>');
+					$(".listOfConditions").append(deleteTemporary[2]+'<br>');
+				}
+				//Delete the values in the input fields
+				$("#packageID").val("");
+				$("#packageCompany").val("");
+				$("#packageCondition").val("");
+			}
+			pickPackage();
+		});
+
 		//Operations for Add button
 		$("#buttonAdd").click(function() {
 			//Take the values from the input fields
@@ -156,6 +195,7 @@
 				$("#packageCompany").val("");
 				$("#packageCondition").val("");
 			}
+			pickPackage();
 		});
 
 		//Operations for Clear button
@@ -171,6 +211,25 @@
 			$(".listOfConditions").empty();
 		});
 
+		//Operations for Home button
+		$("#buttonHome").click(function() {
+			window.location = ".html";
+		});
+
+		//Operations for No Filter button
+		$("#buttonNoFilter").click(function() {
+			$(".listOfNumbers").empty();
+			$(".listOfNames").empty();
+			$(".listOfRooms").empty();
+			for (i=0; i<listOfResidents.length; i++){
+				$(".listOfNumbers").append((i+1)+'<br>');
+				$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+				$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+			}
+			$("#nameSearch").val("");
+			pickResident();
+		});
+
 		//Operations for Search button
 		$("#buttonSearch").click(function() {
 			searchCount = 1;
@@ -182,7 +241,7 @@
 			searchTemporary = $("#nameSearch").val().split(" ");
 			for (i=0; i<listOfResidents.length; i++){
 				for (j=0; j<searchTemporary.length; j++){
-					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
+					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1] || searchTemporary[j]==listOfResidents[i][2]){
 						for (k=0; k<searchTemporaryPointers.length; k++){
 							if (searchTemporaryPointers[k]==listOfResidents[i][3]){
 								searchCheck = true;
@@ -198,10 +257,11 @@
 					}
 				}
 			}
+			$("#nameSearch").val("");
 			pickResident();
 		});
 
-		//Operations for Open button
+		//Operations for Open Wizard button
 		$("#buttonOpenWizard").click(function() {
 			document.getElementById("wizard").style.visibility = 'visible';
 		});
@@ -213,107 +273,108 @@
 	<div class="container">
 		<div class="mainHeading">Package Management</div>
 		<div class="row">
-			<div class="col-sm-10" style="background-color:white;"></div>
-    		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default"><div class="smallButton">Home</div></button></div>
+			<div class="col-md-11" style="background-color:white;"></div>
+    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonHome"><div class="smallButton">Home</div></button></div>
   		</div>
 		<div class="row">
-    		<div class="col-sm-3" style="background-color:white;"><input type="text" class="form-control" id="nameSearch" style="font-size:20px;"></div>
-    		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonSearch"><div class="smallButton">Search</div></button></div>
-    		<div class="col-sm-1" style="background-color:white;"></div>
-    		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard"><div class="smallButton">Open Wizard</div></button></div>
-    		<div class="col-sm-4" style="background-color:white;"></div>
+    		<div class="col-md-3" style="background-color:white;"><input type="text" class="form-control" id="nameSearch" style="font-size:20px;"></div>
+    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonSearch"><div class="smallButton">Search</div></button></div>
+    		<div class="col-md-1" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonNoFilter"><div class="smallButton">No Filter</div></button></div>
+    		<div class="col-md-1" style="background-color:white;"></div>
+    		<div class="col-md-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard"><div class="smallButton">Open Wizard</div></button></div>
+    		<div class="col-md-4" style="background-color:white;"></div>
   		</div>
   		<div class="row">
-    		<div class="col-sm-12" style="background-color:white; height:5px;"></div>
+    		<div class="col-md-12" style="background-color:white; height:5px;"></div>
   		</div>
   		<div class="row">
-    		<div class="col-sm-5" style="background-color:white; border-style:solid; border-width:1px">
+    		<div class="col-md-5" style="background-color:white; border-style:solid; border-width:1px">
     			<div class="row">
-    				<div class="col-sm-1" style="background-color:white;"><div class="secondaryHeading">#</div></div>
-    				<div class="col-sm-8" style="background-color:white;"><div class="secondaryHeading">Resident Name</div></div>
-    				<div class="col-sm-3" style="background-color:white;"><div class="secondaryHeading">Room</div></div>
+    				<div class="col-md-1" style="background-color:white;"><div class="secondaryHeading">#</div></div>
+    				<div class="col-md-8" style="background-color:white;"><div class="secondaryHeading">Resident Name</div></div>
+    				<div class="col-md-3" style="background-color:white;"><div class="secondaryHeading">Room</div></div>
   				</div>
   				<div class="row" style="overflow:scroll;">
-    				<div class="col-sm-1" style="background-color:white; font-size:20px;">
+    				<div class="col-md-1" style="background-color:white; font-size:20px;">
     					<div class="listOfNumbers"></div>
     				</div>
-    				<div class="col-sm-8" style="background-color:white; font-size:20px;">
+    				<div class="col-md-8" style="background-color:white; font-size:20px;">
     					<div class="listOfNames"></div>
     				</div>
-    				<div class="col-sm-3" style="background-color:white; text-align:center; font-size:20px;">
+    				<div class="col-md-3" style="background-color:white; text-align:center; font-size:20px;">
     					<div class="listOfRooms"></div>
     				</div>
   				</div>
     		</div>
-    		<div class="col-sm-1" style="background-color:white;"></div>
-    		<div class="col-sm-6" style="background-color:white; border-style:solid; border-width:1px;">
+    		<div class="col-md-1" style="background-color:white;"></div>
+    		<div class="col-md-6" style="background-color:white; border-style:solid; border-width:1px;">
     			<div class="secondaryHeading">Package Information Wizard</div>
     			<div id="wizard" style="visibility:hidden;">
     				<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">First Name:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="residentFirstName" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">First Name:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="residentFirstName" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">Last Name:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="residentLastName" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">Last Name:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="residentLastName" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">Room:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="residentRoom" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">Room:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="residentRoom" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">PckgID:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="packageID" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">PckgID:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="packageID" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">Company:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="packageCompany" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">Company:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="packageCompany" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><div class="labels">Condition:</div></div>
-    					<div class="col-sm-6" style="background-color:white;"><input type="text" class="form-control" id="packageCondition" style="font-size:20px;"></div>
-    					<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonClear"><div class="smallButton">Clear</div></button></div>
+    					<div class="col-md-4" style="background-color:white;"><div class="labels">Condition:</div></div>
+    					<div class="col-md-6" style="background-color:white;"><input type="text" class="form-control" id="packageCondition" style="font-size:20px;"></div>
+    					<div class="col-md-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonClear"><div class="smallButton">Clear</div></button></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-12" style="background-color:white; height:5px;"></div>
+    					<div class="col-md-12" style="background-color:white; height:5px;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonDelete" style="width:100%"><div class="largeButton">Delete</div></button></div>
-    					<div class="col-sm-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonDeliver" style="width:100%"><div class="largeButton">Deliver</div></button></div>
-    					<div class="col-sm-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonAdd" style="width:100%"><div class="largeButton">Add</div></button></div>
+    					<div class="col-md-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonDelete" style="width:100%"><div class="largeButton">Delete</div></button></div>
+    					<div class="col-md-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonDeliver" style="width:100%"><div class="largeButton">Deliver</div></button></div>
+    					<div class="col-md-4" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonAdd" style="width:100%"><div class="largeButton">Add</div></button></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-12" style="background-color:white; height:5px;"></div>
+    					<div class="col-md-12" style="background-color:white; height:5px;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-3" style="background-color:white;"><div class="labels">List of Packages:</div></div>
-    					<div class="col-sm-8" style="background-color:white; height:200px;" id="listOfPackages">
+    					<div class="col-md-3" style="background-color:white;"><div class="labels">List of Packages:</div></div>
+    					<div class="col-md-8" style="background-color:white; height:200px;" id="listOfPackages">
     						<div class="row">
-    							<div class="col-sm-4" style="background-color:white;"><div class="thirdHeading">PckgID</div></div>
-    							<div class="col-sm-4" style="background-color:white;"><div class="thirdHeading">Company</div></div>
-    							<div class="col-sm-4" style="background-color:white;"><div class="thirdHeading">Condition</div></div>
+    							<div class="col-md-4" style="background-color:white;"><div class="thirdHeading">PckgID</div></div>
+    							<div class="col-md-4" style="background-color:white;"><div class="thirdHeading">Company</div></div>
+    							<div class="col-md-4" style="background-color:white;"><div class="thirdHeading">Condition</div></div>
   							</div>
   							<div class="row">
-    							<div class="col-sm-4" style="background-color:white; text-align:center; font-size:12px;">
+    							<div class="col-md-4" style="background-color:white; text-align:center; font-size:12px;">
     								<div class="listOfID"></div>
     							</div>
-    							<div class="col-sm-4" style="background-color:white; text-align:left; font-size:12px;">
+    							<div class="col-md-4" style="background-color:white; text-align:left; font-size:12px;">
     								<div class="listOfCompanies"></div>
     							</div>
-    							<div class="col-sm-4" style="background-color:white; text-align:left; font-size:12px;">
+    							<div class="col-md-4" style="background-color:white; text-align:left; font-size:12px;">
     								<div class="listOfConditions"></div>
     							</div>
   							</div>
     					</div>
-    					<div class="col-sm-1" style="background-color:white;"></div>
+    					<div class="col-md-1" style="background-color:white;"></div>
   					</div>
   					<div class="row">
-    					<div class="col-sm-12" style="background-color:white; height:5px;"></div>
+    					<div class="col-md-12" style="background-color:white; height:5px;"></div>
   					</div>
   				</div>
     		</div>
