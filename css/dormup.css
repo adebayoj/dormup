@@ -1,3 +1,15 @@
+body { 
+	padding-top: 70px; 
+}
+
+p{
+        padding: 50px;
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        background: #f2f2f2;
+}
+
 .mainHeading{
 	font-size: 42px;
 	background-color: #92B8E9;
@@ -39,3 +51,11 @@
 	top:1px;
 }
 
+.navbar-right{
+	padding-right:20px;
+}
+
+.btn-xheight{
+	height: 200px;
+	margin-top: 30px;
+}
