@@ -67,7 +67,7 @@ body {
 }
 
 .bs-docs-header{
-  background-color: #6f5499;
+  background-color: #1976D2;
 }
 
 .bs-docs-header h1 {
@@ -168,3 +168,14 @@ body {
   clear:both;
   padding-top:30px;
 }
+
+
+
+/***************/
+#itemListHeading * {
+	background-color: #1976D2;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+}
+/**************/
