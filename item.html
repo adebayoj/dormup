@@ -4,144 +4,151 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Guest List</title>
+<title>Item Management</title>
 
-<link rel="stylesheet" type="text/css" href="css/dormup.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/dormup.css">
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/dormup.js"></script>
+<script type="text/javascript" src="js/dormup.js"></script> -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link href="css/item.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+<script src="js/item.js"></script>
 
 <script type="text/javascript">
-	var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
-	var listOfPointers={
-		"Konstantinos Mentzelos":0,
-		"Julius Adebayo":1,
-		"Cecilia Pacheco":2,
-		"Athina Lentza":3,
-		"Argiro Lentza":4,
-		"George Avramopoulos":5,
-		"Konstantinos Karamanlis":6
-	};
-	var listOfPackages=[[["001345","Amazon","Good"],["005647","Fedex","Damaged"]],[["001875","Amazon","Good"],["002347","UPS","Good"]],[],[],[],[],[]];
-	var listOfItems=[[["Titanic","123456","Good"],["Key Room 201","123453","Good"]],[["Key Room 202","456","Good"],["Football","234","Good"]],[],[],[],[],[]];
+	// var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
+	// var listOfPointers={
+	// 	"Konstantinos Mentzelos":0,
+	// 	"Julius Adebayo":1,
+	// 	"Cecilia Pacheco":2,
+	// 	"Athina Lentza":3,
+	// 	"Argiro Lentza":4,
+	// 	"George Avramopoulos":5,
+	// 	"Konstantinos Karamanlis":6
+	// };
+	// var listOfPackages=[[["001345","Amazon","Good"],["005647","Fedex","Damaged"]],[["001875","Amazon","Good"],["002347","UPS","Good"]],[],[],[],[],[]];
 
-	var pickedPointer;
-	var pickedResident = [];
-	var pickedName;
-	var pickedPackage;
-	var checkName;
-	var deleteTemporary;
-	var searchTemporary = [];
-	var searchTemporaryPointers = [];
-	var searchCount;
-	var searchCheck;
+	// var pickedPointer;
+	// var pickedResident = [];
+	// var pickedName;
+	// var pickedPackage;
+	// var checkName;
+	// var deleteTemporary;
+	// var searchTemporary = [];
+	// var searchTemporaryPointers = [];
+	// var searchCount;
+	// var searchCheck;
 
 
-	$(document).ready(function(){
+	// $(document).ready(function(){
 
-		//Upload the list of residents
-		for (i=0; i<listOfResidents.length; i++){
-			$(".listOfNumbers").append((i+1)+'<br>');
-			$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
-			$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
-		}
-		pickResident();
+	// 	//Upload the list of residents
+	// 	for (i=0; i<listOfResidents.length; i++){
+	// 		$(".listOfNumbers").append((i+1)+'<br>');
+	// 		$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+	// 		$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+	// 	}
+	// 	pickResident();
 
-		//Picking a resident name
-		function pickResident(){
-			jQuery('div.listOfNames a').click(function(){
-				pickedName = $(this).text();
-				//Make the wizard visible
-				document.getElementById("wizard").style.visibility = 'visible';
-				//Delete the values in the input fields
-				$("#packageID").val("");
-				$("#packageCompany").val("");
-				$("#packageCondition").val("");
-				//Empty the list of packages in the interface
-				$(".listOfID").empty();
-				$(".listOfCompanies").empty();
-				$(".listOfConditions").empty();
-				//Find the pointer of the resident name
-				pickedPointer = listOfPointers[pickedName];
-				//FIll the input fields with the right information
-				$("#residentFirstName").val(listOfResidents[pickedPointer][0]);
-				$("#residentLastName").val(listOfResidents[pickedPointer][1]);
-				$("#residentRoom").val(listOfResidents[pickedPointer][2]);
-				//Find the packages related to the resident
-				pickedResident = listOfPackages[pickedPointer];
-				//Fill the list of packages in the interface
-				for (i=0; i<pickedResident.length; i++){
-					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+pickedResident[i][0]+'</a>'+'<br>');
-					$(".listOfCompanies").append(pickedResident[i][1]+'<br>');
-					$(".listOfConditions").append(pickedResident[i][2]+'<br>');
-				}
-				pickPackage();
-			});
-		}
+	// 	//Picking a resident name
+	// 	function pickResident(){
+	// 		jQuery('div.listOfNames a').click(function(){
+	// 			pickedName = $(this).text();
+	// 			//Make the wizard visible
+	// 			document.getElementById("wizard").style.visibility = 'visible';
+	// 			//Delete the values in the input fields
+	// 			$("#packageID").val("");
+	// 			$("#packageCompany").val("");
+	// 			$("#packageCondition").val("");
+	// 			//Empty the list of packages in the interface
+	// 			$(".listOfID").empty();
+	// 			$(".listOfCompanies").empty();
+	// 			$(".listOfConditions").empty();
+	// 			//Find the pointer of the resident name
+	// 			pickedPointer = listOfPointers[pickedName];
+	// 			//FIll the input fields with the right information
+	// 			$("#residentFirstName").val(listOfResidents[pickedPointer][0]);
+	// 			$("#residentLastName").val(listOfResidents[pickedPointer][1]);
+	// 			$("#residentRoom").val(listOfResidents[pickedPointer][2]);
+	// 			//Find the packages related to the resident
+	// 			pickedResident = listOfPackages[pickedPointer];
+	// 			//Fill the list of packages in the interface
+	// 			for (i=0; i<pickedResident.length; i++){
+	// 				$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+pickedResident[i][0]+'</a>'+'<br>');
+	// 				$(".listOfCompanies").append(pickedResident[i][1]+'<br>');
+	// 				$(".listOfConditions").append(pickedResident[i][2]+'<br>');
+	// 			}
+	// 			pickPackage();
+	// 		});
+	// 	}
 		
 
-		//Operations for Search button
-		$("#buttonSearch").click(function() {
-			searchCount = 1;
-			searchTemporaryPointers = [];
-			searchCheck = false;
-			$(".listOfNumbers").empty();
-			$(".listOfNames").empty();
-			$(".listOfRooms").empty();
-			searchTemporary = $("#nameSearch").val().split(" ");
-			for (i=0; i<listOfResidents.length; i++){
-				for (j=0; j<searchTemporary.length; j++){
-					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
-						for (k=0; k<searchTemporaryPointers.length; k++){
-							if (searchTemporaryPointers[k]==listOfResidents[i][3]){
-								searchCheck = true;
-							}
-						}
-						if (searchCheck==false){
-							searchTemporaryPointers.push(listOfResidents[i][3]);
-							$(".listOfNumbers").append(searchCount+'<br>');
-							$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
-							$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
-							searchCount = searchCount + 1;
-						}
-					}
-				}
-			}
-			pickResident();
-		});
+	// 	//Operations for Search button
+	// 	$("#buttonSearch").click(function() {
+	// 		searchCount = 1;
+	// 		searchTemporaryPointers = [];
+	// 		searchCheck = false;
+	// 		$(".listOfNumbers").empty();
+	// 		$(".listOfNames").empty();
+	// 		$(".listOfRooms").empty();
+	// 		searchTemporary = $("#nameSearch").val().split(" ");
+	// 		for (i=0; i<listOfResidents.length; i++){
+	// 			for (j=0; j<searchTemporary.length; j++){
+	// 				if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
+	// 					for (k=0; k<searchTemporaryPointers.length; k++){
+	// 						if (searchTemporaryPointers[k]==listOfResidents[i][3]){
+	// 							searchCheck = true;
+	// 						}
+	// 					}
+	// 					if (searchCheck==false){
+	// 						searchTemporaryPointers.push(listOfResidents[i][3]);
+	// 						$(".listOfNumbers").append(searchCount+'<br>');
+	// 						$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+	// 						$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+	// 						searchCount = searchCount + 1;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 		pickResident();
+	// 	});
 
-		//Operations for Open button
-		$("#buttonOpenWizard").click(function() {
-			document.getElementById("wizard").style.visibility = 'visible';
-		});
+	// 	//Operations for Open button
+	// 	$("#buttonOpenWizard").click(function() {
+	// 		document.getElementById("wizard").style.visibility = 'visible';
+	// 	});
 
 	});
 </script>
 </head>
 
 <body onload="startTime()">
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="collapse navbar-collapse" id="top-navbar-collapse">
-    <ul class="nav navbar-nav">
-        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span></a></li>
-        <li><a href="#">Settings</a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span id="clock"></span></a></li>
-        <li><a href="#">Log Out<br></a></li>
-    </ul>
-  </div>
-</nav>
-<div class="bs-docs-header" id="content" tabindex="-1">
-      <div class="container">
-        <h1>Item Management</h1>
-      </div>
-</div>
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="collapse navbar-collapse" id="top-navbar-collapse">
+	    <ul class="nav navbar-nav">
+	        <li><a href="index.html"><span class="glyphicon glyphicon-home"></span></a></li>
+	        <li><a href="#">Settings</a></li>
+	    </ul>
+	    <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span id="clock"></span></a></li>
+	        <li><a href="#">Log Out<br></a></li>
+	    </ul>
+	  </div>
+	</nav>
+
+	<div class="bs-docs-header" id="content" tabindex="-1">
+	      <div class="container">
+	        <h1>Item Management</h1>
+	      </div>
+	</div>
 
 	<div class="container">
-		<!-- <div class="mainHeading">Item Management</div> -->
-		<div class="row">
+		<!-- <div class="mainHeading">Guest List</div> -->
+		<!-- <div class="row">
 			<div class="col-sm-10" style="background-color:white;"></div>
     		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default"><div class="smallButton">Home</div></button></div>
   		</div>
@@ -149,12 +156,12 @@
     		<div class="col-sm-3" style="background-color:white;"><input type="text" class="form-control" id="nameSearch" style="font-size:20px;"></div>
     		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonSearch"><div class="smallButton">Search</div></button></div>
     		<div class="col-sm-1" style="background-color:white;"></div>
-    		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard"><div class="smallButton">New Item</div></button></div>
+    		<div class="col-sm-2" style="background-color:white;"><button type="button" class="btn btn-default" id="buttonOpenWizard"><div class="smallButton">New Guest</div></button></div>
     		<div class="col-sm-4" style="background-color:white;"></div>
-  		</div>
+  		</div> -->
   		<div class="row">
     		<div class="col-sm-5" style="background-color:white; border-style:solid; border-width:1px; margin:0px">
-    			<div class="row guest-details-wizard" id="wizard" style="visibility: visible; margin-top:0px">
+    			<div class="row item-details-wizard" id="wizard" style="visibility: visible; margin-top:0px">
     				<div class="col-sm-12" id="residentListHeading">
 	  					<div class="row">
 	    					<div class="col-sm-8"><p>Resident</p></div>
@@ -162,19 +169,19 @@
 	  					</div>
     				</div><!-- Residents' list -->
     				<div class="col-sm-12" id="residentList">
-	  					<div class="row">
+	  					<div class="row" id="resident-0">
 	    					<div class="col-sm-8"><p>John Smith</p></div>
 	    					<div class="col-sm-4"><p>200</p></div>
 	  					</div>
-	  					<div class="row">
-	    					<div class="col-sm-8"><p>Sarah Jane</p></div>
-	    					<div class="col-sm-4"><p>210</p></div>
+	  					<div class="row" id="resident-1">
+	    					<div class="col-sm-8"><p>John Smith</p></div>
+	    					<div class="col-sm-4"><p>200</p></div>
 	  					</div>
     				</div><!-- Residents' list -->
     			</div> <!-- Left side bar -->
     		</div>
     		<div class="col-sm-1" style="background-color:white;"></div>
-    		<div class="col-sm-6" style="background-color:white; border-style:solid; border-width:1px;">
+    		<div class="col-sm-6 rightSidebar" style="background-color:white; border-style:solid; border-width:1px;">
     			<!-- <div class="secondaryHeading">Guests</div> -->
     			<!-- Display guest details-->
     			<div class="row item-details-wizard" id="wizard" style="visibility: visible;">
@@ -186,7 +193,7 @@
 	    						<div class="labels">Item Name:</div>
 	    					</div>
 	    					<div class="col-sm-6">
-	    						<input type="text" class="form-control" id="guestName" placeholder="Item&#39;s name" value="Titanic">
+	    						<input type="text" class="form-control" id="itemName" placeholder="Item name" value="Nate">
 	    					</div>
 	  					</div>
 	  					<div class="row">
@@ -194,15 +201,15 @@
 	    						<div class="labels">Item ID:</div>
 	    					</div>
 	    					<div class="col-sm-6">
-	    						<input type="text" class="form-control" id="guestName" placeholder="Item&#39;s ID Number" value="1234567">
+	    						<input type="text" class="form-control" id="itemId" value="5" placeholder="Item ID.">
 	    					</div>
 	  					</div>
-	  					<div class="row" id="period">
+	  					<div class="row">
 	    					<div class="col-sm-4">
-	    						<div class="labels">Period:</div>
+	    						<div class="labels">Return Date:</div>
 	    					</div>
 	    					<div class="col-sm-6">
-	    						<input type="number" class="form-control" id="daysLeft" value="5" placeholder="Period ">
+	    						<input type="date" class="form-control" id="returnDate" value="2015-04-18">
 	    					</div>
 	  					</div>
 	  					<div class="row">
@@ -210,7 +217,7 @@
 	    						<div class="labels">Note:</div>
 	    					</div>
 	    					<div class="col-sm-6">
-	    						<textarea type="text" class="form-control" id="guestNote" value="5" placeholder="Enter note (optional)"></textarea>
+	    						<textarea type="text" class="form-control" id="note" value="5" placeholder="Enter note (optional)"></textarea>
 	    					</div>
 	  					</div>
 	  					<div class="row" id="item-form-options">
@@ -218,68 +225,52 @@
 	    						<button type="button" class="btn btn-default" id="clearForm" style="width:100%">Clear form</button>
 	    					</div>
 	    					<div class="col-sm-4 col-sm-offset-4">
-	    						<button type="button" class="btn btn-default" id="saveNewGuest" style="width:100%">Save</button>
+	    						<button type="button" class="btn btn-default" id="saveNewItem" style="width:100%">Save</button>
 	    					</div>
 	  					</div>
     				</div>
-
     				<div class="col-sm-12" id="item-list-options">
 	    				<div class="row">
 	    					<div class="col-sm-2">
-	    						<button type="button" class="btn btn-default" id="guestListNewFormBtn" style="width:100%">Add Item</button>
+	    						<button type="button" class="btn btn-default" id="itemListNewFormBtn" style="width:100%">Add Guest</button>
 	    					</div>
 	    					<div class="col-sm-2 col-sm-offset-1">
-	    						<button type="button" class="btn btn-default singleSelection" id="guestListEdit" style="width:100%">Edit</button>
+	    						<button type="button" class="btn btn-default singleSelection" id="itemListEdit" style="width:100%">Edit</button>
 	    					</div>
 	    					<div class="col-sm-2">
-	    						<button type="button" class="btn btn-default multiSelection" id="itemListCheckIn" style="width:100%">Return</button>
+	    						<button type="button" class="btn btn-default multiSelection" id="itemListReturn" style="width:100%">Return</button>
 	    					</div>
 	    					<div class="col-sm-2 col-sm-offset-1">
-	    						<button type="button" class="btn btn-default multiSelection" id="guestListDelete" style="width:100%">Delete</button>
+	    						<button type="button" class="btn btn-default multiSelection" id="itemListDelete" style="width:100%">Delete</button>
 	    					</div>
 	  					</div>
     				</div>
-
-    				<!-- #change this item list heading.  -->
     				<div class="col-sm-12" id="itemListHeading">
     					<div class="row">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Item Name</p></div>
-	    					<div class="col-sm-3"><p>Item Id</p></div>
-	    					<!-- <div class="col-sm-3"><p>Check-in</p></div> -->
-	    					<div class="col-sm-2"><p>Period</p></div>
+	    					<div class="col-sm-3 col-sm-offset-1"><p>Item</p></div>
+	    					<div class="col-sm-3"><p>Item ID</p></div>
+	    					<div class="col-sm-3"><p>Return Date</p></div>
 	  					</div>
     				</div>
-
-
-
     				<div class="col-sm-12" id="itemList">
     					
-	  					<div class="row" id="guest-0">
-	    					<div class="col-sm-3 col-sm-offset-1"><p class="guestNameInList">Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
+	  					<div class="row" id="item-0">
+	    					<div class="col-sm-3 col-sm-offset-1"><p>Movie - Titanic</p></div>
+	    					<div class="col-sm-3"><p>11223</p></div>
+	    					<div class="col-sm-3"><p>04/18/2015</p></div>
 	  					</div>
-	  					<div class="row" id="guest-1">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Peter Pan</p></div>
-	    					<div class="col-sm-3"><p class="status">Checked in</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
+	  					<div class="row" id="item-1">
+	    					<div class="col-sm-3 col-sm-offset-1"><p>Spare key</p></div>
+	    					<div class="col-sm-3"><p>0</p></div>
+	    					<div class="col-sm-3"><p>04/18/2015</p></div>
 	  					</div>
-	  					<div class="row" id="guest-2">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
-	  					<div class="row" id="guest-3">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
-    				</div><!-- guest list -->
+    				</div><!-- item list -->
     			</div> <!-- wizard -->
 	  		</div>
 		</div>
+	</div> <!-- container -->
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
+  <nav class="navbar navbar-default navbar-fixed-bottom">
   <div class="collapse navbar-collapse" id="top-navbar-collapse">
   <footer class="footer">  </footer>
   <ul>
@@ -288,6 +279,5 @@
   </ul>
   </div>
 </nav>
-
 
 </div></body></html>
