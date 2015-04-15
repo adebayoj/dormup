@@ -47,6 +47,16 @@ $(document).ready(function(){
         saveNewGuestFromForm();      
     });
 
+    $('#residentList').on('mouseover', '.row', function() {
+        $(this).css("background-color", "#BBDEFB");
+        $(this).find("*").css("background-color", "#BBDEFB");
+    });
+
+    $('#residentList').on('mouseout', '.row', function() {
+        $(this).css("background-color", "white");
+        $(this).find("*").css("background-color", "white");
+    });
+
     $('#guestList').on('mouseover', '.row', function() {
         highlightRow($(this).attr("id"));
     });

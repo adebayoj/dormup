@@ -113,7 +113,7 @@ body {
 	font-weight: normal;
 	text-align: left;
 	background-color: white;
-	margin: 0px;
+	margin-top: 0px;
 	padding: 0px;
 }
 
@@ -129,6 +129,29 @@ body {
 	background-color: #1976D2;
 	color: white;
 	font-weight: bold;
+	cursor: pointer;
+}
+
+#residentListHeading * {
+	background-color: #1976D2;
+	color: white;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#residentListHeading .row, #residentList .row {
+	padding: 2px 0px;
+	margin-top: 0px;
+	cursor: pointer;
+}
+
+#residentList .row {
+	border-top: 1px solid #dddddd;
+}
+
+.zeroMargin {
+	margin: 0px;
+	padding: 0px;
 }
 
 /*********** End of Guest List ***********/
