@@ -83,3 +83,45 @@ body {
 	background-color: #90CAF9;
 }*/
 /*
+
+/*********** Guest List ***********/
+
+#guest-details {
+	margin-bottom: 20px;
+	border-bottom: 1px solid black;
+}
+
+#guest-list-options button {
+	font-size: 11px;
+	padding: 5px 0px;
+}
+
+#guestList .row {
+	margin: 0px;
+	padding: 5px 0px;
+	cursor: pointer;
+}
+
+#guestList {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.guest-details-wizard p {
+	font-size: 13px;
+	font-weight: normal;
+	text-align: left;
+	background-color: white;
+	margin: 0px;
+	padding: 0px;
+}
+
+.guest-list-heading p {
+	font-weight: bold;
+}
+
+#guestList .row {
+	border-top: 1px solid #dddddd;
+}
+
+/*********** End of Guest List ***********/
