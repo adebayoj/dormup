@@ -167,9 +167,8 @@ body {
   height: 150px;
   clear:both;
   padding-top:30px;
+  display: none;
 }
-
-
 
 /***************/
 #itemListHeading * {
