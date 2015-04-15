@@ -97,6 +97,10 @@ body {
 	padding: 5px 0px;
 }
 
+#guest-list-options #guestListNewFormBtn {
+	display:none;
+}
+
 #guestList .row {
 	margin: 0px;
 	padding: 5px 0px;
