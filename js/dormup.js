@@ -136,7 +136,8 @@ $(document).ready(function(){
     }
 
     $("#guest-list-options #guestListNewFormBtn").click(function(){
-        showFormForNewGuest();      
+        showFormForNewGuest();
+        $("#guest-details").slideDown();      
     });
 
     $("#guest-list-options #guestListEdit").click(function(){
@@ -233,7 +234,7 @@ $(document).ready(function(){
     function clearGuestDetailsForm() {
         // $('#guestStatusDropdown li a')[0].click(); // Select first option
         setDropdown("Not Arrived");
-        $("#guest-details input").val("");
+        $("#guest-details *").val("");
     }
 
     function showFormForNewGuest() {
