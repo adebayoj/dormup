@@ -367,7 +367,7 @@ $(document).ready(function(){
         var guestId = getGuestDetailsFromForm();
         if(guestId == -1) {
             // Todo: implement more specific error message
-            alert("please enter all required details.");
+            alert("please enter all required details in the right format.");
             return;
         }
         isEditing = false;
