@@ -154,7 +154,7 @@ $(document).ready(function(){
             console.log(arrayOfGuestIds);
         }
         clearAllTableSelections();
-
+        showOrHideListOptions();
     }
 
     function checkInAllSelectedGuests(arrayOfGuestIds) {
@@ -246,6 +246,7 @@ $(document).ready(function(){
         addGuestDetailsToList(guestId);
         // addDummyGuestDetailsTolist();
         clearGuestDetailsForm();
+        showOrHideListOptions();
     }
 
     function addGuestDetailsToList(guestId){

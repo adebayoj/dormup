@@ -87,7 +87,8 @@ body {
 /*********** Guest List ***********/
 
 #guest-details {
-	margin-bottom: 20px;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
 	border-bottom: 1px solid black;
 }
 
@@ -116,7 +117,7 @@ body {
 	padding: 0px;
 }
 
-.guest-list-heading p {
+#residentIdentifier p {
 	font-weight: bold;
 }
 
@@ -124,6 +125,11 @@ body {
 	border-top: 1px solid #dddddd;
 }
 
+#guestListHeading * {
+	background-color: #1976D2;
+	color: white;
+	font-weight: bold;
+}
 
 /*********** End of Guest List ***********/
 
