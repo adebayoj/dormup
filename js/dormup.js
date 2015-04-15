@@ -468,54 +468,54 @@ $(document).ready(function(){
     function showOrHideListOptions() {
         var selections = selectedGuestId.length;
         if(selections == 0) {
-            $("#guest-list-options .singleSelection").slideUp();
-            $("#guest-list-options .multiSelection").slideUp();
+            $("#item-list-options .singleSelection").slideUp();
+            $("#item-list-options .multiSelection").slideUp();
         } else if (selections == 1) {
-            $("#guest-list-options .singleSelection").slideDown();
-            $("#guest-list-options .multiSelection").slideDown();
+            $("#item-list-options .singleSelection").slideDown();
+            $("#item-list-options .multiSelection").slideDown();
         } else if (selections > 1){
-            $("#guest-list-options .singleSelection").slideUp();
-            $("#guest-list-options .multiSelection").show();
+            $("#item-list-options .singleSelection").slideUp();
+            $("#item-list-options .multiSelection").show();
         } else {
             alert("Invalid selection count: " + selections);
         }
 
     }
 
-    $("#guest-list-options #guestListNewFormBtn").click(function(){
-        showFormForNewGuest();
+    $("#item-list-options #itemListNewFormBtn").click(function(){
+        showFormForNewItem();
         $("#guest-details").slideDown();      
     });
 
-    $("#guest-list-options #guestListEdit").click(function(){
-        showGuestDetailsForEditing(selectedGuestId[0]); 
+    $("#item-list-options #itemListEdit").click(function(){
+        showItemDetailsForEditing(selectedItemId[0]); 
     });
 
-    $("#guest-list-options #guestListCheckIn").click(function(){
-        checkInAllSelectedGuests(selectedGuestId); 
+    $("#item-list-options #itemListCheckIn").click(function(){
+        checkInAllSelectedItems(selectedItemId); 
     });
 
-    $("#guest-list-options #guestListCheckOut").click(function(){
-        checkOutAllSelectedGuests(selectedGuestId); 
+    $("#item-list-options #itemListCheckOut").click(function(){
+        checkOutAllSelectedItems(selectedItemId); 
     });
 
-    $("#guest-list-options #guestListDelete").click(function(){
-        deleteAllSelectedGuests(selectedGuestId); 
+    $("#item-list-options #guestListDelete").click(function(){
+        deleteAllSelectedItems(selectedItemId); 
     });
 
-    function deleteAllSelectedGuests(arrayOfGuestIds) {
+    function deleteAllSelectedItems(arrayOfItemIds) {
         //TODO: Also remove guest from data model before removing from table.
-        for(var i = 0; i < arrayOfGuestIds.length; i++){
-            var guestId = arrayOfGuestIds[i];
-            var rowId = "guest-" + guestId;
+        for(var i = 0; i < arrayOfItemIds.length; i++){
+            var guestId = arrayOfItemIds[i];
+            var rowId = "guest-" + itemId;
             deleteRowFromDisplay(rowId);
-            console.log(arrayOfGuestIds);
+            console.log(arrayOfItemIds);
         }
         clearAllTableSelections();
         showOrHideListOptions();
     }
 
-    function checkInAllSelectedGuests(arrayOfGuestIds) {
+    function checkInAllSelectedItems(arrayOfGuestIds) {
         var checkedInString = "Checked in";
         for(var i = 0; i < arrayOfGuestIds.length; i++){
             var guestId = arrayOfGuestIds[i];
