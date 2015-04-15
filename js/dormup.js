@@ -31,16 +31,37 @@ $(document).ready(function(){
 
 
     // ********** Guest List **********
+    var mapOfResidents = {
+        0:["Konstantinos","Mentzelos",205,0],
+        1:["Julius","Adebayo",118,1],
+        2:["Cecilia","Pacheco",304,2],
+        3:["Athina","Lentza",121,3]
+    };
+
+    var mapOfGuests = {
+        // Name, check-in date (yyyy-mm-dd), status, duration, days left, note  
+        0:["Nate Smith","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",0],
+        1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",1],
+        2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",2],
+        3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",3],
+    };
+
+    var mapOfResidentsToGuests = {
+        0:[0,1,2],
+        1:[3]
+    };
+
+    var nextGuestId = 4;
+
     var selectedGuestId = [];
 
-    //TODO: Set Resident ID when the resident is selected
-    var residentId = 2;
-    //TODO: Guest list should only show the guests of the selected resident.
+    var selectedResidentId = -1;
 
     var isEditing = false;
 
-    setDropdown("Not Arrived");
-    showOrHideListOptions();
+    setupResidentList();
+
+    hideRightSidebar();
 
     $('#guestStatusDropdown li a').click(function(){
         setDropdown($(this).text());
@@ -77,6 +98,12 @@ $(document).ready(function(){
         }
     });
 
+    $('#residentList').on('click', '.row', function() {
+        var rowId = $(this).attr("id");
+        var residentId = getResidentId(rowId);
+        setupRightSidebar(residentId);
+    });
+
     $('#guestList').on('click', '.row', function() {
         var rowId = $(this).attr("id");
         var guestId = getGuestId(rowId);
@@ -101,6 +128,76 @@ $(document).ready(function(){
         showOrHideListOptions();
     });
 
+    function hideRightSidebar() {
+        $(".rightSidebar").hide();
+    }
+
+    function showRightSidebar() {
+        $(".rightSidebar").slideDown();   
+    }
+
+    function setupResidentList() {
+        $("#residentList").empty();
+        for (var r in mapOfResidents) {
+            if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                continue;
+            }
+            addResidentToList(r);
+        }
+    }
+
+    function getNextGuestId() {
+        var maxId = -1;
+        for (var g in mapOfGuests) {
+            if (!mapOfGuests.hasOwnProperty(g)) { // Ensure we're only using fields we added.
+                continue;
+            }
+            if(g > maxId) {
+                maxId = g;
+            }
+        }
+        return ++maxId;
+    }
+
+    function setupRightSidebar(residentId) {
+        if(selectedResidentId != -1) {
+            unselectResident(residentId);
+        }
+        selectResident(residentId);
+        displayResidentProfile(residentId);
+        clearGuestDetailsForm();
+        selectedGuestId = [];
+        $("#guestList").empty();
+        var arrayOfGuestIds = mapOfResidentsToGuests[residentId];
+        if(arrayOfGuestIds) {
+            for(var i = 0; i < arrayOfGuestIds.length; i++) {
+                guestId = arrayOfGuestIds[i];
+                addGuestDetailsToList(guestId);
+            }    
+        }
+        showOrHideListOptions();
+        showRightSidebar();
+    }
+
+    function displayResidentProfile(residentId) {
+        var resident = mapOfResidents[residentId];
+        if(!resident) {
+            alert("Could not find profile for resident ID: " + residentId);
+        }
+        var residentHeading = resident[0] + " " + resident[1] + " (Room " + resident[2] + ")";
+        $("#residentIdentifier h3").html(residentHeading);
+    }
+
+    function unselectResident(residentId) {
+        selectedResidentId = -1;
+        removeRowHighlight(getResidentRowId(residentId));
+    }
+
+    function selectResident(residentId) {
+        selectedResidentId = residentId;
+        highlightRow(getResidentRowId(residentId));
+    }
+
     function highlightRow(rowId) {
         var selector = "#" + rowId;
         $(selector).css("background-color", "#BBDEFB");
@@ -124,6 +221,18 @@ $(document).ready(function(){
 
     function getGuestId(rowId) {
         return rowId.split("guest-")[1];
+    }
+
+    function getResidentId(rowId) {
+        return rowId.split("resident-")[1];
+    }
+
+    function getResidentRowId(residentId) {
+        return "resident-" + residentId;
+    }
+
+    function getGuestRowId(residentId) {
+        return "guest-" + residentId;
     }
 
     function showOrHideListOptions() {
@@ -240,9 +349,9 @@ $(document).ready(function(){
     }
 
     function clearGuestDetailsForm() {
-        // $('#guestStatusDropdown li a')[0].click(); // Select first option
+        $("#guest-details input").val("");
+        $("#guest-details textarea").val("");
         setDropdown("Not Arrived");
-        $("#guest-details *").val("");
     }
 
     function showFormForNewGuest() {
@@ -257,7 +366,7 @@ $(document).ready(function(){
         }
         var guestId = getGuestDetailsFromForm();
         if(guestId == -1) {
-            // Todo: implement error handling logic
+            // Todo: implement more specific error message
             alert("please enter all required details.");
             return;
         }
@@ -270,6 +379,9 @@ $(document).ready(function(){
 
     function addGuestDetailsToList(guestId){
         var guest = mapOfGuests[guestId];
+        if(guest[2] == "Checked out") {
+            return;
+        }
         var rowId = "guest-" + guestId;
         $("#guestList").prepend(
             '<div class="row" id="' + rowId + '" style="display:none">' +
@@ -278,9 +390,18 @@ $(document).ready(function(){
                 '<div class="col-sm-3"><p>' + guest[1] + '</p></div>' +
                 '<div class="col-sm-2"><p>' + guest[3] + '</p></div>' +
             '</div>');
-
         $("#" + rowId).slideDown();
         temporarilyHighlightRow(rowId);
+    }
+
+    function addResidentToList(residentId) {
+        var resident = mapOfResidents[residentId];
+        var rowId = getResidentRowId(residentId);
+        $("#residentList").append(
+            '<div class="row" id="' + rowId + '">' +
+                '<div class="col-sm-8"><p>' + resident[0] + " " + resident[1] + '</p></div>' +
+                '<div class="col-sm-4"><p>' + resident[2] + '</p></div>' +
+            '</div>');
     }
 
     function showGuestDetailsForEditing(guestId) {
@@ -296,16 +417,16 @@ $(document).ready(function(){
         $("#saveNewGuest").show();
     }
 
-    function addDummyGuestDetailsTolist(){
-        // $("#guestList").prepend('<p>hello</p>');
-        $("#guestList").prepend(
-            '<div class="row">' +
-                '<div class="col-sm-3 col-sm-offset-1"><p>Peter Pan</p></div>' +
-                '<div class="col-sm-3"><p>Checked in</p></div>' +
-                '<div class="col-sm-3"><p>04/18/2015</p></div>' +
-                '<div class="col-sm-2"><p>5</p></div>' +
-            '</div>');
-    }
+    // function addDummyGuestDetailsTolist(){
+    //     // $("#guestList").prepend('<p>hello</p>');
+    //     $("#guestList").prepend(
+    //         '<div class="row">' +
+    //             '<div class="col-sm-3 col-sm-offset-1"><p>Peter Pan</p></div>' +
+    //             '<div class="col-sm-3"><p>Checked in</p></div>' +
+    //             '<div class="col-sm-3"><p>04/18/2015</p></div>' +
+    //             '<div class="col-sm-2"><p>5</p></div>' +
+    //         '</div>');
+    // }
 
     function setDropdown(value) {
         $("#guestStatusDropdownLabel").html(value + ' <span class="caret"></span>');
@@ -329,14 +450,14 @@ $(document).ready(function(){
         if(!guestName || !checkIn || !status || !duration || !daysLeft) {
             return -1;
         }
-        var guestId = nextGuestId++;
+        var guestId = getNextGuestId();
         var guestDetails = [guestName, checkIn, status, duration, daysLeft, guestNote, guestId];
         mapOfGuests[guestId] = guestDetails;
-        var residentToGuestMapEntry = mapOfResidentsToGuests[residentId];
+        var residentToGuestMapEntry = mapOfResidentsToGuests[selectedResidentId];
         if(residentToGuestMapEntry) {
             residentToGuestMapEntry.push(guestId);
         } else {
-            mapOfResidentsToGuests[residentId] = [guestId];
+            mapOfResidentsToGuests[selectedResidentId] = [guestId];
         }
         return guestId;
     }
@@ -345,382 +466,10 @@ $(document).ready(function(){
         $("#daysLeftFormField").hide();
     }
 
-    var mapOfResidents = {
-        0:["Konstantinos","Mentzelos",205,0],
-        1:["Julius","Adebayo",118,1],
-        2:["Cecilia","Pacheco",304,2],
-        3:["Athina","Lentza",121,3]
-    };
-
-    var mapOfGuests = {
-        // Name, check-in date (yyyy-mm-dd), status, duration, days left, note  
-        0:["Nate Smith","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",0],
-        1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",1],
-        2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",2],
-        3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",3],
-    };
-
-    var mapOfResidentsToGuests = {
-        0:[0,1,2],
-        1:[3]
-    };
-
-    var nextGuestId = 4;
-
     // ********** End of Guest List **********
 
 
-
-
-
-
-
-
-
-
-
-
-
   //   // ********************* Item List ****************
-  // var selectedItemId = [];
-
-  //   //TODO: Set Resident ID when the resident is selected
-  //   var residentId = 2;
-  //   //TODO: Guest list should only show the guests of the selected resident.
-
-  //   var isEditingitem = false;
-
-  //   setDropdown("Not Arrived");
-  //   showOrHideListOptions();
-    
-
-  //   $("#item-form-options #clearForm").click(function(){
-  //       clearItemDetailsForm();        
-  //   });
-
-  //   $("#guest-form-options #saveNewGuest").click(function(){
-  //       saveNewItemFromForm();      
-  //   });
-
-  //   $('#residentList').on('mouseover', '.row', function() {
-  //       $(this).css("background-color", "#BBDEFB");
-  //       $(this).find("*").css("background-color", "#BBDEFB");
-  //   });
-
-  //   $('#residentList').on('mouseout', '.row', function() {
-  //       $(this).css("background-color", "white");
-  //       $(this).find("*").css("background-color", "white");
-  //   });
-
-  //   $('#itemList').on('mouseover', '.row', function() {
-  //       highlightRow($(this).attr("id"));
-  //   });
-
-  //   $('#itemList').on('mouseout', '.row', function() {
-  //       var rowId = $(this).attr("id");
-  //       var guestId = getGuestId(rowId);
-  //       if(!isSelected(guestId)) {
-  //           removeRowHighlight(rowId);
-  //       }
-  //   });
-
-  //   $('#itemList').on('click', '.row', function() {
-  //       var rowId = $(this).attr("id");
-  //       var guestId = getGuestId(rowId);
-  //       var removedId = false;
-  //       for(var i = 0; i < selectedGuestId.length; i++) {
-  //           if(selectedGuestId[i] == guestId) {
-  //               // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
-  //               selectedGuestId[i] = selectedGuestId[selectedGuestId.length - 1];
-  //               selectedGuestId.pop();
-  //               removeRowHighlight(rowId);
-  //               console.log(rowId);
-  //               console.log("pop")
-  //               removedId = true;
-  //           }
-  //       }
-  //       if(!removedId){
-  //           selectedGuestId.push(guestId);    
-  //           highlightRow(rowId);
-  //           console.log(rowId);
-  //               console.log("push")
-  //       }
-  //       showOrHideListOptions();
-  //   });
-
-  //   function highlightRow(rowId) {
-  //       var selector = "#" + rowId;
-  //       $(selector).css("background-color", "#BBDEFB");
-  //       $(selector).find("*").css("background-color", "#BBDEFB");
-  //   }
-
-  //   function removeRowHighlight(rowId) {
-  //       var selector = "#" + rowId;
-  //       $(selector).css("background-color", "white");
-  //       $(selector).find("*").css("background-color", "white");
-  //   }
-
-  //   function isSelected(itemId) {
-  //       for(var i = 0; i < selectedItemId.length; i++) {
-  //           if(selectedItemId[i] == itemId) {
-  //               return true;
-  //           }
-  //       }
-  //       return false;
-  //   }
-
-  //   function getGuestId(rowId) {
-  //       return rowId.split("item-")[1];
-  //   }
-
-  //   function showOrHideListOptions() {
-  //       var selections = selectedGuestId.length;
-  //       if(selections == 0) {
-  //           $("#item-list-options .singleSelection").slideUp();
-  //           $("#item-list-options .multiSelection").slideUp();
-  //       } else if (selections == 1) {
-  //           $("#item-list-options .singleSelection").slideDown();
-  //           $("#item-list-options .multiSelection").slideDown();
-  //       } else if (selections > 1){
-  //           $("#item-list-options .singleSelection").slideUp();
-  //           $("#item-list-options .multiSelection").show();
-  //       } else {
-  //           alert("Invalid selection count: " + selections);
-  //       }
-
-  //   }
-
-  //   $("#item-list-options #itemListNewFormBtn").click(function(){
-  //       showFormForNewItem();
-  //       $("#guest-details").slideDown();      
-  //   });
-
-  //   $("#item-list-options #itemListEdit").click(function(){
-  //       showItemDetailsForEditing(selectedItemId[0]); 
-  //   });
-
-  //   $("#item-list-options #itemListCheckIn").click(function(){
-  //       checkInAllSelectedItems(selectedItemId); 
-  //   });
-
-  //   $("#item-list-options #itemListCheckOut").click(function(){
-  //       checkOutAllSelectedItems(selectedItemId); 
-  //   });
-
-  //   $("#item-list-options #guestListDelete").click(function(){
-  //       deleteAllSelectedItems(selectedItemId); 
-  //   });
-
-  //   function deleteAllSelectedItems(arrayOfItemIds) {
-  //       //TODO: Also remove guest from data model before removing from table.
-  //       for(var i = 0; i < arrayOfItemIds.length; i++){
-  //           var guestId = arrayOfItemIds[i];
-  //           var rowId = "guest-" + itemId;
-  //           deleteRowFromDisplay(rowId);
-  //           console.log(arrayOfItemIds);
-  //       }
-  //       clearAllTableSelections();
-  //       showOrHideListOptions();
-  //   }
-
-  //   function checkInAllSelectedItems(arrayOfGuestIds) {
-  //       var checkedInString = "Checked in";
-  //       for(var i = 0; i < arrayOfGuestIds.length; i++){
-  //           var guestId = arrayOfGuestIds[i];
-  //           mapOfGuests[guestId][2] = checkedInString;
-  //       }
-
-  //       for(var i = 0; i < arrayOfGuestIds.length; i++){
-  //           var guestId = arrayOfGuestIds[i];
-  //           var rowId = "guest-" + guestId;
-  //           var textSelector = "#" + rowId + " .status";
-  //           $(textSelector).html(checkedInString);
-  //           temporarilyHighlightText(textSelector);
-  //           // temporarilyHighlightRow(rowId);
-  //       }
-  //   }
-
-  //   function checkOutAllSelectedGuests(arrayOfGuestIds) {
-  //       var checkedOutString = "Checked out";
-  //       for(var i = 0; i < arrayOfGuestIds.length; i++){
-  //           var guestId = arrayOfGuestIds[i];
-  //           mapOfGuests[guestId][2] = checkedOutString;
-  //       }
-  //       for(var i = 0; i < arrayOfGuestIds.length; i++){
-  //           var guestId = arrayOfGuestIds[i];
-  //           var rowId = "guest-" + guestId;
-  //           var textSelector = "#" + rowId + " .status";
-  //           $(textSelector).html(checkedOutString);
-  //           temporarilyHighlightText(textSelector);
-  //           deleteRowFromDisplay(rowId);
-  //       }
-  //       console.log(arrayOfGuestIds.length);
-  //       clearAllTableSelections();
-  //       showOrHideListOptions();
-  //   }
-
-  //   function clearAllTableSelections() {
-  //       selectedItemId = [];
-  //   }
-
-  //   function temporarilyHighlightText(textSelector) {
-  //       $(textSelector).css("font-weight", "bold");
-  //       setTimeout(function(){
-  //           $(textSelector).css("font-weight", "normal");
-  //       }, 2000);
-  //   }
-
-  //   function temporarilyHighlightRow(rowId) {
-  //       var selector = "#" + rowId;
-  //       var initialBackgroundColor = $(selector).css("background-color");
-  //       $(selector).css("background-color", "#FFECB3");
-  //       $(selector).find("*").css("background-color", "#FFECB3");
-  //       setTimeout(function(){
-  //           $(selector).css("background-color", initialBackgroundColor);
-  //       $(selector).find("*").css("background-color", initialBackgroundColor);
-  //       }, 2000);
-  //   }
-
-  //   function deleteRowFromDisplay(rowId) {
-  //       console.log("row id dfd =" + rowId);
-  //       $("#" + rowId).slideUp();
-  //   }
-
-  //   function clearItemDetailsForm() {
-  //       // $('#guestStatusDropdown li a')[0].click(); // Select first option
-  //       setDropdown("Not Arrived");
-  //       $("#guest-details *").val("");
-  //   }
-
-  //   function showFormForNewItem() {
-  //       $("#clearForm").show();
-  //       $("#saveNewGuest").show();
-  //       clearItemDetailsForm();
-  //   }
-
-  //   function saveNewItemFromForm() {
-  //       if(isEditing) {
-  //           deleteAllSelectedGuests(selectedGuestId);
-  //       }
-  //       var guestId = getGuestDetailsFromForm();
-  //       if(guestId == -1) {
-  //           // Todo: implement error handling logic
-  //           alert("please enter all required details.");
-  //           return;
-  //       }
-  //       isEditing = false;
-  //       addGuestDetailsToList(guestId);
-  //       // addDummyGuestDetailsTolist();
-  //       clearGuestDetailsForm();
-  //       showOrHideListOptions();
-  //   }
-
-  //   function addItemDetailsToList(guestId){
-  //       var guest = mapOfGuests[guestId];
-  //       var rowId = "guest-" + guestId;
-  //       $("#guestList").prepend(
-  //           '<div class="row" id="' + rowId + '" style="display:none">' +
-  //               '<div class="col-sm-3 col-sm-offset-1"><p>' + item[0] + '</p></div>' +
-  //               '<div class="col-sm-3"><p class="status">' + item[2] + '</p></div>' +
-  //               '<div class="col-sm-3"><p>' + item[1] + '</p></div>' +
-  //               '<div class="col-sm-2"><p>' + item[3] + '</p></div>' +
-  //           '</div>');
-
-  //       $("#" + rowId).slideDown();
-  //       temporarilyHighlightRow(rowId);
-  //   }
-
-  //   function showGuestDetailsForEditing(guestId) {
-  //       isEditing = true;
-  //       var guest = mapOfGuests[guestId];
-  //       $("#guest-details #guestName").val(guest[0]);
-  //       $("#guest-details #checkIn").val(guest[1]);
-  //       setDropdown(guest[2]);
-  //       $("#guest-details #duration").val(guest[3]);
-  //       $("#guest-details #daysLeft").val(guest[4]);
-  //       $("#guest-details #guestNote").val(guest[5]);
-  //       $("#clearForm").show();
-  //       $("#saveNewGuest").show();
-  //   }
-
-  //   function addDummyGuestDetailsTolist(){
-  //       // $("#guestList").prepend('<p>hello</p>');
-  //       $("#guestList").prepend(
-  //           '<div class="row">' +
-  //               '<div class="col-sm-3 col-sm-offset-1"><p>Peter Pan</p></div>' +
-  //               '<div class="col-sm-3"><p>Checked in</p></div>' +
-  //               '<div class="col-sm-3"><p>04/18/2015</p></div>' +
-  //               '<div class="col-sm-2"><p>5</p></div>' +
-  //           '</div>');
-  //   }
-
-  //   function setDropdown(value) {
-  //       $("#guestStatusDropdownLabel").html(value + ' <span class="caret"></span>');
-  //       $("#guestStatusDropdownLabel").val(value);
-  //   }
-
-  //   function getGuestDetailsFromForm() {
-  //       var guestName = $("#guestName").val();
-  //       var checkIn  = $("#checkIn").val();
-  //       var status = $("#guestStatusDropdownLabel").val();
-  //       var duration = $("#duration").val();
-  //       var daysLeft = $("#daysLeft").val();
-  //       var guestNote = $("#guestNote").val();
-  //       if(!duration && daysLeft) {
-  //           duration = daysLeft;
-  //       }
-  //       if(!daysLeft && duration) {
-  //           daysLeft = duration;
-  //       }
-
-  //       if(!guestName || !checkIn || !status || !duration || !daysLeft) {
-  //           return -1;
-  //       }
-  //       var guestId = nextGuestId++;
-  //       var guestDetails = [guestName, checkIn, status, duration, daysLeft, guestNote, guestId];
-  //       mapOfGuests[guestId] = guestDetails;
-  //       var residentToGuestMapEntry = mapOfResidentsToGuests[residentId];
-  //       if(residentToGuestMapEntry) {
-  //           residentToGuestMapEntry.push(guestId);
-  //       } else {
-  //           mapOfResidentsToGuests[residentId] = [guestId];
-  //       }
-  //       return guestId;
-  //   }
-
-  //   function hideDaysLeft() {
-  //       $("#daysLeftFormField").hide();
-  //   }
-
-  //   var mapOfResidents = {
-  //       0:["Konstantinos","Mentzelos",205,0],
-  //       1:["Julius","Adebayo",118,1],
-  //       2:["Cecilia","Pacheco",304,2],
-  //       3:["Athina","Lentza",121,3]
-  //   };
-
-  //   var mapOfGuests = {
-  //       // Name, check-in date (yyyy-mm-dd), status, duration, days left, note  
-  //       0:["Nate Smith","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",0],
-  //       1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",1],
-  //       2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",2],
-  //       3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",3],
-  //   };
-
-  //   var mapOfResidentsToGuests = {
-  //       0:[0,1,2],
-  //       1:[3]
-  //   };
-
-  //   var nextGuestId = 4;
-
-
-
-
-
-
-
-
 
 
 // ************************* Item List ******************
