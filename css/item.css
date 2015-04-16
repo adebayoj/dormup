@@ -143,13 +143,13 @@ body {
 	font-size: 14px;
 }
 
-#residentListHeading .row, #itemList .row {
+#residentListHeading .row, #residentList .row {
 	padding: 2px 0px;
 	margin-top: 0px;
 	cursor: pointer;
 }
 
-#itemList .row {
+#residentList .row {
 	border-top: 1px solid #dddddd;
 }
 
