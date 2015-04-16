@@ -84,7 +84,11 @@ body {
 }*/
 /*
 
-/*********** Guest List ***********/
+/*********** Package List ***********/
+
+.container.mainPanel {
+	margin-bottom: 70px;
+}
 
 #pkg-details {
 	margin-bottom: 15px;
@@ -162,7 +166,7 @@ body {
 	display: none;
 }
 
-/*********** End of Guest List ***********/
+/*********** End of Package List ***********/
 
 
 .footer {

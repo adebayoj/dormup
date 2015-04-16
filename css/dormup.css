@@ -86,6 +86,10 @@ body {
 
 /*********** Guest List ***********/
 
+.container.mainPanel {
+	margin-bottom: 70px;
+}
+
 #guest-details {
 	margin-bottom: 15px;
 	padding-bottom: 15px;
