@@ -35,15 +35,18 @@ $(document).ready(function(){
         0:["Konstantinos","Mentzelos",205,0],
         1:["Julius","Adebayo",118,1],
         2:["Cecilia","Pacheco",304,2],
-        3:["Athina","Lentza",121,3]
+        3:["Athina","Lentza",121,3],
+        4:["Argiro","Lentza",121,4],
+        5:["George","Avramopoulos",205,5],
+        6:["Konstantinos","Kamranlis",109,6]
     };
 
     var mapOfGuests = {
         // Name, check-in date (yyyy-mm-dd), status, duration, days left, note  
-        0:["Nate Smith","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",0],
-        1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",1],
-        2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",2],
-        3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"African American, about 6ft and with an afro",3],
+        0:["Nate Smith","2015-04-18","Not Arrived",5,5," 6ft ",0],
+        1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"6ft ",1],
+        2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"6ft ",2],
+        3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"5'10ft",3],
     };
 
     var mapOfResidentsToGuests = {

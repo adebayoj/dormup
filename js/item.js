@@ -35,7 +35,10 @@ $(document).ready(function(){
         0:["Konstantinos","Mentzelos",205,0],
         1:["Julius","Adebayo",118,1],
         2:["Cecilia","Pacheco",304,2],
-        3:["Athina","Lentza",121,3]
+        3:["Athina","Lentza",121,3],
+        4:["Argiro","Lentza",121,4],
+        5:["George","Avramopoulos",205,5],
+        6:["Konstantinos","Kamranlis",109,6]
     };
 
     var mapOfItems = {
