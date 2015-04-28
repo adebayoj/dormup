@@ -160,18 +160,6 @@ $(document).ready(function(){
         saveNewItemFromForm();      
     });
 
-    $('#tableList').on('mouseover', '.row', function() {
-        highlightRow($(this).attr("id"));
-    });
-
-    $('#tableList').on('mouseout', '.row', function() {
-        var rowId = $(this).attr("id");
-        var itemId = getItemId(rowId);
-        if(!isSelected(itemId)) {
-            removeRowHighlight(rowId);
-        }
-    });
-
     $('#tableList').on('click', '.row', function() {
         var rowId = $(this).attr("id");
         var itemId = getItemId(rowId);

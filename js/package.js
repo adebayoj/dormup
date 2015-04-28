@@ -170,20 +170,6 @@ $(document).ready(function(){
         saveNewPkgFromForm();      
     });
 
-    $('#tableList').on('mouseover', '.row', function() {
-        var rowId = $(this).attr("id");
-        console.log(rowId);
-        highlightRow(rowId);
-    });
-
-    $('#tableList').on('mouseout', '.row', function() {
-        var rowId = $(this).attr("id");
-        var pkgUniqueId = getPkgUniqueId(rowId);
-        if(!isSelected(pkgUniqueId)) {
-            removeRowHighlight(rowId);
-        }
-    });
-
     $('#tableList').on('click', '.row', function() {
         var rowId = $(this).attr("id");
         var pkgUniqueId = getPkgUniqueId(rowId);

@@ -173,11 +173,11 @@ $(document).ready(function(){
         window.location = "guest.html";
     });
 
-    $('#residentList').on('mouseover', '.row', function() {
+    $('#residentList, #tableList').on('mouseover', '.row', function() {
         $(this).addClass("hovered-row");
     });
 
-    $('#residentList').on('mouseout', '.row', function() {
+    $('#residentList, #tableList').on('mouseout', '.row', function() {
         $(this).removeClass("hovered-row");
     });
 

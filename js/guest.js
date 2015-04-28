@@ -239,18 +239,6 @@ $(document).ready(function(){
         saveNewGuestFromForm();      
     });
 
-    $('#tableList').on('mouseover', '.row', function() {
-        highlightRow($(this).attr("id"));
-    });
-
-    $('#tableList').on('mouseout', '.row', function() {
-        var rowId = $(this).attr("id");
-        var guestId = getGuestId(rowId);
-        if(!isSelected(guestId)) {
-            removeRowHighlight(rowId);
-        }
-    }); 
-
     $('#tableList').on('click', '.row', function() {
         var rowId = $(this).attr("id");
         var guestId = getGuestId(rowId);
