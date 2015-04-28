@@ -3,22 +3,6 @@ body {
 	/*background-color: #E3F2FD;*/
 }
 
-/*p{
-        padding: 50px;
-        font-size: 32px;
-        font-weight: bold;
-        text-align: center;
-        background: #f2f2f2;
-}*/
-
-.mainHeading{
-	font-size: 42px;
-	/*background-color: #92B8E9;*/
-	text-align: center;
-	/*font-weight: bold;*/
-	/*color:white;*/
-	width: 100%;
-}
 .secondaryHeading{
 	font-size: 30px;
 }
@@ -51,6 +35,10 @@ body {
 .smallButton:active {
 	position:relative;
 	top:1px;
+}
+
+.rightSidebar {
+	border: 1px solid black;
 }
 
 .navbar-right{
@@ -90,50 +78,46 @@ body {
 	margin-bottom: 70px;
 }
 
-#guest-details {
+#top-panel {
 	margin-bottom: 15px;
 	padding-bottom: 15px;
 	border-bottom: 1px solid black;
 }
 
-#guest-list-options button {
+#table-menu button {
 	font-size: 11px;
 	padding: 5px 0px;
 }
 
-#guest-list-options #guestListNewFormBtn {
+#table-menu #newFormBtn {
 	display:none;
 }
 
-#guestList .row {
+#tableList .row {
 	margin: 0px;
 	padding: 5px 0px;
 	cursor: pointer;
 }
 
-#guestList {
-	padding-left: 0px;
-	padding-right: 0px;
+#tableList .row {
+	border-top: 1px solid #dddddd;
 }
 
-.guest-details-wizard p {
-	font-size: 13px;
-	font-weight: normal;
-	text-align: left;
-	background-color: white;
-	margin-top: 0px;
-	padding: 0px;
+#tableList {
+	padding-left: 0px;
+	padding-right: 0px;
 }
 
 #residentIdentifier p {
 	font-weight: bold;
 }
 
-#guestList .row {
+
+#tableList .row {
 	border-top: 1px solid #dddddd;
 }
 
-#guestListHeading * {
+#tableListHeading * {
 	background-color: #1976D2;
 	color: white;
 	font-weight: bold;
@@ -151,6 +135,22 @@ body {
 	padding: 2px 0px;
 	margin-top: 0px;
 	cursor: pointer;
+}
+
+#residentList p, #tableList p {
+	font-size: 12px;
+}
+
+.row.hovered-row, .row.hovered-row * {
+	background-color: #E3F2FD;
+}
+
+.row.selected-row, .row.selected-row * {
+	background-color: #BBDEFB;
+}
+
+.row.flash, .row.flash * {
+	background-color: #FFECB3;
 }
 
 #residentList .row {
@@ -179,7 +179,7 @@ body {
 }
 
 /***************/
-#itemListHeading * {
+#tableListHeading * {
 	background-color: #1976D2;
 	color: white;
 	font-weight: bold;

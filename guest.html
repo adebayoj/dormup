@@ -13,6 +13,7 @@
 <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/dormup.js"></script>
+<script type="text/javascript" src="js/guest.js"></script>
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link href="css/dormup.css" rel="stylesheet">
@@ -22,110 +23,110 @@
 <script src="js/dormup.js"></script> -->
 
 <script type="text/javascript">
-	var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
-	var listOfPointers={
-		"Konstantinos Mentzelos":0,
-		"Julius Adebayo":1,
-		"Cecilia Pacheco":2,
-		"Athina Lentza":3,
-		"Argiro Lentza":4,
-		"George Avramopoulos":5,
-		"Konstantinos Karamanlis":6
-	};
-	var listOfPackages=[[["001345","Amazon","Good"],["005647","Fedex","Damaged"]],[["001875","Amazon","Good"],["002347","UPS","Good"]],[],[],[],[],[]];
+// 	var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
+// 	var listOfPointers={
+// 		"Konstantinos Mentzelos":0,
+// 		"Julius Adebayo":1,
+// 		"Cecilia Pacheco":2,
+// 		"Athina Lentza":3,
+// 		"Argiro Lentza":4,
+// 		"George Avramopoulos":5,
+// 		"Konstantinos Karamanlis":6
+// 	};
+// 	var listOfPackages=[[["001345","Amazon","Good"],["005647","Fedex","Damaged"]],[["001875","Amazon","Good"],["002347","UPS","Good"]],[],[],[],[],[]];
 
-	var pickedPointer;
-	var pickedResident = [];
-	var pickedName;
-	var pickedPackage;
-	var checkName;
-	var deleteTemporary;
-	var searchTemporary = [];
-	var searchTemporaryPointers = [];
-	var searchCount;
-	var searchCheck;
+// 	var pickedPointer;
+// 	var pickedResident = [];
+// 	var pickedName;
+// 	var pickedPackage;
+// 	var checkName;
+// 	var deleteTemporary;
+// 	var searchTemporary = [];
+// 	var searchTemporaryPointers = [];
+// 	var searchCount;
+// 	var searchCheck;
 
 
-	$(document).ready(function(){
+// 	$(document).ready(function(){
 
-		//Upload the list of residents
-		for (i=0; i<listOfResidents.length; i++){
-			$(".listOfNumbers").append((i+1)+'<br>');
-			$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
-			$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
-		}
-		pickResident();
+// 		//Upload the list of residents
+// 		for (i=0; i<listOfResidents.length; i++){
+// 			$(".listOfNumbers").append((i+1)+'<br>');
+// 			$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+// 			$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+// 		}
+// 		pickResident();
 
-		//Picking a resident name
-		function pickResident(){
-			jQuery('div.listOfNames a').click(function(){
-				pickedName = $(this).text();
-				//Make the wizard visible
-				document.getElementById("wizard").style.visibility = 'visible';
-				//Delete the values in the input fields
-				$("#packageID").val("");
-				$("#packageCompany").val("");
-				$("#packageCondition").val("");
-				//Empty the list of packages in the interface
-				$(".listOfID").empty();
-				$(".listOfCompanies").empty();
-				$(".listOfConditions").empty();
-				//Find the pointer of the resident name
-				pickedPointer = listOfPointers[pickedName];
-				//FIll the input fields with the right information
-				$("#residentFirstName").val(listOfResidents[pickedPointer][0]);
-				$("#residentLastName").val(listOfResidents[pickedPointer][1]);
-				$("#residentRoom").val(listOfResidents[pickedPointer][2]);
-				//Find the packages related to the resident
-				pickedResident = listOfPackages[pickedPointer];
-				//Fill the list of packages in the interface
-				for (i=0; i<pickedResident.length; i++){
-					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+pickedResident[i][0]+'</a>'+'<br>');
-					$(".listOfCompanies").append(pickedResident[i][1]+'<br>');
-					$(".listOfConditions").append(pickedResident[i][2]+'<br>');
-				}
-				pickPackage();
-			});
-		}
+// 		//Picking a resident name
+// 		function pickResident(){
+// 			jQuery('div.listOfNames a').click(function(){
+// 				pickedName = $(this).text();
+// 				//Make the wizard visible
+// 				document.getElementById("wizard").style.visibility = 'visible';
+// 				//Delete the values in the input fields
+// 				$("#packageID").val("");
+// 				$("#packageCompany").val("");
+// 				$("#packageCondition").val("");
+// 				//Empty the list of packages in the interface
+// 				$(".listOfID").empty();
+// 				$(".listOfCompanies").empty();
+// 				$(".listOfConditions").empty();
+// 				//Find the pointer of the resident name
+// 				pickedPointer = listOfPointers[pickedName];
+// 				//FIll the input fields with the right information
+// 				$("#residentFirstName").val(listOfResidents[pickedPointer][0]);
+// 				$("#residentLastName").val(listOfResidents[pickedPointer][1]);
+// 				$("#residentRoom").val(listOfResidents[pickedPointer][2]);
+// 				//Find the packages related to the resident
+// 				pickedResident = listOfPackages[pickedPointer];
+// 				//Fill the list of packages in the interface
+// 				for (i=0; i<pickedResident.length; i++){
+// 					$(".listOfID").append('<a style="cursor: pointer; cursor: hand;">'+pickedResident[i][0]+'</a>'+'<br>');
+// 					$(".listOfCompanies").append(pickedResident[i][1]+'<br>');
+// 					$(".listOfConditions").append(pickedResident[i][2]+'<br>');
+// 				}
+// 				pickPackage();
+// 			});
+// 		}
 		
 
-		//Operations for Search button
-		$("#buttonSearch").click(function() {
-			searchCount = 1;
-			searchTemporaryPointers = [];
-			searchCheck = false;
-			$(".listOfNumbers").empty();
-			$(".listOfNames").empty();
-			$(".listOfRooms").empty();
-			searchTemporary = $("#nameSearch").val().split(" ");
-			for (i=0; i<listOfResidents.length; i++){
-				for (j=0; j<searchTemporary.length; j++){
-					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
-						for (k=0; k<searchTemporaryPointers.length; k++){
-							if (searchTemporaryPointers[k]==listOfResidents[i][3]){
-								searchCheck = true;
-							}
-						}
-						if (searchCheck==false){
-							searchTemporaryPointers.push(listOfResidents[i][3]);
-							$(".listOfNumbers").append(searchCount+'<br>');
-							$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
-							$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
-							searchCount = searchCount + 1;
-						}
-					}
-				}
-			}
-			pickResident();
-		});
+// 		//Operations for Search button
+// 		$("#buttonSearch").click(function() {
+// 			searchCount = 1;
+// 			searchTemporaryPointers = [];
+// 			searchCheck = false;
+// 			$(".listOfNumbers").empty();
+// 			$(".listOfNames").empty();
+// 			$(".listOfRooms").empty();
+// 			searchTemporary = $("#nameSearch").val().split(" ");
+// 			for (i=0; i<listOfResidents.length; i++){
+// 				for (j=0; j<searchTemporary.length; j++){
+// 					if (searchTemporary[j]==listOfResidents[i][0] || searchTemporary[j]==listOfResidents[i][1]){
+// 						for (k=0; k<searchTemporaryPointers.length; k++){
+// 							if (searchTemporaryPointers[k]==listOfResidents[i][3]){
+// 								searchCheck = true;
+// 							}
+// 						}
+// 						if (searchCheck==false){
+// 							searchTemporaryPointers.push(listOfResidents[i][3]);
+// 							$(".listOfNumbers").append(searchCount+'<br>');
+// 							$(".listOfNames").append('<a style="cursor: pointer; cursor: hand;">'+listOfResidents[i][0]+" "+listOfResidents[i][1]+'</a>'+'<br>');
+// 							$(".listOfRooms").append(listOfResidents[i][2]+'<br>');
+// 							searchCount = searchCount + 1;
+// 						}
+// 					}
+// 				}
+// 			}
+// 			pickResident();
+// 		});
 
-		//Operations for Open button
-		$("#buttonOpenWizard").click(function() {
-			document.getElementById("wizard").style.visibility = 'visible';
-		});
+// 		//Operations for Open button
+// 		$("#buttonOpenWizard").click(function() {
+// 			document.getElementById("wizard").style.visibility = 'visible';
+// 		});
 
-	});
-</script>
+// 	});
+// </script>
 </head>
 
 <body onload="startTime()">
@@ -163,7 +164,7 @@
   		</div> -->
   		<div class="row">
     		<div class="col-sm-5" style="background-color:white; border-style:solid; border-width:1px; margin:0px">
-    			<div class="row guest-details-wizard" id="wizard" style="visibility: visible; margin-top:0px">
+    			<div class="row" id="wizard" style="visibility: visible; margin-top:0px">
     				<div class="col-sm-12" id="residentListHeading">
 	  					<div class="row">
 	    					<div class="col-sm-8"><p>Resident</p></div>
@@ -186,10 +187,10 @@
     		<div class="col-sm-6 rightSidebar" style="background-color:white; border-style:solid; border-width:1px;">
     			<!-- <div class="secondaryHeading">Guests</div> -->
     			<!-- Display guest details-->
-    			<div class="row guest-details-wizard" id="wizard" style="visibility: visible;">
+    			<div class="row" id="wizard" style="visibility: visible;">
     				<!--TODO: Set resident name-->
     				<div class="col-sm-12" id="residentIdentifier"><h3>Kesiena Owho-Ovuakporie (Room 400)</h3></div>
-    				<div class="col-sm-12" id="guest-details">
+    				<div class="col-sm-12" id="top-panel">
 	  					<div class="row">
 	    					<div class="col-sm-4">
 	    						<div class="labels">Guest:</div>
@@ -254,10 +255,10 @@
 	    					</div>
 	  					</div>
     				</div>
-    				<div class="col-sm-12" id="guest-list-options">
+    				<div class="col-sm-12" id="table-menu">
 	    				<div class="row">
 	    					<div class="col-sm-2">
-	    						<button type="button" class="btn btn-default" id="guestListNewFormBtn" style="width:100%">Add Guest</button>
+	    						<button type="button" class="btn btn-default" id="newFormBtn" style="width:100%">Add Guest</button>
 	    					</div>
 	    					<div class="col-sm-2 col-sm-offset-1">
 	    						<button type="button" class="btn btn-default singleSelection" id="guestListEdit" style="width:100%">Edit</button>
@@ -273,7 +274,7 @@
 	    					</div>
 	  					</div>
     				</div>
-    				<div class="col-sm-12" id="guestListHeading">
+    				<div class="col-sm-12" id="tableListHeading">
     					<div class="row">
 	    					<div class="col-sm-3 col-sm-offset-1"><p>Guest</p></div>
 	    					<div class="col-sm-3"><p>Status</p></div>
@@ -281,7 +282,7 @@
 	    					<div class="col-sm-2"><p>Days Left</p></div>
 	  					</div>
     				</div>
-    				<div class="col-sm-12" id="guestList">
+    				<div class="col-sm-12" id="tableList">
     					
 	  					<div class="row" id="guest-0">
 	    					<div class="col-sm-3 col-sm-offset-1"><p class="guestNameInList">Nate Johnson</p></div>
