@@ -15,13 +15,6 @@
 <script type="text/javascript" src="js/dormup.js"></script>
 <script type="text/javascript" src="js/package.js"></script>
 
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link href="css/package.css" rel="stylesheet">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-<script src="js/package.js"></script> -->
-
 <script type="text/javascript">
 	// var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
 	// var listOfPointers={
@@ -170,7 +163,7 @@
 	    					<div class="col-sm-8"><p>Resident</p></div>
 	    					<div class="col-sm-4"><p>Room no.</p></div>
 	  					</div>
-    				</div><!-- Residents' list -->
+    				</div>
     				<div class="col-sm-12" id="residentList">
 	  					<div class="row" id="resident-0">
 	    					<div class="col-sm-8"><p>John Smith</p></div>
@@ -180,17 +173,29 @@
 	    					<div class="col-sm-8"><p>John Smith</p></div>
 	    					<div class="col-sm-4"><p>200</p></div>
 	  					</div>
-    				</div><!-- Residents' list -->
-    			</div> <!-- Left side bar -->
+    				</div>
+    			</div>
     		</div>
     		<div class="col-sm-1"></div>
     		<div class="col-sm-6 rightSidebar">
-    			<!-- <div class="secondaryHeading">Guests</div> -->
-    			<!-- Display guest details-->
     			<div class="row" id="wizard" style="visibility: visible;">
-    				<!--TODO: Set resident name-->
-    				<div class="col-sm-12" id="residentIdentifier"><h3>Kesiena Owho-Ovuakporie (Room 400)</h3></div>
     				<div class="col-sm-12" id="top-panel">
+    					<div class="row">
+	    					<div class="col-sm-4">
+	    						<div class="labels">Resident:</div>
+	    					</div>
+	    					<div class="col-sm-6">
+	    						<input type="text" class="form-control" id="residentName" placeholder="Resident Name" value="Kesiena Owho-Ovuakporie">
+	    					</div>
+	  					</div>
+	  					<div class="row">
+	    					<div class="col-sm-4">
+	    						<div class="labels">Room:</div>
+	    					</div>
+	    					<div class="col-sm-6">
+	    						<input type="text" class="form-control" id="room" placeholder="Room" value="400">
+	    					</div>
+	  					</div>
 	  					<div class="row">
 	    					<div class="col-sm-4">
 	    						<div class="labels">Package ID:</div>
@@ -204,7 +209,7 @@
 	    						<div class="labels">Company:</div>
 	    					</div>
 	    					<div class="col-sm-6">
-	    						<input type="text" class="form-control" id="company" value="5" placeholder="Company e.g. DHL">
+	    						<input type="text" class="form-control" id="company" value="5" placeholder="e.g. DHL (optional)">
 	    					</div>
 	  					</div>
 	  					<div class="row">
@@ -258,11 +263,11 @@
 	    					<div class="col-sm-3"><p>DHL</p></div>
 	    					<div class="col-sm-5"><p></p></div>
 	  					</div>
-    				</div><!-- pkg list -->
-    			</div> <!-- wizard -->
+    				</div>
+    			</div>
 	  		</div>
 		</div>
-	</div> <!-- container -->
+	</div>
 
   <nav class="navbar navbar-default navbar-fixed-bottom">
   <div class="collapse navbar-collapse" id="top-navbar-collapse">

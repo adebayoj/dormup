@@ -34,8 +34,8 @@ function displayResidentProfile(residentId) {
     if(!resident) {
         alert("Could not find profile for resident ID: " + residentId);
     }
-    var residentHeading = resident[0] + " " + resident[1] + " (Room " + resident[2] + ")";
-    $("#residentIdentifier h3").html(residentHeading);
+    $("#residentName").val(resident[0] + " " + resident[1]).prop('disabled', true);
+    $("#room").val(resident[2]).prop('disabled', true);
 }
 
 function isSelected(pkgUniqueId) {
@@ -77,7 +77,7 @@ function clearAllTableSelections() {
 }
 
 function clearPkgDetailsForm() {
-    $("#top-panel input").val("");
+    $("#top-panel input").not("#residentName").not("#room").val("");
     $("#top-panel textarea").val("");
 }
 
@@ -99,7 +99,6 @@ function saveNewPkgFromForm() {
     }
     isEditing = false;
     addPkgDetailsToList(pkgUniqueId, true);
-    // addDummyGuestDetailsTolist();
     clearPkgDetailsForm();
     showOrHideListOptions(selectedPkgId.length);
 }
@@ -133,7 +132,7 @@ function getPkgDetailsFromForm() {
     var packageId = $("#packageId").val();
     var company = $("#company").val();
     var note = $("#note").val();
-    if(!packageId || !company) {
+    if(!packageId) {
         return -1;
     }
     var pkgUniqueId = getNextPkgUniqueId();

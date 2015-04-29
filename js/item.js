@@ -22,7 +22,7 @@ function clearAllTableSelections() {
 }
 
 function clearItemDetailsForm() {
-    $("#top-panel input").val("");
+    $("#top-panel input").not("#residentName").not("#room").val("");
     $("#top-panel textarea").val("");
 }
 
@@ -44,7 +44,6 @@ function saveNewItemFromForm() {
     }
     isEditing = false;
     addItemDetailsToList(itemUniqueId, true);
-    // addDummyGuestDetailsTolist();
     clearItemDetailsForm();
     showOrHideListOptions(selectedItemId.length);
 }
@@ -129,8 +128,8 @@ function displayResidentProfile(residentId) {
     if(!resident) {
         alert("Could not find profile for resident ID: " + residentId);
     }
-    var residentHeading = resident[0] + " " + resident[1] + " (Room " + resident[2] + ")";
-    $("#residentIdentifier h3").html(residentHeading);
+    $("#residentName").val(resident[0] + " " + resident[1]).prop('disabled', true);
+    $("#room").val(resident[2]).prop('disabled', true);
 }
 
 function isSelected(itemId) {
