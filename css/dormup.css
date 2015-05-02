@@ -63,6 +63,11 @@ body {
   text-align: center;
 }
 
+.navbar-brand {
+	font-size: 32px;
+	font-weight: bold;
+}
+
 /*.navbar-option{
 	background-color: #BBDEFB;
 }

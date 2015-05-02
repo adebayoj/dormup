@@ -129,6 +129,11 @@
 	        <li><a href="index.html"><span class="glyphicon glyphicon-home" style="font-size:20px"></span></a></li>
 	        <li><a href="#"><span class="glyphicon glyphicon-wrench" style="font-size:20px"></a></li>
 	    </ul>
+	    <ul class="nav navbar-nav navbar-center">
+	        <a class="navbar-brand" href="">
+	        	Package Management
+	        </a>
+	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	        <li><a href="#"><span id="clock"></span></a></li>
 	        <li><a href="#"><span class="glyphicon glyphicon-log-out" style="font-size:20px"><br></a></li>
@@ -136,11 +141,6 @@
 	  </div>
 	</nav>
 
-	<div class="bs-docs-header" id="content" tabindex="-1">
-	      <div class="container">
-	        <h1>Package Management</h1>
-	      </div>
-	</div>
 
 	<div class="container mainPanel">
 		<!-- <div class="mainHeading">Guest List</div> -->
@@ -156,30 +156,40 @@
     		<div class="col-sm-4" style="background-color:white;"></div>
   		</div> -->
   		<div class="row">
-  			<div class="row">
+  			<div class="col-sm-5" style="background-color:white; margin:0px">
+	  			<div class="col-lg-15">
+				    <div class="input-group">
+				      <input type="text" class="form-control" placeholder="Search by Name or Room Number">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></button>
+				      </span>
+				    </div><!-- /input-group -->
+			    </div><!-- /.col-lg-15 -->
+			    <div class="col-lg-15" style="height:10px"></div>
   				<ul class="nav nav-tabs" id="myTab">
   					<li class="active"><a id="residentsTab" href="#residentsTab">Residents</a></li>
   					<li><a id="packagesTab" href="#packagesTab">Packages</a></li>
   				</ul>
-    		<div class="col-sm-5" style="background-color:white; border-style:solid; border-width:1px; margin:0px">
-    			<div class="row" id="wizard" style="visibility: visible; margin-top:0px">
-    				<div class="col-sm-12" id="residentListHeading">
-	  					<div class="row">
-	    					<div class="col-sm-8" id="firstColumn"><p>Name</p></div>
-	    					<div class="col-sm-4" id="secondColumn"><p>Room no.</p></div>
-	  					</div>
-    				</div>
-    				<div class="col-sm-12" id="residentList">
-	  					<div class="row" id="resident-0">
-	    					<div class="col-sm-8"><p>John Smith</p></div>
-	    					<div class="col-sm-4"><p>200</p></div>
-	  					</div>
-	  					<div class="row" id="resident-1">
-	    					<div class="col-sm-8"><p>John Smith</p></div>
-	    					<div class="col-sm-4"><p>200</p></div>
-	  					</div>
-    				</div>
-    			</div>
+	    		<div class="col-sm-12" style="background-color:white; border-style:solid; border-width:1px; margin:0px">
+	    			<div class="row" id="wizard" style="visibility: visible; margin-top:0px">
+	    				<div class="col-sm-12" id="residentListHeading">
+		  					<div class="row">
+		    					<div class="col-sm-8" id="firstColumn"><p>Name</p></div>
+		    					<div class="col-sm-4" id="secondColumn"><p>Room no.</p></div>
+		  					</div>
+	    				</div>
+	    				<div class="col-sm-12" id="residentList">
+		  					<div class="row" id="resident-0">
+		    					<div class="col-sm-8"><p>John Smith</p></div>
+		    					<div class="col-sm-4"><p>200</p></div>
+		  					</div>
+		  					<div class="row" id="resident-1">
+		    					<div class="col-sm-8"><p>John Smith</p></div>
+		    					<div class="col-sm-4"><p>200</p></div>
+		  					</div>
+	    				</div>
+	    			</div>
+	    		</div>
     		</div>
     		<div class="col-sm-1"></div>
     		<div class="col-sm-6 rightSidebar">
@@ -272,7 +282,6 @@
     			</div>
 	  		</div>
 		</div>
-	</div>
 
   <nav class="navbar navbar-default navbar-fixed-bottom">
   <div class="collapse navbar-collapse" id="top-navbar-collapse">
