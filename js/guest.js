@@ -1,4 +1,5 @@
 var selectedGuestId = [];
+var selectedTab = "Residents";
 
 function getNextGuestId() {
     var maxId = -1;
