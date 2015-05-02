@@ -111,7 +111,6 @@ function setupResidentList(searchStr) {
 		var found=false;
 		var inputString=searchStr;
 		var inputArray=inputString.split(" ");
-		console.log("Number or words: "+inputArray.length);
 		if (inputArray.length == 1){
 			for (var r in mapOfResidents) {
 		        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
@@ -274,14 +273,7 @@ $(document).ready(function(){
 
     $('#searchInput').keyup(function(e) {
     	var searchString =$("#searchInput").val();
-    	// if (e.keyCode == 13){
-    		//Handler for enter keypress
-    		setupResidentList(searchString);
-    	// }
-    	// else if(searchString.length==0){
-    	// 	// Handler for 'Delete' keypress
-    	// 	setupResidentList();
-    	// }
+    	setupResidentList(searchString);
     });
 
 });
