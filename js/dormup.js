@@ -55,6 +55,8 @@ var mapOfResidentsToPkgs = {
     2:[5]
 };
 
+var listForSearch=[];
+
 var selectedResidentId = -1;
 
 var isEditing = false;
@@ -81,16 +83,71 @@ function showRightSidebar() {
     $(".rightSidebar").slideDown();   
 }
 
-function setupResidentList() {
-    $("#firstColumn").html("Name");
+function isInResidentInfo(residentMapID, singleString){
+	var resInfo=mapOfResidents[residentMapID];
+	var stringForSearch=singleString.toLowerCase();
+	if (resInfo[0].toLowerCase().indexOf(stringForSearch)>=0 || resInfo[1].toLowerCase().indexOf(stringForSearch)>=0 || resInfo[2].toString().indexOf(stringForSearch)>=0){
+		return true
+	}
+	return false;
+}
+
+function setupResidentList(searchStr) {
+	$("#firstColumn").html("Name");
     $("#secondColumn").html("Room");
     $("#residentList").empty();
-    for (var r in mapOfResidents) {
-        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
-            continue;
-        }
-        addResidentToList(r);
-    }
+	if (searchStr === undefined || searchStr.length==0){
+		listForSearch=[];
+	    for (var r in mapOfResidents) {
+	        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+	            continue;
+	        }
+	        addResidentToList(r);
+	        var resInfo=mapOfResidents[r];
+	        listForSearch.push(resInfo[0]+" "+resInfo[1]+ " "+resInfo[2]);
+	    }
+	}
+	else{
+		var found=false;
+		var inputString=searchStr;
+		var inputArray=inputString.split(" ");
+		console.log("Number or words: "+inputArray.length);
+		if (inputArray.length == 1){
+			for (var r in mapOfResidents) {
+		        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		            continue;
+		        }
+		        if (isInResidentInfo(r,inputArray[0])){
+		        	addResidentToList(r);
+		        	found=true;
+		        }
+		    }
+		}
+		else if (inputArray.length == 2){
+			for (var r in mapOfResidents) {
+		        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		            continue;
+		        }
+		        var resInfo=mapOfResidents[r];
+		        if (isInResidentInfo(r,inputArray[0]) && isInResidentInfo(r,inputArray[1])){
+		        	addResidentToList(r);
+		        	found=true;
+		        }
+		    }
+		}
+		else if (inputArray.length == 3){
+			if (isInResidentInfo(r,inputArray[0]) && isInResidentInfo(r,inputArray[1]) && isInResidentInfo(r,inputArray[2])){
+	        }
+		}
+		if (!found) {
+			$("#residentList").append(
+				'<div class="row">' +
+            	'<div class="col-sm-12"><p><i>'+"\""+ inputString+"\""+ " not found."+'</i></p></div>' +
+        		'</div>'
+        	);
+		}
+	}
+	
 }
 
 function unselectResident(residentId) {
@@ -163,6 +220,7 @@ function addResidentToList(residentId) {
         '</div>');
 }
 
+
 $(document).ready(function(){
     setupResidentList();
     hideRightSidebar();
@@ -207,4 +265,26 @@ $(document).ready(function(){
             setupRightSidebar(mapOfPkgs[packageId][4]);
         }
     });
+
+    $('#btnSearch').click(function(){
+    	var searchString =$("#searchInput").val();
+    	setupResidentList(searchString);
+    });
+
+
+    $('#searchInput').keyup(function(e) {
+    	var searchString =$("#searchInput").val();
+    	// if (e.keyCode == 13){
+    		//Handler for enter keypress
+    		setupResidentList(searchString);
+    	// }
+    	// else if(searchString.length==0){
+    	// 	// Handler for 'Delete' keypress
+    	// 	setupResidentList();
+    	// }
+    });
+
 });
+
+
+

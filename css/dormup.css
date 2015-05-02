@@ -63,9 +63,13 @@ body {
   text-align: center;
 }
 
-.navbar-brand {
-	font-size: 32px;
+.navbar-title {
+	font-size: 28px;
 	font-weight: bold;
+	margin: 0px;
+	margin-top: 7px;
+	text-align: center;
+	/*width: 100%;*/
 }
 
 /*.navbar-option{
