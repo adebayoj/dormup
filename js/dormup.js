@@ -265,12 +265,6 @@ $(document).ready(function(){
         }
     });
 
-    $('#btnSearch').click(function(){
-    	var searchString =$("#searchInput").val();
-    	setupResidentList(searchString);
-    });
-
-
     $('#searchInput').keyup(function(e) {
     	var searchString =$("#searchInput").val();
     	setupResidentList(searchString);
