@@ -164,6 +164,7 @@ function addResidentToList(residentId) {
 }
 
 $(document).ready(function(){
+    setupResidentList();
     hideRightSidebar();
 
     $("#homePageContainer #btnPackage").click(function() {
