@@ -1,4 +1,46 @@
 var selectedPkgId = [];
+var selectedPackageId = -1;
+var selectedTab = "Residents";
+
+function unselectPackage(packageId) {
+    selectedPackageId = -1;
+    removeRowHighlight(getPackageRowId(packageId));
+}
+
+function selectPackage(packageId) {
+    selectedPackageId = packageId;
+    highlightRow(getPackageRowId(packageId));
+}
+
+function getPackageId(rowId) {
+    return rowId.split("package-")[1];
+}
+
+function getPackageRowId(packageId) {
+    return "package-" + packageId;
+}
+
+function setupPackagesList() {
+    $("#firstColumn").html("ID");
+    $("#secondColumn").html("Company");
+    $("#residentList").empty();
+    for (var r in mapOfPkgs) {
+        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+            continue;
+        }
+        addPackageToList(r);
+    }
+}
+
+function addPackageToList(packageId) {
+    var packages = mapOfPkgs[packageId];
+    var rowId = getPackageRowId(packageId);
+    $("#residentList").append(
+        '<div class="row" id="' + rowId + '">' +
+            '<div class="col-sm-8"><p>' + packages[0] + '</p></div>' +
+            '<div class="col-sm-4"><p>' + packages[1] + '</p></div>' +
+        '</div>');
+}
 
 function getNextPkgUniqueId() {
     var maxId = -1;
@@ -148,6 +190,22 @@ function getPkgDetailsFromForm() {
 }
 
 $(document).ready(function(){
+    setupResidentList();
+
+    $("#myTab a").click(function(e){
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $("#residentsTab").click(function(e){
+        setupResidentList();
+        selectedTab = "Residents";
+    });
+
+    $("#packagesTab").click(function(e){
+        setupPackagesList();
+        selectedTab = "Packages";
+    });
 
     $("#homePageContainer #btnPackage").click(function() {
         window.location = "pkg.html";
@@ -179,16 +237,12 @@ $(document).ready(function(){
                 selectedPkgId[i] = selectedPkgId[selectedPkgId.length - 1];
                 selectedPkgId.pop();
                 removeRowHighlight(rowId);
-                console.log(rowId);
-                console.log("pop")
                 removedId = true;
             }
         }
         if(!removedId){
             selectedPkgId.push(pkgUniqueId);    
             highlightRow(rowId);
-            console.log(rowId);
-            console.log("push")
         }
         showOrHideListOptions(selectedPkgId.length);
     });
