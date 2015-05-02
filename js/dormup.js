@@ -2,11 +2,11 @@
 var mapOfResidents = {
     0:["Konstantinos","Mentzelos",205,0],
     1:["Julius","Adebayo",118,1],
-    2:["Cecilia","Pacheco",304,2],
+    2:["Cecilia","Testart",304,2],
     3:["Athina","Lentza",121,3],
     4:["Argiro","Lentza",121,4],
     5:["George","Avramopoulos",205,5],
-    6:["Konstantinos","Kamranlis",109,6]
+    6:["Konstantinos","Karamanlis",109,6]
 };
 
 var mapOfGuests = {
@@ -28,6 +28,10 @@ var mapOfItems = {
     1:["Spare key","2015-04-18", 00012, "", 1],
     2:["Movie - Starwars 1", "2015-04-20", 00145, "", 2],
     3:["Vacuum cleaner", "2015-04-18", 00139, "", 3],
+    4:["Basketball - Wilson", "", 00023, "", 4],
+    5:["Baseball Bat", "", 00001, "", 5],
+    6:["Movie - Harry Poter", "", 02345, "", 6],
+    7:[""]
 }
 
 var mapOfResidentsToItems = {
@@ -36,13 +40,13 @@ var mapOfResidentsToItems = {
 };
 
 var mapOfPkgs = {
-  // Pkg ID, Company, note, pkg Unique ID
-    0:["001234","Amazon","Damaged",0],
-    1:["001245","DHL","Cold food",1],
-    2:["0011433","UPS","Fragile",2],
-    3:["0011432","UPS","",3],
-    4:["141234","Fedex","",4],
-    5:["2311234","Amazon","Stored on top of the shelf",5]
+  // Pkg ID, Company, note, pkg Unique ID, Resident ID
+    0:["001234","Amazon","Damaged",0,0],
+    1:["001245","DHL","Cold food",1,0],
+    2:["0011433","UPS","Fragile",2,1],
+    3:["0011432","UPS","",3,1],
+    4:["141234","Fedex","",4,1],
+    5:["2311234","Amazon","Stored on top of the shelf",5,2]
 }
 
 var mapOfResidentsToPkgs = {
@@ -78,6 +82,8 @@ function showRightSidebar() {
 }
 
 function setupResidentList() {
+    $("#firstColumn").html("Name");
+    $("#secondColumn").html("Room");
     $("#residentList").empty();
     for (var r in mapOfResidents) {
         if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
@@ -158,7 +164,6 @@ function addResidentToList(residentId) {
 }
 
 $(document).ready(function(){
-    setupResidentList();
     hideRightSidebar();
 
     $("#homePageContainer #btnPackage").click(function() {
@@ -182,12 +187,23 @@ $(document).ready(function(){
     });
 
     $('#residentList').on('click', '.row', function() {
-        var rowId = $(this).attr("id");
-        var residentId = getResidentId(rowId);
-        if(selectedResidentId != -1) {
-            unselectResident(selectedResidentId);
+        if (selectedTab == "Residents"){
+            var rowId = $(this).attr("id");
+            var residentId = getResidentId(rowId);
+            if(selectedResidentId != -1) {
+                unselectResident(selectedResidentId);
+            }
+            selectResident(residentId);
+            setupRightSidebar(residentId);
         }
-        selectResident(residentId);
-        setupRightSidebar(residentId);
+        else if (selectedTab == "Packages"){
+            var rowId = $(this).attr("id");
+            var packageId = getPackageId(rowId);
+            if(selectedPackageId != -1) {
+                unselectPackage(selectedPackageId);
+            }
+            selectPackage(packageId);
+            setupRightSidebar(mapOfPkgs[packageId][4]);
+        }
     });
 });
