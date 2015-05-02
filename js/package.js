@@ -20,16 +20,62 @@ function getPackageRowId(packageId) {
     return "package-" + packageId;
 }
 
-function setupPackagesList() {
+function isInPkgInfo(pkgMapID, singleString){
+	var pkgInfo=mapOfPkgs[pkgMapID];
+	var stringForSearch=singleString.toLowerCase();
+	if (pkgInfo[0].toString().indexOf(stringForSearch)>=0 || pkgInfo[1].toLowerCase().indexOf(stringForSearch)>=0){
+		return true
+	}
+	return false;
+}
+
+function setupPackagesList(searchStr) {
     $("#firstColumn").html("ID");
     $("#secondColumn").html("Company");
     $("#residentList").empty();
-    for (var r in mapOfPkgs) {
-        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
-            continue;
-        }
-        addPackageToList(r);
+    if (searchStr === undefined || searchStr.length==0){
+    	for (var r in mapOfPkgs) {
+	        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+	            continue;
+	        }
+	        addPackageToList(r);
+	    }
     }
+    else{
+    	var found=false;
+    	var inputString=searchStr;
+		var inputArray=inputString.split(" ");
+		if (inputArray.length == 1){
+			for (var r in mapOfPkgs) {
+		        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		            continue;
+		        }
+		        if (isInPkgInfo(r,inputArray[0])){
+		        	addPackageToList(r);
+		        	found=true;
+		        }
+		    }
+		}
+		else if (inputArray.length==2){
+			for (var r in mapOfPkgs) {
+		        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		            continue;
+		        }
+		        if (isInPkgInfo(r,inputArray[0]) && isInPkgInfo(r,inputArray[1])){
+		        	addPackageToList(r);
+		        	found=true;
+		        }
+		    }
+		}
+		if (!found) {
+			$("#residentList").append(
+				'<div class="row">' +
+            	'<div class="col-sm-12"><p><i>'+"\""+ inputString+"\""+ " not found."+'</i></p></div>' +
+        		'</div>'
+        	);
+		}
+    }
+    
 }
 
 function addPackageToList(packageId) {
@@ -199,11 +245,13 @@ $(document).ready(function(){
     $("#residentsTab").click(function(e){
         setupResidentList();
         selectedTab = "Residents";
+        document.getElementById("searchInput").placeholder="Search by Name or Room Number";
     });
 
     $("#packagesTab").click(function(e){
         setupPackagesList();
         selectedTab = "Packages";
+        document.getElementById("searchInput").placeholder="Search by Id or Company";
     });
 
     $("#homePageContainer #btnPackage").click(function() {

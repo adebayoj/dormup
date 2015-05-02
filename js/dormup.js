@@ -55,8 +55,6 @@ var mapOfResidentsToPkgs = {
     2:[5]
 };
 
-var listForSearch=[];
-
 var selectedResidentId = -1;
 
 var isEditing = false;
@@ -97,14 +95,11 @@ function setupResidentList(searchStr) {
     $("#secondColumn").html("Room");
     $("#residentList").empty();
 	if (searchStr === undefined || searchStr.length==0){
-		listForSearch=[];
 	    for (var r in mapOfResidents) {
 	        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
 	            continue;
 	        }
 	        addResidentToList(r);
-	        var resInfo=mapOfResidents[r];
-	        listForSearch.push(resInfo[0]+" "+resInfo[1]+ " "+resInfo[2]);
 	    }
 	}
 	else{
@@ -267,7 +262,13 @@ $(document).ready(function(){
 
     $('#searchInput').keyup(function(e) {
     	var searchString =$("#searchInput").val();
-    	setupResidentList(searchString);
+    	if (selectedTab=="Residents"){
+    		setupResidentList(searchString);
+    	}
+    	else if (selectedTab=="Packages") {
+    		setupPackagesList(searchString);
+    	}
+    	
     });
 
 });
