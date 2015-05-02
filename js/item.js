@@ -1,4 +1,5 @@
 var selectedItemId = [];
+var selectedTab = "Residents";
 
 function deleteAllSelectedItems(arrayOfItemIds) {
     //TODO: Also remove item from data model before removing from table.
