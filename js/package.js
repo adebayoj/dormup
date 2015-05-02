@@ -190,7 +190,6 @@ function getPkgDetailsFromForm() {
 }
 
 $(document).ready(function(){
-    setupResidentList();
 
     $("#myTab a").click(function(e){
         e.preventDefault();
