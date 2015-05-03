@@ -175,9 +175,6 @@ body {
 	display: none;
 }
 
-/*********** End of Guest List ***********/
-
-
 .footer {
   position: relative;
   margin-top: -150px; /* negative value of footer height */
@@ -187,11 +184,59 @@ body {
   display: none;
 }
 
-/***************/
 #tableListHeading * {
 	background-color: #1976D2;
 	color: white;
 	font-weight: bold;
-	cursor: pointer;
 }
-/**************/
+
+#homePageContainer button:hover {
+	background-image: none;
+	background-color: white;
+	border: 1px solid #1976D2;
+}
+
+#top-navbar-collapse {
+	background-color: #1976D2
+}
+
+#top-navbar-collapse a {
+	color: white;
+	border-left: 1px solid white;
+	border-right: 1px solid white;
+}
+
+#top-navbar-collapse .active a, #top-navbar-collapse a:hover{
+	background-color: white;
+	background-image: none;
+	border-left: 1px solid #1976D2;
+	border-right: 1px solid #1976D2;
+	color: #1976D2;
+}
+
+p.navbar-title.navbar-text {
+	color: white;
+	padding-left: 300px; /* Fix this to use a centering logic rather than explicit pixel padding */
+}
+
+#myTab > li > a {
+	border: 1px solid #1976D2;
+	border-bottom: 1px solid white;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	color: #1976D2;
+}
+
+#myTab > li.active > a{
+	border: 1px solid #1976D2;
+	border-bottom: 1px solid white;
+	background-color: #1976D2;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	color: white;
+}
+
+#leftTable {
+	border: 1px solid #1976D2;
+	margin-top: 0;
+}
