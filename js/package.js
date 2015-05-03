@@ -149,7 +149,6 @@ function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
         var company = arrayOfPkgUniqueIds[i];
         var rowId = "pkg-" + company;
         deleteRowFromDisplay(rowId);
-        console.log(arrayOfPkgUniqueIds);
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedPkgId.length);
