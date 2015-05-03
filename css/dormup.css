@@ -79,9 +79,6 @@ body {
 .navbar-option-active{
 	background-color: #90CAF9;
 }*/
-/*
-
-/*********** Guest List ***********/
 
 .container.mainPanel {
 	margin-bottom: 70px;
@@ -106,9 +103,6 @@ body {
 	margin: 0px;
 	padding: 5px 0px;
 	cursor: pointer;
-}
-
-#tableList .row {
 	border-top: 1px solid #dddddd;
 }
 
@@ -122,15 +116,11 @@ body {
 }
 
 
-#tableList .row {
-	border-top: 1px solid #dddddd;
-}
-
 #tableListHeading * {
 	background-color: #1976D2;
 	color: white;
 	font-weight: bold;
-	cursor: pointer;
+	cursor: default;
 }
 
 #residentListHeading * {
@@ -138,12 +128,12 @@ body {
 	color: white;
 	font-weight: bold;
 	font-size: 14px;
+	cursor: default;
 }
 
 #residentListHeading .row, #residentList .row {
 	padding: 2px 0px;
 	margin-top: 0px;
-	cursor: pointer;
 }
 
 #residentList p, #tableList p {
@@ -164,6 +154,7 @@ body {
 
 #residentList .row {
 	border-top: 1px solid #dddddd;
+	cursor: pointer;
 }
 
 .zeroMargin {
