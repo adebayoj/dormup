@@ -1,21 +1,107 @@
 var selectedItemId = [];
+var selectedItmId = -1;
 var selectedTab = "Residents";
 
-function deleteAllSelectedItems(arrayOfItemIds) {
+function unselectItem(itemId) {
+    selectedItmId = -1;
+    removeRowHighlight(getItmRowId(itemId));
+}
+
+function selectItem(itemId) {
+    selectedItmId = itemId;
+    highlightRow(getItmRowId(itemId));
+}
+
+function getItmId(rowId) {
+    return rowId.split("itm-")[1];
+}
+
+function getItmRowId(itemId) {
+    return "itm-" + itemId;
+}
+
+function isInItemInfo(itemMapID, singleString){
+    var itemInfo=mapOfItems[pkgMapID];
+    var stringForSearch=singleString.toLowerCase();
+    if (itemInfo[0].toString().indexOf(stringForSearch)>=0 || itemInfo[1].toLowerCase().indexOf(stringForSearch)>=0){
+        return true
+    }
+    return false;
+}
+
+function setupItemsList(searchStr) {
+    $("#firstColumn").html("Description");
+    $("#secondColumn").html("Return Date");
+    $("#residentList").empty();
+    if (searchStr === undefined || searchStr.length==0){
+        for (var r in mapOfItems) {
+            if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                continue;
+            }
+            addItemToList(r);
+        }
+    }
+    else{
+        var found=false;
+        var inputString=searchStr;
+        var inputArray=inputString.split(" ");
+        if (inputArray.length == 1){
+            for (var r in mapOfItems) {
+                if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                    continue;
+                }
+                if (isInItemInfo(r,inputArray[0])){
+                    addItemToList(r);
+                    found=true;
+                }
+            }
+        }
+        else if (inputArray.length==2){
+            for (var r in mapOfItems) {
+                if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                    continue;
+                }
+                if (isInItemInfo(r,inputArray[0]) && isInItemInfo(r,inputArray[1])){
+                    addItemToList(r);
+                    found=true;
+                }
+            }
+        }
+        if (!found) {
+            $("#residentList").append(
+                '<div class="row">' +
+                '<div class="col-sm-12"><p><i>'+"\""+ inputString+"\""+ " not found."+'</i></p></div>' +
+                '</div>'
+            );
+        }
+    }
+    
+}
+
+function addItemToList(itemId) {
+    var items = mapOfItems[itemId];
+    var rowId = getItmRowId(itemId);
+    $("#residentList").append(
+        '<div class="row" id="' + rowId + '">' +
+            '<div class="col-sm-8"><p>' + items[0] + '</p></div>' +
+            '<div class="col-sm-4"><p>' + items[1] + '</p></div>' +
+        '</div>');
+}
+
+function deleteAllSelectedItems(arrayOfItemUniqueIds) {
     //TODO: Also remove item from data model before removing from table.
-    for(var i = 0; i < arrayOfItemIds.length; i++){
-        var itemId = arrayOfItemIds[i];
+    for(var i = 0; i < arrayOfItemUniqueIds.length; i++){
+        var itemId = arrayOfItemUniqueIds[i];
         var rowId = "item-" + itemId;
         deleteRowFromDisplay(rowId);
-        console.log(arrayOfItemIds);
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedItemId.length);
 }
 
-function returnAllSelectedItems(arrayOfItemIds) {
+function returnAllSelectedItems(arrayOfItemUniqueIds) {
     //TODO: fix this if we implement event log
-    deleteAllSelectedItems(arrayOfItemIds);
+    deleteAllSelectedItems(arrayOfItemUniqueIds);
 }
 
 function clearAllTableSelections() {
@@ -49,9 +135,9 @@ function saveNewItemFromForm() {
     showOrHideListOptions(selectedItemId.length);
 }
 
-function addItemDetailsToList(itemId, highlightRow){
-    var item = mapOfItems[itemId];
-    var rowId = "item-" + itemId;
+function addItemDetailsToList(itemUniqueId, highlightRow){
+    var item = mapOfItems[itemUniqueId];
+    var rowId = "item-" + itemUniqueId;
     $("#tableList").prepend(
         '<div class="row" id="' + rowId + '" style="display:none">' +
             '<div class="col-sm-3 col-sm-offset-1"><p>' + item[0] + '</p></div>' +
@@ -83,7 +169,7 @@ function getItemDetailsFromForm() {
     if(!itemName || !returnDate || !itemId) {
         return -1;
     }
-    var itemUniqueId = getNextItemId();
+    var itemUniqueId = getNextItemUniqueId();
     var itemDetails = [itemName, returnDate, itemId, note, itemUniqueId];
     mapOfItems[itemUniqueId] = itemDetails;
     var residentToItemMapEntry = mapOfResidentsToItems[selectedResidentId];
@@ -95,7 +181,7 @@ function getItemDetailsFromForm() {
     return itemUniqueId;
 }
 
-function getNextItemId() {
+function getNextItemUniqueId() {
     var maxId = -1;
     for (var g in mapOfItems) {
         if (!mapOfItems.hasOwnProperty(g)) { // Ensure we're only using fields we added.
@@ -113,10 +199,10 @@ function setupRightSidebar(residentId) {
     clearItemDetailsForm();
     selectedItemId = [];
     $("#tableList").empty();
-    var arrayOfItemIds = mapOfResidentsToItems[residentId];
-    if(arrayOfItemIds) {
-        for(var i = 0; i < arrayOfItemIds.length; i++) {
-            itemUniqueId = arrayOfItemIds[i];
+    var arrayOfItemUniqueIds = mapOfResidentsToItems[residentId];
+    if(arrayOfItemUniqueIds) {
+        for(var i = 0; i < arrayOfItemUniqueIds.length; i++) {
+            itemUniqueId = arrayOfItemUniqueIds[i];
             addItemDetailsToList(itemUniqueId, false);
         }    
     }
@@ -133,25 +219,43 @@ function displayResidentProfile(residentId) {
     $("#room").val(resident[2]).prop('disabled', true);
 }
 
-function isSelected(itemId) {
+function isSelected(itemUniqueId) {
     for(var i = 0; i < selectedItemId.length; i++) {
-        if(selectedItemId[i] == itemId) {
+        if(selectedItemId[i] == itemUniqueId) {
             return true;
         }
     }
     return false;
 }
 
-function getItemId(rowId) {
+function getItemUniqueId(rowId) {
     return rowId.split("item-")[1];
 }
 
-function getResidentId(rowId) {
-    return rowId.split("resident-")[1];
+function getItemRowId(residentId) {
+    return "item-" + residentId;
 }
 
 
-$(document).ready(function(){    
+$(document).ready(function(){
+
+    $("#myTab a").click(function(e){
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    $("#residentsTab").click(function(e){
+        setupResidentList();
+        selectedTab = "Residents";
+        document.getElementById("searchInput").placeholder="Search by Name or Room Number";
+    });
+
+    $("#itemListTab").click(function(e){
+        setupItemsList();
+        selectedTab = "Items";
+        document.getElementById("searchInput").placeholder="Search by Description or Return Date";
+    });
+
     $("#item-form-options #clearForm").click(function(){
         clearItemDetailsForm();        
     });
@@ -170,16 +274,12 @@ $(document).ready(function(){
                 selectedItemId[i] = selectedItemId[selectedItemId.length - 1];
                 selectedItemId.pop();
                 removeRowHighlight(rowId);
-                console.log(rowId);
-                console.log("pop")
                 removedId = true;
             }
         }
         if(!removedId){
             selectedItemId.push(itemId);    
             highlightRow(rowId);
-            console.log(rowId);
-                console.log("push")
         }
         showOrHideListOptions(selectedItemId.length);
     });
