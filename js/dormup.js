@@ -31,7 +31,6 @@ var mapOfItems = {
     4:["Basketball - Wilson", "", 00023, "", 4],
     5:["Baseball Bat", "", 00001, "", 5],
     6:["Movie - Harry Poter", "", 02345, "", 6],
-    7:[""]
 }
 
 var mapOfResidentsToItems = {
@@ -40,13 +39,13 @@ var mapOfResidentsToItems = {
 };
 
 var mapOfPkgs = {
-  // Pkg ID, Company, note, pkg Unique ID, Resident ID
-    0:["001234","Amazon","Damaged",0,0],
-    1:["001245","DHL","Cold food",1,0],
-    2:["0011433","UPS","Fragile",2,1],
-    3:["0011432","UPS","",3,1],
-    4:["141234","Fedex","",4,1],
-    5:["2311234","Amazon","Stored on top of the shelf",5,2]
+  // Pkg ID, Company, note, pkg Unique ID
+    0:["001234","Amazon","Damaged",0],
+    1:["001245","DHL","Cold food",1],
+    2:["0011433","UPS","Fragile",2],
+    3:["0011432","UPS","",3],
+    4:["141234","Fedex","",4],
+    5:["2311234","Amazon","Stored on top of the shelf",5]
 }
 
 var mapOfResidentsToPkgs = {
@@ -256,7 +255,55 @@ $(document).ready(function(){
                 unselectPackage(selectedPackageId);
             }
             selectPackage(packageId);
-            setupRightSidebar(mapOfPkgs[packageId][4]);
+            for (i=0; i<Object.keys(mapOfResidents).length; i++){
+                if (i in mapOfResidentsToPkgs){
+                    temporary = mapOfResidentsToPkgs[i]
+                    for (j=0; j<temporary.length; j++){
+                        if (temporary[j] == packageId){
+                            residentId = i;
+                        }
+                    }
+                }
+            }
+            setupRightSidebar(residentId);
+        }
+        else if (selectedTab == "Guests"){
+            var rowId = $(this).attr("id");
+            var guestId = getGstId(rowId);
+            if(selectedGstId != -1) {
+                unselectGuest(selectedGstId);
+            }
+            selectGuest(guestId);
+            for (i=0; i<Object.keys(mapOfResidents).length; i++){
+                if (i in mapOfResidentsToGuests){
+                    temporary = mapOfResidentsToGuests[i]
+                    for (j=0; j<temporary.length; j++){
+                        if (temporary[j] == guestId){
+                            residentId = i;
+                        }
+                    }
+                }
+            }
+            setupRightSidebar(residentId);
+        }
+        else if (selectedTab == "Items"){
+            var rowId = $(this).attr("id");
+            var itemId = getItmId(rowId);
+            if(selectedItmId != -1) {
+                unselectItem(selectedItmId);
+            }
+            selectItem(itemId);
+            for (i=0; i<Object.keys(mapOfResidents).length; i++){
+                if (i in mapOfResidentsToItems){
+                    temporary = mapOfResidentsToItems[i]
+                    for (j=0; j<temporary.length; j++){
+                        if (temporary[j] == itemId){
+                            residentId = i;
+                        }
+                    }
+                }
+            }
+            setupRightSidebar(residentId);
         }
     });
 
