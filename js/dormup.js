@@ -11,10 +11,10 @@ var mapOfResidents = {
 
 var mapOfGuests = {
     // Name, check-in date (yyyy-mm-dd), status, duration, days left, note  
-    0:["Nate Smith","2015-04-18","Not Arrived",5,5," 6ft ",0],
-    1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,"6ft ",1],
-    2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"6ft ",2],
-    3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"5'10ft",3],
+    0:["Nate Smith","2015-04-18","Not Arrived",5,5,"He's 6ft"],
+    1:["Andrew Carnegie","2015-04-18","Not Arrived",5,5,""],
+    2:["Mike Tyson","2015-04-18","Not Arrived",5,5,"Looks like a boxer"],
+    3:["Sandra Johnson","2015-04-18","Not Arrived",5,5,"She's 5'10ft"],
 };
 
 var mapOfResidentsToGuests = {
@@ -24,13 +24,13 @@ var mapOfResidentsToGuests = {
 
 var mapOfItems = {
   // Name, return date (yyyy-mm-dd), ID, note
-    0:["Movie - Titanic","2015-04-25",00123, "Broken case",0],
-    1:["Spare key","2015-04-18", 00012, "", 1],
-    2:["Movie - Starwars 1", "2015-04-20", 00145, "", 2],
-    3:["Vacuum cleaner", "2015-04-18", 00139, "", 3],
-    4:["Basketball - Wilson", "", 00023, "", 4],
-    5:["Baseball Bat", "", 00001, "", 5],
-    6:["Movie - Harry Poter", "", 02345, "", 6],
+    0:["Movie - Titanic","2015-04-25",00123, "Broken case"],
+    1:["Spare key","2015-04-18", 00012, ""],
+    2:["Movie - Starwars 1", "2015-04-20", 00145, ""],
+    3:["Vacuum cleaner", "2015-04-18", 00139, ""],
+    4:["Basketball - Wilson", "", 00023, ""],
+    5:["Baseball Bat", "", 00001, ""],
+    6:["Movie - Harry Poter", "", 02345, ""],
 }
 
 var mapOfResidentsToItems = {
@@ -40,12 +40,12 @@ var mapOfResidentsToItems = {
 
 var mapOfPkgs = {
   // Pkg ID, Company, note, pkg Unique ID
-    0:["001234","Amazon","Damaged",0],
-    1:["001245","DHL","Cold food",1],
-    2:["0011433","UPS","Fragile",2],
-    3:["0011432","UPS","",3],
-    4:["141234","Fedex","",4],
-    5:["2311234","Amazon","Stored on top of the shelf",5]
+    0:["001234","Amazon","Damaged"],
+    1:["001245","DHL","Cold food"],
+    2:["0011433","UPS","Fragile"],
+    3:["0011432","UPS",""],
+    4:["141234","Fedex",""],
+    5:["2311234","Amazon","Stored on top of the shelf"]
 }
 
 var mapOfResidentsToPkgs = {
