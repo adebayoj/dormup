@@ -207,7 +207,7 @@ body {
 
 p.navbar-title.navbar-text {
 	color: white;
-	padding-left: 300px; /* Fix this to use a centering logic rather than explicit pixel padding */
+	padding-left: 300px; 
 }
 
 #myTab > li > a {
@@ -230,4 +230,23 @@ p.navbar-title.navbar-text {
 #leftTable {
 	border: 1px solid #1976D2;
 	margin-top: 0;
+}
+
+.jumbotron {
+    padding: 0.3em 0.3em;
+    h1 {
+        font-size: 3em;
+        text-align: center;
+    }
+    p {
+        font-size: 1.2em;
+        .btn {
+            padding: 0.5em;
+        }
+    }
+}
+
+#Dormup_title {
+	font-weight: bold;
+	color:#1976D2;
 }
