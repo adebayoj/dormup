@@ -1,24 +1,6 @@
-var selectedItemId = [];
-var selectedItmId = -1;
+var selectedItemIdList = [];
+var selectedTabItem = -1;
 var selectedTab = "Residents";
-
-function unselectItem(itemId) {
-    selectedItmId = -1;
-    removeRowHighlight(getItmRowId(itemId));
-}
-
-function selectItem(itemId) {
-    selectedItmId = itemId;
-    highlightRow(getItmRowId(itemId));
-}
-
-function getItmId(rowId) {
-    return rowId.split("itm-")[1];
-}
-
-function getItmRowId(itemId) {
-    return "itm-" + itemId;
-}
 
 function isInItemInfo(itemMapID, singleString){
     var itemInfo=mapOfItems[pkgMapID];
@@ -80,12 +62,60 @@ function setupItemsList(searchStr) {
 
 function addItemToList(itemId) {
     var items = mapOfItems[itemId];
-    var rowId = getItmRowId(itemId);
+    var rowId = getTabItemRowId(itemId);
     $("#residentList").append(
         '<div class="row" id="' + rowId + '">' +
             '<div class="col-sm-8"><p>' + items[0] + '</p></div>' +
             '<div class="col-sm-4"><p>' + items[1] + '</p></div>' +
         '</div>');
+}
+
+function getNextItemUniqueId() {
+    var maxId = -1;
+    for (var g in mapOfItems) {
+        if (!mapOfItems.hasOwnProperty(g)) { // Ensure we're only using fields we added.
+            continue;
+        }
+        if(g > maxId) {
+            maxId = g;
+        }
+    }
+    return ++maxId;
+}
+
+function setupRightSidebar(residentId) {
+    displayResidentProfile(residentId);
+    clearItemDetailsForm();
+    selectedItemIdList = [];
+    $("#tableList").empty();
+    var arrayOfItemUniqueIds = mapOfResidentsToItems[residentId];
+    if(arrayOfItemUniqueIds) {
+        for(var i = 0; i < arrayOfItemUniqueIds.length; i++) {
+            itemUniqueId = arrayOfItemUniqueIds[i];
+            addItemDetailsToList(itemUniqueId, false);
+        }    
+    }
+    showOrHideListOptions(selectedItemIdList.length);
+    deselectTheSelectAllCheckBox();
+    showRightSidebar();
+}
+
+function displayResidentProfile(residentId) {
+    var resident = mapOfResidents[residentId];
+    if(!resident) {
+        alert("Could not find profile for resident ID: " + residentId);
+    }
+    $("#residentName").val(resident[0] + " " + resident[1]).prop('disabled', true);
+    $("#room").val(resident[2]).prop('disabled', true);
+}
+
+function isSelected(itemUniqueId) {
+    for(var i = 0; i < selectedItemIdList.length; i++) {
+        if(selectedItemIdList[i] == itemUniqueId) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function deleteAllSelectedItems(arrayOfItemUniqueIds) {
@@ -96,7 +126,7 @@ function deleteAllSelectedItems(arrayOfItemUniqueIds) {
         deleteRowFromDisplay(rowId);
     }
     clearAllTableSelections();
-    showOrHideListOptions(selectedItemId.length);
+    showOrHideListOptions(selectedItemIdList.length);
 }
 
 function returnAllSelectedItems(arrayOfItemUniqueIds) {
@@ -105,7 +135,7 @@ function returnAllSelectedItems(arrayOfItemUniqueIds) {
 }
 
 function clearAllTableSelections() {
-    selectedItemId = [];
+    selectedItemIdList = [];
 }
 
 function clearItemDetailsForm() {
@@ -121,7 +151,7 @@ function showFormForNewItem() {
 
 function saveNewItemFromForm() {
     if(isEditing) {
-        deleteAllSelectedItems(selectedItemId);
+        deleteAllSelectedItems(selectedItemIdList);
     }
     var itemUniqueId = getItemDetailsFromForm();
     if(itemUniqueId == -1) {
@@ -132,15 +162,17 @@ function saveNewItemFromForm() {
     isEditing = false;
     addItemDetailsToList(itemUniqueId, true);
     clearItemDetailsForm();
-    showOrHideListOptions(selectedItemId.length);
+    showOrHideListOptions(selectedItemIdList.length);
 }
 
 function addItemDetailsToList(itemUniqueId, highlightRow){
     var item = mapOfItems[itemUniqueId];
     var rowId = "item-" + itemUniqueId;
+    var checkboxId = getCheckboxId(itemUniqueId);
     $("#tableList").prepend(
         '<div class="row" id="' + rowId + '" style="display:none">' +
-            '<div class="col-sm-3 col-sm-offset-1"><p>' + item[0] + '</p></div>' +
+            '<div class="col-sm-1"><input type="checkbox" name="item-checkbox" id=' + checkboxId + '></div>' +
+            '<div class="col-sm-3"><p>' + item[0] + '</p></div>' +
             '<div class="col-sm-3"><p>' + item[2] + '</p></div>' +
             '<div class="col-sm-3"><p>' + item[1] + '</p></div>' +
         '</div>');
@@ -148,17 +180,6 @@ function addItemDetailsToList(itemUniqueId, highlightRow){
     if(highlightRow) {
         temporarilyHighlightRow(rowId);
     }
-}
-
-function showItemDetailsForEditing(itemUniqueId) {
-    isEditing = true;
-    var item = mapOfItems[itemUniqueId];
-    $("#top-panel #itemName").val(item[0]);
-    $("#top-panel #returnDate").val(item[1]);
-    $("#top-panel #itemId").val(item[2]);
-    $("#top-panel #note").val(item[3]);
-    $("#clearForm").show();
-    $("#saveNewItem").show();
 }
 
 function getItemDetailsFromForm() {
@@ -181,64 +202,78 @@ function getItemDetailsFromForm() {
     return itemUniqueId;
 }
 
-function getNextItemUniqueId() {
-    var maxId = -1;
-    for (var g in mapOfItems) {
-        if (!mapOfItems.hasOwnProperty(g)) { // Ensure we're only using fields we added.
-            continue;
-        }
-        if(g > maxId) {
-            maxId = g;
-        }
-    }
-    return ++maxId;
-}
-
-function setupRightSidebar(residentId) {
-    displayResidentProfile(residentId);
-    clearItemDetailsForm();
-    selectedItemId = [];
-    $("#tableList").empty();
-    var arrayOfItemUniqueIds = mapOfResidentsToItems[residentId];
-    if(arrayOfItemUniqueIds) {
-        for(var i = 0; i < arrayOfItemUniqueIds.length; i++) {
-            itemUniqueId = arrayOfItemUniqueIds[i];
-            addItemDetailsToList(itemUniqueId, false);
-        }    
-    }
-    showOrHideListOptions(selectedItemId.length);
-    showRightSidebar();
-}
-
-function displayResidentProfile(residentId) {
-    var resident = mapOfResidents[residentId];
-    if(!resident) {
-        alert("Could not find profile for resident ID: " + residentId);
-    }
-    $("#residentName").val(resident[0] + " " + resident[1]).prop('disabled', true);
-    $("#room").val(resident[2]).prop('disabled', true);
-}
-
-function isSelected(itemUniqueId) {
-    for(var i = 0; i < selectedItemId.length; i++) {
-        if(selectedItemId[i] == itemUniqueId) {
-            return true;
-        }
-    }
-    return false;
+function showItemDetailsForEditing(itemUniqueId) {
+    isEditing = true;
+    var item = mapOfItems[itemUniqueId];
+    $("#top-panel #itemName").val(item[0]);
+    $("#top-panel #returnDate").val(item[1]);
+    $("#top-panel #itemId").val(item[2]);
+    $("#top-panel #note").val(item[3]);
+    $("#clearForm").show();
+    $("#saveNewItem").show();
 }
 
 function getItemUniqueId(rowId) {
     return rowId.split("item-")[1];
 }
 
-function getItemRowId(residentId) {
-    return "item-" + residentId;
+function getTabItemUniqueId(tabItemRowId) {
+    return tabItemRowId.split("tab-item-")[1];
 }
 
+function getItemRowId(itemUniqueId) {
+    return "item-" + itemUniqueId;
+}
+
+function getTabItemRowId(itemUniqueId) {
+    return "tab-item-" + itemUniqueId;
+}
+
+function getCheckboxId(itemUniqueId) {
+    return "item-checkbox-" + itemUniqueId;
+}
+
+function getItemUniqueIdFromCheckboxId(checkboxId) {
+    return checkboxId.split("item-checkbox-")[1];   
+}
+
+function selectItem(itemUniqueId) {
+    selectedItemIdList.push(itemUniqueId);
+    var checkboxId = getCheckboxId(itemUniqueId);
+    $("#" + checkboxId).prop('checked', true);
+    highlightRow(getItemRowId(itemUniqueId));
+}
+
+function deselectItem(itemUniqueId) {
+    if(selectedItemIdList.length != 0) {
+        for(var i = 0; i < selectedItemIdList.length; i++) {
+            if(selectedItemIdList[i] == itemUniqueId) {
+                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
+                selectedItemIdList[i] = selectedItemIdList[selectedItemIdList.length - 1];
+                selectedItemIdList.pop();
+            }
+        }
+    }
+    var checkboxId = getCheckboxId(itemUniqueId);
+    $("#" + checkboxId).prop('checked', false);
+    removeRowHighlight(getItemRowId(itemUniqueId));
+}
+
+function selectTabItem(itemUniqueId) {
+    selectedTabItem = itemUniqueId;
+    highlightRow(getTabItemRowId(itemUniqueId));
+}
+
+function deselectTabItem(itemUniqueId) {
+    selectedTabItem = -1;
+    removeRowHighlight(getTabItemRowId(itemUniqueId));
+}
+
+function deselectTheSelectAllCheckBox() {
+    $("#item-select-all").prop('checked', false);
+}
 
 $(document).ready(function(){
-
     $("#myTab a").click(function(e){
         e.preventDefault();
         $(this).tab('show');
@@ -264,40 +299,47 @@ $(document).ready(function(){
         saveNewItemFromForm();      
     });
 
-    $('#tableList').on('click', '.row', function() {
-        var rowId = $(this).attr("id");
-        var itemId = getItemId(rowId);
-        var removedId = false;
-        for(var i = 0; i < selectedItemId.length; i++) {
-            if(selectedItemId[i] == itemId) {
-                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
-                selectedItemId[i] = selectedItemId[selectedItemId.length - 1];
-                selectedItemId.pop();
-                removeRowHighlight(rowId);
-                removedId = true;
-            }
-        }
-        if(!removedId){
-            selectedItemId.push(itemId);    
-            highlightRow(rowId);
-        }
-        showOrHideListOptions(selectedItemId.length);
-    });
-
     $("#table-menu #newFormBtn").click(function(){
         showFormForNewItem();
         $("#top-panel").slideDown();      
     });
 
     $("#table-menu #itemListEdit").click(function(){
-        showItemDetailsForEditing(selectedItemId[0]); 
+        showItemDetailsForEditing(selectedItemIdList[0]); 
     });
 
     $("#table-menu #itemListReturn").click(function(){
-        returnAllSelectedItems(selectedItemId); 
+        returnAllSelectedItems(selectedItemIdList); 
     });
 
     $("#table-menu #itemListDelete").click(function(){
-        deleteAllSelectedItems(selectedItemId); 
-    });    
+        deleteAllSelectedItems(selectedItemIdList); 
+    });
+
+    $('#tableList').on('click', '.row', function() {
+        var rowId = $(this).attr("id");
+        var itemUniqueId = getItemUniqueId(rowId);
+        if(isSelected(itemUniqueId)) {
+            deselectItem(itemUniqueId);
+        } else {
+            selectItem(itemUniqueId);
+        }
+        showOrHideListOptions(selectedItemIdList.length);
+    });
+
+    $("#item-select-all").click(function(event){
+        selectedItemIdList = [];
+        var isChecked = this.checked;
+        $('input[name="item-checkbox"]').each(function() {
+            var checkboxId = $(this).attr("id");
+            var itemUniqueId = getItemUniqueIdFromCheckboxId(checkboxId);
+            if(isChecked) {
+                selectItem(itemUniqueId);    
+            } else {
+                deselectItem(itemUniqueId);
+            }
+            
+        });
+        showOrHideListOptions(selectedItemIdList.length);
+    });
 });

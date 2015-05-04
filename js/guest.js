@@ -1,24 +1,6 @@
-var selectedGuestId = [];
-var selectedGstId = -1;
+var selectedguestUniqueIdList = [];
+var selectedTabGuest = -1;
 var selectedTab = "Residents";
-
-function unselectGuest(guestId) {
-    selectedGstId = -1;
-    removeRowHighlight(getGstRowId(guestId));
-}
-
-function selectGuest(guestId) {
-    selectedGstId = guestId;
-    highlightRow(getGstRowId(guestId));
-}
-
-function getGstId(rowId) {
-    return rowId.split("gst-")[1];
-}
-
-function getGstRowId(guestId) {
-    return "gst-" + guestId;
-}
 
 function isInGuestInfo(guestMapID, singleString){
     var guestInfo=mapOfGuests[guestMapID];
@@ -38,7 +20,7 @@ function setupGuestsList(searchStr) {
             if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
                 continue;
             }
-            addGuestToList(r);
+            addGuestToTabList(r);
         }
     }
     else{
@@ -51,7 +33,7 @@ function setupGuestsList(searchStr) {
                     continue;
                 }
                 if (isInGuestInfo(r,inputArray[0])){
-                    addGuestToList(r);
+                    addGuestToTabList(r);
                     found=true;
                 }
             }
@@ -62,7 +44,7 @@ function setupGuestsList(searchStr) {
                     continue;
                 }
                 if (isInGuestInfo(r,inputArray[0]) && isInGuestInfo(r,inputArray[1])){
-                    addGuestToList(r);
+                    addGuestToTabList(r);
                     found=true;
                 }
             }
@@ -78,9 +60,9 @@ function setupGuestsList(searchStr) {
     
 }
 
-function addGuestToList(guestId) {
-    var guests = mapOfGuests[guestId];
-    var rowId = getGstRowId(guestId);
+function addGuestToTabList(guestUniqueId) {
+    var guests = mapOfGuests[guestUniqueId];
+    var rowId = getTabGuestRowId(guestUniqueId);
     $("#residentList").append(
         '<div class="row" id="' + rowId + '">' +
             '<div class="col-sm-8"><p>' + guests[0] + '</p></div>' +
@@ -104,7 +86,7 @@ function getNextGuestUniqueId() {
 function setupRightSidebar(residentId) {
     displayResidentProfile(residentId);
     clearGuestDetailsForm();
-    selectedGuestId = [];
+    selectedguestUniqueIdList = [];
     $("#tableList").empty();
     var arrayOfGuestUniqueIds = mapOfResidentsToGuests[residentId];
     if(arrayOfGuestUniqueIds) {
@@ -113,7 +95,8 @@ function setupRightSidebar(residentId) {
             addGuestDetailsToList(guestUniqueId, false);
         }    
     }
-    showOrHideListOptions(selectedGuestId.length);
+    showOrHideListOptions(selectedguestUniqueIdList.length);
+    deselectTheSelectAllCheckBox();
     showRightSidebar();
 }
 
@@ -127,8 +110,8 @@ function displayResidentProfile(residentId) {
 }
 
 function isSelected(guestUniqueId) {
-    for(var i = 0; i < selectedGuestId.length; i++) {
-        if(selectedGuestId[i] == guestUniqueId) {
+    for(var i = 0; i < selectedguestUniqueIdList.length; i++) {
+        if(selectedguestUniqueIdList[i] == guestUniqueId) {
             return true;
         }
     }
@@ -138,24 +121,24 @@ function isSelected(guestUniqueId) {
 function deleteAllSelectedGuests(arrayOfGuestUniqueIds) {
     //TODO: Also remove guest from data model before removing from table.
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
-        var guestId = arrayOfGuestUniqueIds[i];
-        var rowId = "guest-" + guestId;
+        var guestUniqueId = arrayOfGuestUniqueIds[i];
+        var rowId = "guest-" + guestUniqueId;
         deleteRowFromDisplay(rowId);
     }
     clearAllTableSelections();
-    showOrHideListOptions(selectedGuestId.length);
+    showOrHideListOptions(selectedguestUniqueIdList.length);
 }
 
 function checkInAllSelectedGuests(arrayOfGuestUniqueIds) {
     var checkedInString = "Checked in";
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
-        var guestId = arrayOfGuestUniqueIds[i];
-        mapOfGuests[guestId][2] = checkedInString;
+        var guestUniqueId = arrayOfGuestUniqueIds[i];
+        mapOfGuests[guestUniqueId][2] = checkedInString;
     }
 
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
-        var guestId = arrayOfGuestUniqueIds[i];
-        var rowId = "guest-" + guestId;
+        var guestUniqueId = arrayOfGuestUniqueIds[i];
+        var rowId = "guest-" + guestUniqueId;
         var textSelector = "#" + rowId + " .status";
         $(textSelector).html(checkedInString);
         temporarilyHighlightText(textSelector);
@@ -166,23 +149,23 @@ function checkInAllSelectedGuests(arrayOfGuestUniqueIds) {
 function checkOutAllSelectedGuests(arrayOfGuestUniqueIds) {
     var checkedOutString = "Checked out";
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
-        var guestId = arrayOfGuestUniqueIds[i];
-        mapOfGuests[guestId][2] = checkedOutString;
+        var guestUniqueId = arrayOfGuestUniqueIds[i];
+        mapOfGuests[guestUniqueId][2] = checkedOutString;
     }
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
-        var guestId = arrayOfGuestUniqueIds[i];
-        var rowId = "guest-" + guestId;
+        var guestUniqueId = arrayOfGuestUniqueIds[i];
+        var rowId = "guest-" + guestUniqueId;
         var textSelector = "#" + rowId + " .status";
         $(textSelector).html(checkedOutString);
         temporarilyHighlightText(textSelector);
         deleteRowFromDisplay(rowId);
     }
     clearAllTableSelections();
-    showOrHideListOptions(selectedGuestId.length);
+    showOrHideListOptions(selectedguestUniqueIdList.length);
 }
 
 function clearAllTableSelections() {
-    selectedGuestId = [];
+    selectedguestUniqueIdList = [];
 }
 
 function clearGuestDetailsForm() {
@@ -199,18 +182,17 @@ function showFormForNewGuest() {
 
 function saveNewGuestFromForm() {
     if(isEditing) {
-        deleteAllSelectedGuests(selectedGuestId);
+        deleteAllSelectedGuests(selectedguestUniqueIdList);
     }
     var guestUniqueId = getGuestDetailsFromForm();
     if(guestUniqueId == -1) {
-        // Todo: implement more specific error message
         alert("please enter all required details in the right format.");
         return;
     }
     isEditing = false;
     addGuestDetailsToList(guestUniqueId, true);
     clearGuestDetailsForm();
-    showOrHideListOptions(selectedGuestId.length);
+    showOrHideListOptions(selectedguestUniqueIdList.length);
 }
 
 function addGuestDetailsToList(guestUniqueId, highlightRow){
@@ -219,9 +201,11 @@ function addGuestDetailsToList(guestUniqueId, highlightRow){
         return;
     }
     var rowId = "guest-" + guestUniqueId;
+    var checkboxId = getCheckboxId(guestUniqueId);
     $("#tableList").prepend(
         '<div class="row" id="' + rowId + '" style="display:none">' +
-            '<div class="col-sm-3 col-sm-offset-1"><p>' + guest[0] + '</p></div>' +
+            '<div class="col-sm-1"><input type="checkbox" name="guest-checkbox" id=' + checkboxId + '></div>' +
+            '<div class="col-sm-3"><p>' + guest[0] + '</p></div>' +
             '<div class="col-sm-3"><p class="status">' + guest[2] + '</p></div>' +
             '<div class="col-sm-3"><p>' + guest[1] + '</p></div>' +
             '<div class="col-sm-2"><p>' + guest[3] + '</p></div>' +
@@ -255,11 +239,11 @@ function getGuestDetailsFromForm() {
         return -1;
     }
     var guestUniqueId = getNextGuestUniqueId();
-    var guestDetails = [guestName, checkIn, status, duration, daysLeft, guestNote, guestId];
+    var guestDetails = [guestName, checkIn, status, duration, daysLeft, guestNote, guestUniqueId];
     mapOfGuests[guestUniqueId] = guestDetails;
     var residentToGuestMapEntry = mapOfResidentsToGuests[selectedResidentId];
     if(residentToGuestMapEntry) {
-        residentToGuestMapEntry.push(guestId);
+        residentToGuestMapEntry.push(guestUniqueId);
     } else {
         mapOfResidentsToGuests[selectedResidentId] = [guestUniqueId];
     }
@@ -287,8 +271,60 @@ function getGuestUniqueId(rowId) {
     return rowId.split("guest-")[1];
 }
 
-function getGuestRowId(residentId) {
-    return "guest-" + residentId;
+function getTabGuestUniqueId(rowId) {
+    return rowId.split("tab-guest-")[1];
+}
+
+function getGuestRowId(guestUniqueId) {
+    return "guest-" + guestUniqueId;
+}
+
+function getTabGuestRowId(guestUniqueId) {
+    return "tab-guest-" + guestUniqueId;
+}
+
+function getCheckboxId(guestUniqueId) {
+    return "guest-checkbox-" + guestUniqueId;
+}
+
+function getGuestUniqueIdFromCheckboxId(checkboxId) {
+    return checkboxId.split("guest-checkbox-")[1];   
+}
+
+function selectGuest(guestUniqueId) {
+    selectedguestUniqueIdList.push(guestUniqueId);
+    var checkboxId = getCheckboxId(guestUniqueId);
+    $("#" + checkboxId).prop('checked', true);
+    highlightRow(getGuestRowId(guestUniqueId));
+}
+
+function deselectGuest(guestUniqueId) {
+    if(selectedguestUniqueIdList.length != 0) {
+        for(var i = 0; i < selectedguestUniqueIdList.length; i++) {
+            if(selectedguestUniqueIdList[i] == guestUniqueId) {
+                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
+                selectedguestUniqueIdList[i] = selectedguestUniqueIdList[selectedguestUniqueIdList.length - 1];
+                selectedguestUniqueIdList.pop();
+            }
+        }
+    }
+    var checkboxId = getCheckboxId(guestUniqueId);
+    $("#" + checkboxId).prop('checked', false);
+    removeRowHighlight(getGuestRowId(guestUniqueId));
+}
+
+function selectTabGuest(guestUniqueId) {
+    selectedTabGuest = guestUniqueId;
+    highlightRow(getTabGuestRowId(guestUniqueId));
+}
+
+function deselectTabGuest(guestUniqueId) {
+    selectedTabGuest = -1;
+    removeRowHighlight(getTabGuestRowId(guestUniqueId));
+}
+
+function deselectTheSelectAllCheckBox() {
+    $("#guest-select-all").prop('checked', false);
 }
 
 $(document).ready(function(){
@@ -316,19 +352,19 @@ $(document).ready(function(){
     });
 
     $("#table-menu #guestListEdit").click(function(){
-        showGuestDetailsForEditing(selectedGuestId[0]); 
+        showGuestDetailsForEditing(selectedguestUniqueIdList[0]); 
     });
 
     $("#table-menu #guestListCheckIn").click(function(){
-        checkInAllSelectedGuests(selectedGuestId); 
+        checkInAllSelectedGuests(selectedguestUniqueIdList); 
     });
 
     $("#table-menu #guestListCheckOut").click(function(){
-        checkOutAllSelectedGuests(selectedGuestId); 
+        checkOutAllSelectedGuests(selectedguestUniqueIdList); 
     });
 
     $("#table-menu #guestListDelete").click(function(){
-        deleteAllSelectedGuests(selectedGuestId); 
+        deleteAllSelectedGuests(selectedguestUniqueIdList); 
     });
 
     $('#guestStatusDropdown li a').click(function(){
@@ -345,22 +381,29 @@ $(document).ready(function(){
 
     $('#tableList').on('click', '.row', function() {
         var rowId = $(this).attr("id");
-        var guestId = getGuestId(rowId);
-        var removedId = false;
-        for(var i = 0; i < selectedGuestId.length; i++) {
-            if(selectedGuestId[i] == guestId) {
-                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
-                selectedGuestId[i] = selectedGuestId[selectedGuestId.length - 1];
-                selectedGuestId.pop();
-                removeRowHighlight(rowId);
-                removedId = true;
+        var guestUniqueId = getGuestUniqueId(rowId);
+        if(isSelected(guestUniqueId)) {
+            deselectGuest(guestUniqueId);
+        } else {
+            selectGuest(guestUniqueId);
+        }
+        showOrHideListOptions(selectedguestUniqueIdList.length);
+    });
+
+    $("#guest-select-all").click(function(event){
+        selectedguestUniqueIdList = [];
+        var isChecked = this.checked;
+        $('input[name="guest-checkbox"]').each(function() {
+            var checkboxId = $(this).attr("id");
+            var guestUniqueId = getGuestUniqueIdFromCheckboxId(checkboxId);
+            if(isChecked) {
+                selectGuest(guestUniqueId);    
+            } else {
+                deselectGuest(guestUniqueId);
             }
-        }
-        if(!removedId){
-            selectedGuestId.push(guestId);    
-            highlightRow(rowId);
-        }
-        showOrHideListOptions(selectedGuestId.length);
+            
+        });
+        showOrHideListOptions(selectedguestUniqueIdList.length);
     });
 
 });

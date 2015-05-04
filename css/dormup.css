@@ -175,6 +175,11 @@ body {
   display: none;
 }
 
+.footer-text {
+	list-style-type: none;
+	color: white;
+}
+
 #tableListHeading * {
 	background-color: #1976D2;
 	color: white;

@@ -35,7 +35,9 @@ var mapOfItems = {
 
 var mapOfResidentsToItems = {
     0:[0,1,2],
-    1:[3]
+    1:[3],
+    2:[4,5],
+    3:[6]
 };
 
 var mapOfPkgs = {
@@ -57,15 +59,6 @@ var mapOfResidentsToPkgs = {
 var selectedResidentId = -1;
 
 var isEditing = false;
-
-function startTime() {
-    var today=new Date();
-    var h=today.getHours();
-    var m=today.getMinutes();
-    m = checkTime(m);
-    document.getElementById('clock').innerHTML = h+":"+m;
-    var t = setTimeout(function(){startTime()},30000);
-}
 
 function checkTime(i) {
     if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -250,60 +243,63 @@ $(document).ready(function(){
         }
         else if (selectedTab == "Packages"){
             var rowId = $(this).attr("id");
-            var packageId = getPackageId(rowId);
-            if(selectedPackageId != -1) {
-                unselectPackage(selectedPackageId);
+            var pkgUniqueId = getTabPkgUniqueId(rowId);
+            if(selectedTabPkg != -1) {
+                deselectTabPkg(selectedTabPkg);
             }
-            selectPackage(packageId);
+            selectTabPkg(pkgUniqueId);
             for (i=0; i<Object.keys(mapOfResidents).length; i++){
                 if (i in mapOfResidentsToPkgs){
                     temporary = mapOfResidentsToPkgs[i]
                     for (j=0; j<temporary.length; j++){
-                        if (temporary[j] == packageId){
-                            residentId = i;
+                        if (temporary[j] == pkgUniqueId){
+                            selectedResidentId = i;
                         }
                     }
                 }
             }
-            setupRightSidebar(residentId);
+            setupRightSidebar(selectedResidentId);
+            temporarilyHighlightRow(getPkgRowId(pkgUniqueId));
         }
         else if (selectedTab == "Guests"){
             var rowId = $(this).attr("id");
-            var guestId = getGstId(rowId);
-            if(selectedGstId != -1) {
-                unselectGuest(selectedGstId);
+            var guestUniqueId = getTabGuestUniqueId(rowId);
+            if(selectTabGuest != -1) {
+                deselectTabGuest(selectedTabGuest);
             }
-            selectGuest(guestId);
+            selectTabGuest(guestUniqueId);
             for (i=0; i<Object.keys(mapOfResidents).length; i++){
                 if (i in mapOfResidentsToGuests){
                     temporary = mapOfResidentsToGuests[i]
                     for (j=0; j<temporary.length; j++){
-                        if (temporary[j] == guestId){
-                            residentId = i;
+                        if (temporary[j] == guestUniqueId){
+                            selectedResidentId = i;
                         }
                     }
                 }
             }
-            setupRightSidebar(residentId);
+            setupRightSidebar(selectedResidentId);
+            temporarilyHighlightRow(getGuestRowId(guestUniqueId));
         }
         else if (selectedTab == "Items"){
             var rowId = $(this).attr("id");
-            var itemId = getItmId(rowId);
-            if(selectedItmId != -1) {
-                unselectItem(selectedItmId);
+            var itemId = getTabItemUniqueId(rowId);
+            if(selectedTabItem != -1) {
+                deselectTabItem(selectedTabItem);
             }
-            selectItem(itemId);
+            selectTabItem(itemId);
             for (i=0; i<Object.keys(mapOfResidents).length; i++){
                 if (i in mapOfResidentsToItems){
                     temporary = mapOfResidentsToItems[i]
                     for (j=0; j<temporary.length; j++){
                         if (temporary[j] == itemId){
-                            residentId = i;
+                            selectedResidentId = i;
                         }
                     }
                 }
             }
-            setupRightSidebar(residentId);
+            setupRightSidebar(selectedResidentId);
+            temporarilyHighlightRow(getItemRowId(itemId));
         }
     });
 

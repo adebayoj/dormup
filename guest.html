@@ -122,7 +122,7 @@
 // </script>
 </head>
 
-<body onload="startTime()">
+<body>
 	<nav class="navbar navbar-default navbar-fixed-top">
 	  <div class="collapse navbar-collapse" id="top-navbar-collapse">
 	    <ul class="nav navbar-nav">
@@ -178,21 +178,13 @@
 		  					</div>
 	    				</div>
 	    				<div class="col-sm-12" id="residentList">
-		  					<div class="row" id="resident-0">
-		    					<div class="col-sm-8"><p>John Smith</p></div>
-		    					<div class="col-sm-4"><p>200</p></div>
-		  					</div>
-		  					<div class="row" id="resident-1">
-		    					<div class="col-sm-8"><p>John Smith</p></div>
-		    					<div class="col-sm-4"><p>200</p></div>
-		  					</div>
 	    				</div>
 	    			</div>
 	    		</div>
     		</div>
     		<div class="col-sm-1"></div>
     		<div class="col-sm-6 rightSidebar">
-    			<div class="row" id="wizard" style="visibility: visible;">
+    			<div class="row" id="wizard">
     				<div class="col-sm-12" id="top-panel">
     					<div class="row">
 	    					<div class="col-sm-4">
@@ -277,7 +269,7 @@
     				<div class="col-sm-12" id="table-menu">
 	    				<div class="row">
 	    					<div class="col-sm-2">
-	    						<button type="button" class="btn btn-default" id="newFormBtn" style="width:100%">Add Guest</button>
+	    						<button type="button" class="btn btn-default" id="newFormBtn" style="width:100%">Add Many Guests</button>
 	    					</div>
 	    					<div class="col-sm-2 col-sm-offset-1">
 	    						<button type="button" class="btn btn-default singleSelection" id="guestListEdit" style="width:100%">Edit</button>
@@ -295,38 +287,14 @@
     				</div>
     				<div class="col-sm-12" id="tableListHeading">
     					<div class="row">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Guest</p></div>
+    						<div class="col-sm-1"><input type="checkbox" id="guest-select-all">	</div>
+	    					<div class="col-sm-3"><p>Guest</p></div>
 	    					<div class="col-sm-3"><p>Status</p></div>
 	    					<div class="col-sm-3"><p>Check-in</p></div>
 	    					<div class="col-sm-2"><p>Days Left</p></div>
 	  					</div>
     				</div>
     				<div class="col-sm-12" id="tableList">
-    					
-	  					<div class="row" id="guest-0">
-	    					<div class="col-sm-3 col-sm-offset-1"><p class="guestNameInList">Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-3"><p>04/18/2015</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
-	  					<div class="row" id="guest-1">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Peter Pan</p></div>
-	    					<div class="col-sm-3"><p class="status">Checked in</p></div>
-	    					<div class="col-sm-3"><p>04/18/2015</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
-	  					<div class="row" id="guest-2">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-3"><p>04/18/2015</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
-	  					<div class="row" id="guest-3">
-	    					<div class="col-sm-3 col-sm-offset-1"><p>Nate Johnson</p></div>
-	    					<div class="col-sm-3"><p class="status">Not Arrived</p></div>
-	    					<div class="col-sm-3"><p>04/18/2015</p></div>
-	    					<div class="col-sm-2"><p>5</p></div>
-	  					</div>
     				</div>
     			</div>
 	  		</div>
@@ -337,8 +305,8 @@
   <div class="collapse navbar-collapse" id="top-navbar-collapse">
   <footer class="footer">  </footer>
   <ul>
-   <li style = "list-style-type: none"> Dormup &copy;  2015 </li>
-   <li style = "list-style-type: none"> English (US) </li>
+   <li class="footer-text"> Dormup &copy;  2015 </li>
+   <li class="footer-text"> English (US) </li>
   </ul>
   </div>
 </nav>

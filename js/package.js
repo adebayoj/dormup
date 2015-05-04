@@ -1,24 +1,6 @@
-var selectedPkgId = [];
-var selectedPackageId = -1;
+var selectedPkgIdList = [];
+var selectedTabPkg = -1;
 var selectedTab = "Residents";
-
-function unselectPackage(packageId) {
-    selectedPackageId = -1;
-    removeRowHighlight(getPackageRowId(packageId));
-}
-
-function selectPackage(packageId) {
-    selectedPackageId = packageId;
-    highlightRow(getPackageRowId(packageId));
-}
-
-function getPackageId(rowId) {
-    return rowId.split("package-")[1];
-}
-
-function getPackageRowId(packageId) {
-    return "package-" + packageId;
-}
 
 function isInPkgInfo(pkgMapID, singleString){
 	var pkgInfo=mapOfPkgs[pkgMapID];
@@ -38,7 +20,7 @@ function setupPackagesList(searchStr) {
 	        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
 	            continue;
 	        }
-	        addPackageToList(r);
+	        addPackageToTabList(r);
 	    }
     }
     else{
@@ -51,7 +33,7 @@ function setupPackagesList(searchStr) {
 		            continue;
 		        }
 		        if (isInPkgInfo(r,inputArray[0])){
-		        	addPackageToList(r);
+		        	addPackageToTabList(r);
 		        	found=true;
 		        }
 		    }
@@ -62,7 +44,7 @@ function setupPackagesList(searchStr) {
 		            continue;
 		        }
 		        if (isInPkgInfo(r,inputArray[0]) && isInPkgInfo(r,inputArray[1])){
-		        	addPackageToList(r);
+		        	addPackageToTabList(r);
 		        	found=true;
 		        }
 		    }
@@ -78,9 +60,9 @@ function setupPackagesList(searchStr) {
     
 }
 
-function addPackageToList(packageId) {
+function addPackageToTabList(packageId) {
     var packages = mapOfPkgs[packageId];
-    var rowId = getPackageRowId(packageId);
+    var rowId = getTabPkgRowId(packageId);
     $("#residentList").append(
         '<div class="row" id="' + rowId + '">' +
             '<div class="col-sm-8"><p>' + packages[0] + '</p></div>' +
@@ -104,7 +86,7 @@ function getNextPkgUniqueId() {
 function setupRightSidebar(residentId) {
     displayResidentProfile(residentId);
     clearPkgDetailsForm();
-    selectedPkgId = [];
+    selectedPkgIdList = [];
     $("#tableList").empty();
     var arrayOfPkgUniqueIds = mapOfResidentsToPkgs[residentId];
     if(arrayOfPkgUniqueIds) {
@@ -113,7 +95,8 @@ function setupRightSidebar(residentId) {
             addPkgDetailsToList(pkgUniqueId, false);
         }    
     }
-    showOrHideListOptions(selectedPkgId.length);
+    showOrHideListOptions(selectedPkgIdList.length);
+    deselectTheSelectAllCheckBox();
     showRightSidebar();
 }
 
@@ -127,31 +110,23 @@ function displayResidentProfile(residentId) {
 }
 
 function isSelected(pkgUniqueId) {
-    for(var i = 0; i < selectedPkgId.length; i++) {
-        if(selectedPkgId[i] == pkgUniqueId) {
+    for(var i = 0; i < selectedPkgIdList.length; i++) {
+        if(selectedPkgIdList[i] == pkgUniqueId) {
             return true;
         }
     }
     return false;
 }
 
-function getPkgUniqueId(rowId) {
-    return rowId.split("pkg-")[1];
-}
-
-function getPkgRowId(residentId) {
-    return "pkg-" + residentId;
-}
-
 function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
     //TODO: Also remove pkg from data model before removing from table.
     for(var i = 0; i < arrayOfPkgUniqueIds.length; i++){
-        var company = arrayOfPkgUniqueIds[i];
-        var rowId = "pkg-" + company;
+        var pkgUniqueId = arrayOfPkgUniqueIds[i];
+        var rowId = "pkg-" + pkgUniqueId;
         deleteRowFromDisplay(rowId);
     }
     clearAllTableSelections();
-    showOrHideListOptions(selectedPkgId.length);
+    showOrHideListOptions(selectedPkgIdList.length);
 }
 
 function deliverAllSelectedItems(arrayOfPkgUniqueIds) {
@@ -160,7 +135,7 @@ function deliverAllSelectedItems(arrayOfPkgUniqueIds) {
 }
 
 function clearAllTableSelections() {
-    selectedPkgId = [];
+    selectedPkgIdList = [];
 }
 
 function clearPkgDetailsForm() {
@@ -176,7 +151,7 @@ function showFormForNewPkg() {
 
 function saveNewPkgFromForm() {
     if(isEditing) {
-        deleteAllSelectedPkgs(selectedPkgId);
+        deleteAllSelectedPkgs(selectedPkgIdList);
     }
     var pkgUniqueId = getPkgDetailsFromForm();
     if(pkgUniqueId == -1) {
@@ -187,15 +162,17 @@ function saveNewPkgFromForm() {
     isEditing = false;
     addPkgDetailsToList(pkgUniqueId, true);
     clearPkgDetailsForm();
-    showOrHideListOptions(selectedPkgId.length);
+    showOrHideListOptions(selectedPkgIdList.length);
 }
 
 function addPkgDetailsToList(pkgUniqueId, highlightRow){
     var pkg = mapOfPkgs[pkgUniqueId];
     var rowId = "pkg-" + pkgUniqueId;
+    var checkboxId = getCheckboxId(pkgUniqueId);
     $("#tableList").prepend(
         '<div class="row" id="' + rowId + '" style="display:none">' +
-            '<div class="col-sm-3 col-sm-offset-1"><p>' + pkg[0] + '</p></div>' +
+            '<div class="col-sm-1"><input type="checkbox" name="pkg-checkbox" id=' + checkboxId + '></div>' +
+            '<div class="col-sm-3"><p>' + pkg[0] + '</p></div>' +
             '<div class="col-sm-3"><p>' + pkg[1] + '</p></div>' +
             '<div class="col-sm-5"><p>' + pkg[2] + '</p></div>' +
         '</div>');
@@ -232,6 +209,66 @@ function getPkgDetailsFromForm() {
         mapOfResidentsToPkgs[selectedResidentId] = [pkgUniqueId];
     }
     return pkgUniqueId;
+}
+
+function getPkgUniqueId(rowId) {
+    return rowId.split("pkg-")[1];
+}
+
+function getTabPkgUniqueId(tabPkgRowId) {
+    return tabPkgRowId.split("tab-pkg-")[1];
+}
+
+function getPkgRowId(residentId) {
+    return "pkg-" + residentId;
+}
+
+function getTabPkgRowId(tabPkgUniqueId) {
+    return "tab-pkg-" + tabPkgUniqueId;
+}
+
+function getCheckboxId(pkgUniqueId) {
+    return "pkg-checkbox-" + pkgUniqueId;
+}
+
+function getPkgUniqueIdFromCheckboxId(checkboxId) {
+    return checkboxId.split("pkg-checkbox-")[1];   
+}
+
+function selectPkg(pkgUniqueId) {
+    selectedPkgIdList.push(pkgUniqueId);
+    var checkboxId = getCheckboxId(pkgUniqueId);
+    $("#" + checkboxId).prop('checked', true);
+    highlightRow(getPkgRowId(pkgUniqueId));
+}
+
+function deselectPkg(pkgUniqueId) {
+    if(selectedPkgIdList.length != 0) {
+        for(var i = 0; i < selectedPkgIdList.length; i++) {
+            if(selectedPkgIdList[i] == pkgUniqueId) {
+                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
+                selectedPkgIdList[i] = selectedPkgIdList[selectedPkgIdList.length - 1];
+                selectedPkgIdList.pop();
+            }
+        }
+    }
+    var checkboxId = getCheckboxId(pkgUniqueId);
+    $("#" + checkboxId).prop('checked', false);
+    removeRowHighlight(getPkgRowId(pkgUniqueId));
+}
+
+function selectTabPkg(pkgUniqueId) {
+    selectedTabPkg = pkgUniqueId;
+    highlightRow(getTabPkgRowId(pkgUniqueId));
+}
+
+function deselectTabPkg(pkgUniqueId) {
+    selectedTabPkg = -1;
+    removeRowHighlight(getTabPkgRowId(pkgUniqueId));
+}
+
+function deselectTheSelectAllCheckBox() {
+    $("#pkg-select-all").prop('checked', false);
 }
 
 $(document).ready(function(){
@@ -273,40 +310,48 @@ $(document).ready(function(){
         saveNewPkgFromForm();      
     });
 
-    $('#tableList').on('click', '.row', function() {
-        var rowId = $(this).attr("id");
-        var pkgUniqueId = getPkgUniqueId(rowId);
-        var removedId = false;
-        for(var i = 0; i < selectedPkgId.length; i++) {
-            if(selectedPkgId[i] == pkgUniqueId) {
-                // This is a faster way to delete pkg from the middle (in JavaScript) when he ordering of the items isn't relevant
-                selectedPkgId[i] = selectedPkgId[selectedPkgId.length - 1];
-                selectedPkgId.pop();
-                removeRowHighlight(rowId);
-                removedId = true;
-            }
-        }
-        if(!removedId){
-            selectedPkgId.push(pkgUniqueId);    
-            highlightRow(rowId);
-        }
-        showOrHideListOptions(selectedPkgId.length);
-    });
-
     $("#table-menu #pkgListBtnNewPackage").click(function(){
         showFormForNewPkg();
         $("#top-panel").slideDown();      
     });
 
     $("#table-menu #pkgListEdit").click(function(){
-        showPkgDetailsForEditing(selectedPkgId[0]); 
+        showPkgDetailsForEditing(selectedPkgIdList[0]); 
     });
 
     $("#table-menu #pkgListDeliver").click(function(){
-        deliverAllSelectedItems(selectedPkgId); 
+        deliverAllSelectedItems(selectedPkgIdList); 
     });
 
     $("#table-menu #pkgListDelete").click(function(){
-        deleteAllSelectedPkgs(selectedPkgId); 
+        deleteAllSelectedPkgs(selectedPkgIdList); 
     });
+
+    $('#tableList').on('click', '.row', function() {
+        var rowId = $(this).attr("id");
+        var pkgUniqueId = getPkgUniqueId(rowId);
+        if(isSelected(pkgUniqueId)) {
+            deselectPkg(pkgUniqueId);
+        } else {
+            selectPkg(pkgUniqueId);
+        }
+        showOrHideListOptions(selectedPkgIdList.length);
+    });
+
+    $("#pkg-select-all").click(function(event){
+        selectedPkgIdList = [];
+        var isChecked = this.checked;
+        $('input[name="pkg-checkbox"]').each(function() {
+            var checkboxId = $(this).attr("id");
+            var pkgUniqueId = getPkgUniqueIdFromCheckboxId(checkboxId);
+            if(isChecked) {
+                selectPkg(pkgUniqueId);    
+            } else {
+                deselectPkg(pkgUniqueId);
+            }
+            
+        });
+        showOrHideListOptions(selectedPkgIdList.length);
+    });
+
 });
