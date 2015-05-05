@@ -99,6 +99,7 @@ function setupRightSidebar(residentId) {
     deselectTheSelectAllCheckBox();
     showRightSidebar();
     setTableListMaxHeight();
+    $("#packageId").focus();
 }
 
 function displayResidentProfile(residentId) {
@@ -142,6 +143,7 @@ function clearAllTableSelections() {
 function clearPkgDetailsForm() {
     $("#top-panel input").not("#residentName").not("#room").val("");
     $("#top-panel textarea").val("");
+    $("#packageId").focus();
 }
 
 function showFormForNewPkg() {

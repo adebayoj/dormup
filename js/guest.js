@@ -99,6 +99,7 @@ function setupRightSidebar(residentId) {
     deselectTheSelectAllCheckBox();
     showRightSidebar();
     setTableListMaxHeight();
+    $("#guestName").focus();
 }
 
 function displayResidentProfile(residentId) {
@@ -173,6 +174,7 @@ function clearGuestDetailsForm() {
     $("#top-panel input").not("#residentName").not("#room").val("");
     $("#top-panel textarea").val("");
     setDropdown("Not Arrived");
+    $("#guestName").focus();
 }
 
 function showFormForNewGuest() {
@@ -331,7 +333,7 @@ function deselectTheSelectAllCheckBox() {
 $(document).ready(function(){
     setupResidentList();
     hideRightSidebar();
-    
+
     $("#myTab a").click(function(e){
         e.preventDefault();
         $(this).tab('show');
