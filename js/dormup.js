@@ -1,12 +1,12 @@
 /* Insert JavaScript here */
-var mapOfResidents = {
-    0:["Konstantinos","Mentzelos",205,0],
-    1:["Julius","Adebayo",118,1],
-    2:["Cecilia","Testart",304,2],
-    3:["Athina","Lentza",121,3],
-    4:["Argiro","Lentza",121,4],
-    5:["George","Avramopoulos",205,5],
-    6:["Konstantinos","Karamanlis",109,6]
+var mapOfResidents = {    
+    0:["Argiro","Lentza",121],
+    1:["Athina","Lentza",121],
+    2:["Cecilia","Testart",304],
+    3:["George","Avramopoulos",205],
+    4:["Julius","Adebayo",118],
+    5:["Konstantinos","Karamanlis",109],
+    6:["Konstantinos","Mentzelos",205]
 };
 
 var mapOfGuests = {
