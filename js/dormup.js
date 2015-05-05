@@ -194,6 +194,7 @@ function temporarilyHighlightRow(rowId) {
 
 function deleteRowFromDisplay(rowId) {
     $("#" + rowId).slideUp();
+    $("#" + rowId).remove();
 }
 
 function addResidentToList(residentId) {

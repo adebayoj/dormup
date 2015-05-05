@@ -185,12 +185,12 @@
     		<div class="col-sm-1"></div>
     		<div class="col-sm-6 rightSidebar">
     			<div class="row" id="wizard">
-    				<div class="col-sm-12" id="top-panel">
+    				<div class="col-sm-8 col-sm-offset-2" id="top-panel">
     					<div class="row">
 	    					<div class="col-sm-4">
 	    						<div class="labels">Resident:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="text" class="form-control" id="residentName" placeholder="Resident Name" value="Kesiena Owho-Ovuakporie">
 	    					</div>
 	  					</div>
@@ -198,7 +198,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Room:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="text" class="form-control" id="room" placeholder="Room" value="400">
 	    					</div>
 	  					</div>
@@ -206,7 +206,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Guest:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="text" class="form-control" id="guestName" placeholder="Guest&#39;s name" value="Nate">
 	    					</div>
 	  					</div>
@@ -214,7 +214,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Check-in:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="date" class="form-control" id="checkIn" value="2015-04-18">
 	    					</div>
 	  					</div>
@@ -222,7 +222,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Status:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 		    					<div class="dropdown" id="guestStatusDropdown">
 									<button class="btn btn-default dropdown-toggle" type="button" id="guestStatusDropdownLabel" data-toggle="dropdown" aria-expanded="false" value="Not Arrived">Not Arrived <span class="caret"></span></button>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="guestStatusDropdownLabel">
@@ -237,7 +237,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Duration (days):</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="number" class="form-control" id="duration" value="5" placeholder="No. of days">
 	    					</div>
 	  					</div>
@@ -245,7 +245,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Days Left:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<input type="number" class="form-control" id="daysLeft" value="5" placeholder="No. of days left">
 	    					</div>
 	  					</div>
@@ -253,7 +253,7 @@
 	    					<div class="col-sm-4">
 	    						<div class="labels">Note:</div>
 	    					</div>
-	    					<div class="col-sm-6">
+	    					<div class="col-sm-8">
 	    						<textarea type="text" class="form-control" id="guestNote" value="5" placeholder="Enter note (optional)"></textarea>
 	    					</div>
 	  					</div>
@@ -261,17 +261,14 @@
 	    					<div class="col-sm-4">
 	    						<button type="button" class="btn btn-default" id="clearForm" style="width:100%">Clear form</button>
 	    					</div>
-	    					<div class="col-sm-4 col-sm-offset-4">
+	    					<div class="col-sm-6 col-sm-offset-2">
 	    						<button type="button" class="btn btn-default" id="saveNewGuest" style="width:100%">Add Guest</button>
 	    					</div>
 	  					</div>
     				</div>
     				<div class="col-sm-12" id="table-menu">
 	    				<div class="row">
-	    					<div class="col-sm-2">
-	    						<button type="button" class="btn btn-default" id="newFormBtn" style="width:100%">Add Many Guests</button>
-	    					</div>
-	    					<div class="col-sm-2 col-sm-offset-1">
+	    					<div class="col-sm-2 col-sm-offset-2">
 	    						<button type="button" class="btn btn-default singleSelection" id="guestListEdit" style="width:100%">Edit</button>
 	    					</div>
 	    					<div class="col-sm-2">
@@ -280,7 +277,7 @@
 	    					<div class="col-sm-2">
 	    						<button type="button" class="btn btn-default multiSelection" id="guestListCheckOut" style="width:100%">Check-out</button>
 	    					</div>
-	    					<div class="col-sm-2 col-sm-offset-1">
+	    					<div class="col-sm-2">
 	    						<button type="button" class="btn btn-default multiSelection" id="guestListDelete" style="width:100%">Delete</button>
 	    					</div>
 	  					</div>
