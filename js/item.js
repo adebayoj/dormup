@@ -98,6 +98,7 @@ function setupRightSidebar(residentId) {
     showOrHideListOptions(selectedItemIdList.length);
     deselectTheSelectAllCheckBox();
     showRightSidebar();
+    setTableListMaxHeight();
 }
 
 function displayResidentProfile(residentId) {
@@ -274,6 +275,9 @@ function deselectTheSelectAllCheckBox() {
 }
 
 $(document).ready(function(){
+    setupResidentList();
+    hideRightSidebar();
+    
     $("#myTab a").click(function(e){
         e.preventDefault();
         $(this).tab('show');

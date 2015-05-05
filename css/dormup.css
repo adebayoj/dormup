@@ -38,7 +38,16 @@ body {
 }
 
 .rightSidebar {
-	border: 1px solid black;
+	margin: 0;
+	padding: 0;
+	/*border: 1px solid gray;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;*/
+}
+
+#wizard {
+	margin: 0;
+	padding: 0;
 }
 
 .navbar-right{
@@ -87,7 +96,8 @@ body {
 #top-panel {
 	margin-bottom: 15px;
 	padding-bottom: 15px;
-	border-bottom: 1px solid black;
+	border: 1px solid gray;
+	border-radius: 10px;
 }
 
 #table-menu button {
@@ -125,6 +135,7 @@ body {
 
 #residentListHeading * {
 	background-color: #1976D2;
+	border-top-right-radius: 10px;
 	color: white;
 	font-weight: bold;
 	font-size: 14px;
@@ -175,13 +186,16 @@ body {
   display: none;
 }
 
-.footer-text {
+#footer-text  {
 	list-style-type: none;
 	color: white;
 }
 
-#tableListHeading * {
+#tableListHeading {
 	background-color: #1976D2;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	margin-top: 5px;
 	color: white;
 	font-weight: bold;
 }
@@ -233,7 +247,6 @@ p.navbar-title.navbar-text {
 }
 
 #leftTable {
-	border: 1px solid #1976D2;
 	margin-top: 0;
 }
 
@@ -255,3 +268,35 @@ p.navbar-title.navbar-text {
 	font-weight: bold;
 	color:#1976D2;
 }
+
+/*** start of scrollbar CSS ***/
+#residentList {
+	border: 1px solid gray;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	overflow: auto;
+}
+
+#tableList {
+	border: 1px solid gray;
+	overflow: auto;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+/*
+The following two styles help ensure that the scrollbar is visible on mac
+*/
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+    background-color: rgba(0,0,0,.2);
+    border-bottom-right-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+/*** end of scrollbar CSS ***/

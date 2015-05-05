@@ -131,6 +131,8 @@ function setupResidentList(searchStr) {
         	);
 		}
 	}
+
+    setResidentListMaxHeight();
 	
 }
 
@@ -204,11 +206,17 @@ function addResidentToList(residentId) {
         '</div>');
 }
 
+function setResidentListMaxHeight() {
+    var residentListMaxHeight = $("#footer-text").offset().top - $("#residentList").offset().top - 15;
+    $("#residentList").css("max-height", residentListMaxHeight);
+}
+
+function setTableListMaxHeight() {
+    var tableListMaxHeight = $("#footer-text").offset().top - $("#tableList").offset().top - 15;
+    $("#tableList").css("max-height", tableListMaxHeight);
+}
 
 $(document).ready(function(){
-    setupResidentList();
-    hideRightSidebar();
-
     $("#homePageContainer #btnPackage").click(function() {
         window.location = "package.html";
     });
