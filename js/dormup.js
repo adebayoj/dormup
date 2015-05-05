@@ -212,7 +212,7 @@ function setResidentListMaxHeight() {
 }
 
 function setTableListMaxHeight() {
-    var tableListMaxHeight = $("#footer-text").offset().top - $("#tableList").offset().top - 15;
+    var tableListMaxHeight = $("#footer-text").offset().top - $("#tableList").offset().top - 30;
     $("#tableList").css("max-height", tableListMaxHeight);
 }
 
