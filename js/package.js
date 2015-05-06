@@ -166,19 +166,32 @@ function showFormForNewPkg() {
 function saveNewPkgFromForm() {
     if(isEditing) {
         deleteAllSelectedPkgs(selectedPkgIdList);
+        var pkgUniqueId = getPkgDetailsFromForm();
+        console.log(pkgUniqueId);
+        if(pkgUniqueId == -1) {
+            // Todo: implement more specific error message
+            alert("please enter all required details in the right format.");
+            return;
+        }
+        isEditing = false;
+        addPkgDetailsToList(pkgUniqueId, true);
+        clearPkgDetailsForm();
+        showOrHideListOptions(selectedPkgIdList.length);
     }
-    var pkgUniqueId = getPkgDetailsFromForm();
-    if(pkgUniqueId == -1) {
-        // Todo: implement more specific error message
-        alert("please enter all required details in the right format.");
-        return;
-    }
-    isEditing = false;
-    addPkgDetailsToList(pkgUniqueId, true);
-    clearPkgDetailsForm();
-    showOrHideListOptions(selectedPkgIdList.length);
-    if (selectedTab == "Packages"){
-        addPackageToTabList(pkgUniqueId);
+    else{
+        var pkgUniqueId = getPkgDetailsFromForm();
+        if(pkgUniqueId == -1) {
+            // Todo: implement more specific error message
+            alert("please enter all required details in the right format.");
+            return;
+        }
+        isEditing = false;
+        addPkgDetailsToList(pkgUniqueId, true);
+        clearPkgDetailsForm();
+        showOrHideListOptions(selectedPkgIdList.length);
+        if (selectedTab == "Packages"){
+            addPackageToTabList(pkgUniqueId);
+        }
     }
 }
 
