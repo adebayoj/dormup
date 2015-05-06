@@ -435,24 +435,23 @@ $(document).ready(function(){
      //functions for autocomplete for the items. 
     var residentnameslist = [];
     for (var m in mapOfResidents){
-        residentnameslist.push(mapOfResidents[m][0] + " " + mapOfResidents[m][1])
+        residentnameslist.push(mapOfResidents[m][0] + " " + mapOfResidents[m][1] + " [room " + 
+            mapOfResidents[m][2] + "]");
     } 
   
   $('[name=residents]')
             .typeahead({
                 minLength: 2,
-                source: residentnameslist
-        //     select: function(event, ui) {
-        //     alert("hello!");
-
-        //     // prev_answer = ui.item.value;
-        //     // addPrevWord();
-        //     // newWord();
-        //     return false;
-        // },
-        }).on('typeahead:selected', function (obj, datum) {
-            alert("hello");
-            console.log("no");
+                source: residentnameslist,
+                updater: function(item) { // http://stackoverflow.com/a/11747290/978369
+                    var a = item.split(" [room ");
+                    var name = a[0];
+                    var b = a[1].split("]");
+                    var room = b[0];
+                    $("#room").val(room);
+                    $("#returnDate").focus();
+                    return name;
+                }
         });
 
 });
