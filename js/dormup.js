@@ -328,6 +328,9 @@ $(document).ready(function(){
     	else if (selectedTab=="Guests"){
     		setupGuestsList(searchString);
     	}
+    	else if (selectedTab=="Items"){
+    		setupItemsList(searchString);
+    	}
     	
     });
 

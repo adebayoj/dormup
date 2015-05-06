@@ -3,10 +3,10 @@ var selectedTabItem = -1;
 var selectedTab = "Residents";
 
 function isInItemInfo(itemMapID, singleString){
-    var itemInfo=mapOfItems[pkgMapID];
+    var itemInfo=mapOfItems[itemMapID];
     var stringForSearch=singleString.toLowerCase();
-    if (itemInfo[0].toString().indexOf(stringForSearch)>=0 || itemInfo[1].toLowerCase().indexOf(stringForSearch)>=0){
-        return true
+    if (itemInfo[0].toLowerCase().indexOf(stringForSearch)>=0 || itemInfo[1].toLowerCase().indexOf(stringForSearch)>=0){
+        return true;
     }
     return false;
 }
@@ -364,10 +364,12 @@ $(document).ready(function(){
 
     $("#table-menu #itemListReturn").click(function(){
         returnAllSelectedItems(selectedItemIdList); 
+        setupItemsList();
     });
 
     $("#table-menu #itemListDelete").click(function(){
         deleteAllSelectedItems(selectedItemIdList); 
+        setupItemsList();
     });
 
     $('#tableList').on('click', '.row', function() {
