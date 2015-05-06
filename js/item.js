@@ -17,7 +17,7 @@ function setupItemsList(searchStr) {
     $("#residentList").empty();
     if (searchStr === undefined || searchStr.length==0){
         for (var r in mapOfItems) {
-            if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+            if (!mapOfItems.hasOwnProperty(r)) {
                 continue;
             }
             addItemToList(r);
@@ -29,7 +29,7 @@ function setupItemsList(searchStr) {
         var inputArray=inputString.split(" ");
         if (inputArray.length == 1){
             for (var r in mapOfItems) {
-                if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                if (!mapOfItems.hasOwnProperty(r)) {
                     continue;
                 }
                 if (isInItemInfo(r,inputArray[0])){
@@ -40,7 +40,7 @@ function setupItemsList(searchStr) {
         }
         else if (inputArray.length==2){
             for (var r in mapOfItems) {
-                if (!mapOfItems.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                if (!mapOfItems.hasOwnProperty(r)) {
                     continue;
                 }
                 if (isInItemInfo(r,inputArray[0]) && isInItemInfo(r,inputArray[1])){
@@ -121,10 +121,9 @@ function isSelected(itemUniqueId) {
 }
 
 function deleteAllSelectedItems(arrayOfItemUniqueIds) {
-    //TODO: Also remove item from data model before removing from table.
     for (i=0; i<Object.keys(mapOfResidents).length; i++){
         if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
-            residentId = i;
+            var residentId = i;
         }
     }
     for(var i = 0; i < arrayOfItemUniqueIds.length; i++){
@@ -140,6 +139,9 @@ function deleteAllSelectedItems(arrayOfItemUniqueIds) {
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedItemIdList.length);
+    if (selectedTab == "Items"){
+        setupItemsList();
+    }
 }
 
 function returnAllSelectedItems(arrayOfItemUniqueIds) {
@@ -166,73 +168,47 @@ function showFormForNewItem() {
 function saveNewItemFromForm() {
     var check_Item_Availability = false;
     var check_Resident_Availability = false;
-    if (selectedTab == "Residents"){
-        for (i=0; i<Object.keys(mapOfItems).length; i++){
-            if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val() && mapOfItems[i][1] == ""){
-                check_Item_Availability = true;
-                itemUniqueId = i;
-            }
-        }
-        for (i=0; i<Object.keys(mapOfResidents).length; i++){
-            if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
-                residentId = i;
-            }
-        }
-        if (check_Item_Availability == true){
-            if ($("#returnDate").val() != ""){
-                if(isEditing) {
-                   deleteAllSelectedItems(selectedItemIdList);
-                }
-                isEditing = false;
-                mapOfItems[itemUniqueId][1] = $("#returnDate").val();
-                mapOfResidentsToItems[residentId].push(itemUniqueId);
-                addItemDetailsToList(itemUniqueId, true);
-                clearItemDetailsForm();
-                showOrHideListOptions(selectedItemIdList.length);
-            }
-            else{
-                alert("please enter all required details in the right format.")
-            }
-        }
-        else{
-            alert("the item doesn't exist.");
+    var check_Item_Existence = false;
+    for (i=0; i<Object.keys(mapOfItems).length; i++){
+        if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val()){
+            check_Item_Existence = true;
+            itemUniqueId = i;
         }
     }
-    else{
-        for (i=0; i<Object.keys(mapOfItems).length; i++){
-            if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val()){
-                itemId = i;
-            }
+    if (check_Item_Existence == false){
+        alert("the item doesn't exist.");
+    }
+    for (i=0; i<Object.keys(mapOfResidents).length; i++){
+        if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+            check_Resident_Availability = true;
+            var residentId = i;
         }
-        for (i=0; i<Object.keys(mapOfResidents).length; i++){
-            if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
-                check_Resident_Availability = true;
-                residentId = i;
-            }
-        }
-        if (check_Resident_Availability == true){
-            if ($("#returnDate").val() != ""){
-                if(isEditing) {
-                   deleteAllSelectedItems(selectedItemIdList);
-                }
-                isEditing = false;
-                mapOfItems[itemId][1] = $("#returnDate").val();
-                if (residentId in mapOfResidentsToItems){
-                    mapOfResidentsToItems[residentId].push(itemId);
-                }
-                else{
-                    mapOfResidentsToItems[residentId] = [itemId];
-                }
-                setupItemsList();
-                setupRightSidebar(residentId);
-            }
-            else{
-                alert("please enter all required details in the right format.")
-            }
+    }
+    if (check_Resident_Availability == false){
+        alert("the resident doesn't exist.");
+    }
+    if (!isEditing){
+        if (mapOfItems[itemUniqueId][1] == ""){
+            check_Item_Availability = true;
         }
         else{
-            alert("the resident doesn't exist.");
+            alert("the item isn't available.");
         }
+    }
+    if ($("#returnDate").val() != ""){
+        mapOfItems[itemUniqueId][1] = $("#returnDate").val();
+        mapOfItems[itemUniqueId][3] = $("#note").val();
+        if (!isEditing){
+            mapOfResidentsToItems[residentId].push(itemUniqueId);
+        }
+        setupRightSidebar(residentId);
+    }
+    else{
+        alert("please enter all required details in the right format.")
+    }
+    isEditing = false;
+    if (selectedTab == "Items"){
+        setupItemsList();
     }
 }
 
@@ -299,7 +275,6 @@ function deselectItem(itemUniqueId) {
     if(selectedItemIdList.length != 0) {
         for(var i = 0; i < selectedItemIdList.length; i++) {
             if(selectedItemIdList[i] == itemUniqueId) {
-                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
                 selectedItemIdList[i] = selectedItemIdList[selectedItemIdList.length - 1];
                 selectedItemIdList.pop();
             }
@@ -364,12 +339,10 @@ $(document).ready(function(){
 
     $("#table-menu #itemListReturn").click(function(){
         returnAllSelectedItems(selectedItemIdList); 
-        setupItemsList();
     });
 
     $("#table-menu #itemListDelete").click(function(){
         deleteAllSelectedItems(selectedItemIdList); 
-        setupItemsList();
     });
 
     $('#tableList').on('click', '.row', function() {
