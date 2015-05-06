@@ -1,12 +1,29 @@
 /* Insert JavaScript here */
 var mapOfResidents = {    
-    0:["Argiro","Lentza",121],
-    1:["Athina","Lentza",121],
-    2:["Cecilia","Testart",304],
-    3:["George","Avramopoulos",205],
-    4:["Julius","Adebayo",118],
-    5:["Konstantinos","Karamanlis",109],
-    6:["Konstantinos","Mentzelos",205]
+    0:["Argiro","Lentza",51],
+    1:["Athina","Lentza",22],
+    2:["Bruce","Lee",25],
+    3:["Cecilia","Testart",30],
+    4:["George","Avramopoulos",15],
+    5:["Homer","Simpson",13],
+    6:["Jackie","Chen",17],
+    7:["James","Smith",14],
+    8:["Jet","Lee",19],
+    9:["Julius","Adebayo",10],
+    10:["Konstantinos","Karamanlis",26],
+    11:["Konstantinos","Mentzelos",205],
+    12:["Leigh","Fisk",32],
+    13:["Munther","Dahler",33],
+    14:["Nina","Kevler",11],
+    15:["Ope","John",42],
+    16:["Paul","Peter",41],
+    17:["Peter","Jones",40],
+    18:["Qudus","Kayan",35],
+    19:["Shane","Allen",37],
+    20:["Stella","Wang",255],
+    21:["Yan","Ki",43],
+    22:["Yusuf","Kayan",28],
+    23:["Zulu","Jimoh",44]
 };
 
 var mapOfGuests = {
@@ -30,7 +47,7 @@ var mapOfItems = {
     3:["Vacuum cleaner", "2015-04-18", "00139", ""],
     4:["Basketball - Wilson", "", "00023", ""],
     5:["Baseball Bat", "", "00001", ""],
-    6:["Movie - Harry Poter", "", "02345", ""],
+    6:["Movie - Harry Porter", "", "02345", ""],
 }
 
 var mapOfResidentsToItems = {

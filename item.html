@@ -15,6 +15,9 @@
 <script type="text/javascript" src="js/dormup.js"></script>
 <script type="text/javascript" src="js/item.js"></script>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	// var listOfResidents=[["Konstantinos","Mentzelos",205,0],["Julius","Adebayo",118,1],["Cecilia","Pacheco",304,2],["Athina","Lentza",121,3],["Argiro","Lentza",121,4],["George","Avramopoulos",205,5],["Konstantinos","Karamanlis",109,6]];
 	// var listOfPointers={
@@ -191,7 +194,7 @@
 	    						<div class="labels">Resident:</div>
 	    					</div>
 	    					<div class="col-sm-8">
-	    						<input type="text" class="form-control" id="residentName" placeholder="Resident Name" value="Kesiena Owho-Ovuakporie">
+	    						<input type="text" class="form-control" id="residentName" placeholder="Resident Name" name='residents' data-provide='typeahead'>
 	    					</div>
 	  					</div>
 	  					<div class="row">
@@ -207,9 +210,10 @@
 	    						<div class="labels">Item Name:</div>
 	    					</div>
 	    					<div class="col-sm-8">
-	    						<input type="text" class="form-control" id="itemName" placeholder="Item name" value="Nate">
+	    						<input type="text" class="form-control" id="itemName" placeholder="Item name" name='countries' data-provide='typeahead'>
 	    					</div>
 	  					</div>
+
 	  					<div class="row">
 	    					<div class="col-sm-4">
 	    						<div class="labels">Item ID:</div>
