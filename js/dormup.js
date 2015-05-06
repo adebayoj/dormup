@@ -325,6 +325,9 @@ $(document).ready(function(){
     	else if (selectedTab=="Packages") {
     		setupPackagesList(searchString);
     	}
+    	else if (selectedTab=="Guests"){
+    		setupGuestsList(searchString);
+    	}
     	
     });
 

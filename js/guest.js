@@ -5,10 +5,18 @@ var selectedTab = "Residents";
 function isInGuestInfo(guestMapID, singleString){
     var guestInfo=mapOfGuests[guestMapID];
     var stringForSearch=singleString.toLowerCase();
-    if (guestInfo[0].toString().indexOf(stringForSearch)>=0 || guestInfo[2].toLowerCase().indexOf(stringForSearch)>=0){
+    if (guestInfo[0].toLowerCase().indexOf(stringForSearch)>=0 || guestInfo[2].toLowerCase().indexOf(stringForSearch)>=0){
         return true
     }
     return false;
+}
+
+function isNotCheckedOut(guestMapID){
+	var guestInfo=mapOfGuests[guestMapID];
+	if (guestInfo[2]=="Checked out"){
+		return false;
+	}
+	return true;
 }
 
 function setupGuestsList(searchStr) {
@@ -20,7 +28,9 @@ function setupGuestsList(searchStr) {
             if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
                 continue;
             }
-            addGuestToTabList(r);
+            if(isNotCheckedOut(r)){
+            	addGuestToTabList(r);
+            }
         }
     }
     else{
@@ -32,7 +42,7 @@ function setupGuestsList(searchStr) {
                 if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
                     continue;
                 }
-                if (isInGuestInfo(r,inputArray[0])){
+                if (isInGuestInfo(r,inputArray[0]) && isNotCheckedOut(r)){
                     addGuestToTabList(r);
                     found=true;
                 }
@@ -43,7 +53,7 @@ function setupGuestsList(searchStr) {
                 if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
                     continue;
                 }
-                if (isInGuestInfo(r,inputArray[0]) && isInGuestInfo(r,inputArray[1])){
+                if (isInGuestInfo(r,inputArray[0]) && isInGuestInfo(r,inputArray[1]) &&isNotCheckedOut(r)){
                     addGuestToTabList(r);
                     found=true;
                 }
@@ -208,7 +218,8 @@ function saveNewGuestFromForm() {
     clearGuestDetailsForm();
     showOrHideListOptions(selectedguestUniqueIdList.length);
     if (selectedTab == "Guests"){
-        addGuestToTabList(guestUniqueId);
+        // addGuestToTabList(guestUniqueId);
+        setupGuestsList();
     }
 }
 
@@ -379,11 +390,13 @@ $(document).ready(function(){
     });
 
     $("#table-menu #guestListCheckOut").click(function(){
-        checkOutAllSelectedGuests(selectedguestUniqueIdList); 
+        checkOutAllSelectedGuests(selectedguestUniqueIdList);
+        setupGuestsList(); 
     });
 
     $("#table-menu #guestListDelete").click(function(){
-        deleteAllSelectedGuests(selectedguestUniqueIdList); 
+        deleteAllSelectedGuests(selectedguestUniqueIdList);
+        setupGuestsList(); 
     });
 
     $('#guestStatusDropdown li a').click(function(){
