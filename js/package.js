@@ -122,7 +122,18 @@ function isSelected(pkgUniqueId) {
 
 function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
     //TODO: Also remove pkg from data model before removing from table.
+    for (i=0; i<Object.keys(mapOfResidents).length; i++){
+        if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+            residentId = i;
+        }
+    }
     for(var i = 0; i < arrayOfPkgUniqueIds.length; i++){
+        delete mapOfPkgs[arrayOfPkgUniqueIds[i]];
+        for (k=0; k<mapOfResidentsToPkgs[residentId].length; k++){
+            if (mapOfResidentsToPkgs[residentId][k] == arrayOfPkgUniqueIds[i]){
+                mapOfResidentsToPkgs[residentId].splice(k,1);
+            }
+        }
         var pkgUniqueId = arrayOfPkgUniqueIds[i];
         var rowId = "pkg-" + pkgUniqueId;
         deleteRowFromDisplay(rowId);
@@ -166,6 +177,9 @@ function saveNewPkgFromForm() {
     addPkgDetailsToList(pkgUniqueId, true);
     clearPkgDetailsForm();
     showOrHideListOptions(selectedPkgIdList.length);
+    if (selectedTab == "Packages"){
+        addPackageToTabList(pkgUniqueId);
+    }
 }
 
 function addPkgDetailsToList(pkgUniqueId, highlightRow){
