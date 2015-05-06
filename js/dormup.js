@@ -221,8 +221,9 @@ function temporarilyHighlightRow(rowId) {
 }
 
 function deleteRowFromDisplay(rowId) {
-    $("#" + rowId).slideUp();
-    $("#" + rowId).remove();
+    $("#" + rowId).slideUp("slow", function(){
+        $("#" + rowId).remove();
+    });
 }
 
 function addResidentToList(residentId) {
