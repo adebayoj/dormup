@@ -17,7 +17,7 @@ function setupPackagesList(searchStr) {
     $("#residentList").empty();
     if (searchStr === undefined || searchStr.length==0){
     	for (var r in mapOfPkgs) {
-	        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+	        if (!mapOfPkgs.hasOwnProperty(r)) {
 	            continue;
 	        }
 	        addPackageToTabList(r);
@@ -29,7 +29,7 @@ function setupPackagesList(searchStr) {
 		var inputArray=inputString.split(" ");
 		if (inputArray.length == 1){
 			for (var r in mapOfPkgs) {
-		        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		        if (!mapOfPkgs.hasOwnProperty(r)) {
 		            continue;
 		        }
 		        if (isInPkgInfo(r,inputArray[0])){
@@ -40,7 +40,7 @@ function setupPackagesList(searchStr) {
 		}
 		else if (inputArray.length==2){
 			for (var r in mapOfPkgs) {
-		        if (!mapOfPkgs.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+		        if (!mapOfPkgs.hasOwnProperty(r)) {
 		            continue;
 		        }
 		        if (isInPkgInfo(r,inputArray[0]) && isInPkgInfo(r,inputArray[1])){
@@ -73,7 +73,7 @@ function addPackageToTabList(packageId) {
 function getNextPkgUniqueId() {
     var maxId = -1;
     for (var g in mapOfPkgs) {
-        if (!mapOfPkgs.hasOwnProperty(g)) { // Ensure we're only using fields we added.
+        if (!mapOfPkgs.hasOwnProperty(g)) {
             continue;
         }
         if(g > maxId) {
@@ -121,7 +121,6 @@ function isSelected(pkgUniqueId) {
 }
 
 function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
-    //TODO: Also remove pkg from data model before removing from table.
     for (i=0; i<Object.keys(mapOfResidents).length; i++){
         if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
             residentId = i;
@@ -140,7 +139,9 @@ function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedPkgIdList.length);
-    setupPackagesList();
+    if (selectedTab == "Packages"){
+        setupPackagesList();
+    }
 }
 
 function deliverAllSelectedItems(arrayOfPkgUniqueIds) {
@@ -166,33 +167,22 @@ function showFormForNewPkg() {
 
 function saveNewPkgFromForm() {
     if(isEditing) {
-        deleteAllSelectedPkgs(selectedPkgIdList);
-        var pkgUniqueId = getPkgDetailsFromForm();
-        console.log(pkgUniqueId);
+        var pkgUniqueId = getPkgDetailsFromForm(selectedPkgIdList[0], true);
+        isEditing = false;
+        setupRightSidebar(selectedResidentId);
+    }
+    else{
+        var pkgUniqueId = getPkgDetailsFromForm(-1, false);
         if(pkgUniqueId == -1) {
-            // Todo: implement more specific error message
             alert("please enter all required details in the right format.");
             return;
         }
-        isEditing = false;
         addPkgDetailsToList(pkgUniqueId, true);
         clearPkgDetailsForm();
         showOrHideListOptions(selectedPkgIdList.length);
     }
-    else{
-        var pkgUniqueId = getPkgDetailsFromForm();
-        if(pkgUniqueId == -1) {
-            // Todo: implement more specific error message
-            alert("please enter all required details in the right format.");
-            return;
-        }
-        isEditing = false;
-        addPkgDetailsToList(pkgUniqueId, true);
-        clearPkgDetailsForm();
-        showOrHideListOptions(selectedPkgIdList.length);
-        if (selectedTab == "Packages"){
-            addPackageToTabList(pkgUniqueId);
-        }
+    if (selectedTab == "Packages"){
+        setupPackagesList();
     }
 }
 
@@ -223,19 +213,26 @@ function showPkgDetailsForEditing(pkgUniqueId) {
     $("#saveNewItem").show();
 }
 
-function getPkgDetailsFromForm() {
+function getPkgDetailsFromForm(pkgId, check) {
     var packageId = $("#packageId").val();
     var company = $("#company").val();
     var note = $("#note").val();
     if(!packageId) {
         return -1;
     }
-    var pkgUniqueId = getNextPkgUniqueId();
+    if (check == true){
+        var pkgUniqueId = pkgId;
+    }
+    else{
+        var pkgUniqueId = getNextPkgUniqueId();
+    }
     var pkgDetails = [packageId, company, note, pkgUniqueId];
     mapOfPkgs[pkgUniqueId] = pkgDetails;
     var residentToPkgMapEntry = mapOfResidentsToPkgs[selectedResidentId];
     if(residentToPkgMapEntry) {
-        residentToPkgMapEntry.push(pkgUniqueId);
+        if (check == false){
+            residentToPkgMapEntry.push(pkgUniqueId);
+        }
     } else {
         mapOfResidentsToPkgs[selectedResidentId] = [pkgUniqueId];
     }
