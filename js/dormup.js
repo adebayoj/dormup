@@ -57,6 +57,17 @@ var mapOfResidentsToPkgs = {
 var selectedResidentId = -1;
 
 var isEditing = false;
+var listForAutocomplete=[];
+
+function makeListForAutocomple(){
+	for (var r in mapOfResidents) {
+        if (!mapOfResidents.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+            continue;
+        }
+        var res=mapOfResidents[r];
+        listForAutocomplete.push(res[0]+" "+res[1]);
+    }
+}
 
 function checkTime(i) {
     if (i<10) {i = "0" + i};  // add zero in front of numbers < 10
@@ -333,6 +344,8 @@ $(document).ready(function(){
     	}
     	
     });
+
+    makeListForAutocomple();
 
 });
 
