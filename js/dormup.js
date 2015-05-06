@@ -24,13 +24,13 @@ var mapOfResidentsToGuests = {
 
 var mapOfItems = {
   // Name, return date (yyyy-mm-dd), ID, note
-    0:["Movie - Titanic","2015-04-25",00123, "Broken case"],
-    1:["Spare key","2015-04-18", 00012, ""],
-    2:["Movie - Starwars 1", "2015-04-20", 00145, ""],
-    3:["Vacuum cleaner", "2015-04-18", 00139, ""],
-    4:["Basketball - Wilson", "", 00023, ""],
-    5:["Baseball Bat", "", 00001, ""],
-    6:["Movie - Harry Poter", "", 02345, ""],
+    0:["Movie - Titanic","2015-04-25","00123", "Broken case"],
+    1:["Spare key","2015-04-18", "00012", ""],
+    2:["Movie - Starwars 1", "2015-04-20", "00145", ""],
+    3:["Vacuum cleaner", "2015-04-18", "00139", ""],
+    4:["Basketball - Wilson", "", "00023", ""],
+    5:["Baseball Bat", "", "00001", ""],
+    6:["Movie - Harry Poter", "", "02345", ""],
 }
 
 var mapOfResidentsToItems = {
@@ -239,6 +239,7 @@ $(document).ready(function(){
     });
 
     $('#residentList').on('click', '.row', function() {
+        check_Selected_Item = false;
         if (selectedTab == "Residents"){
             var rowId = $(this).attr("id");
             var residentId = getResidentId(rowId);
@@ -301,11 +302,17 @@ $(document).ready(function(){
                     for (j=0; j<temporary.length; j++){
                         if (temporary[j] == itemId){
                             selectedResidentId = i;
+                            check_Selected_Item = true;
                         }
                     }
                 }
             }
-            setupRightSidebar(selectedResidentId);
+            if (check_Selected_Item == false){
+                setupRightSidebarForNewItem(itemId);
+            }
+            else{
+                setupRightSidebar(selectedResidentId);
+            }
             temporarilyHighlightRow(getItemRowId(itemId));
         }
     });
