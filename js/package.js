@@ -140,6 +140,7 @@ function deleteAllSelectedPkgs(arrayOfPkgUniqueIds) {
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedPkgIdList.length);
+    setupPackagesList();
 }
 
 function deliverAllSelectedItems(arrayOfPkgUniqueIds) {

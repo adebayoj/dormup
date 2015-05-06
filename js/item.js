@@ -441,7 +441,7 @@ $(document).ready(function(){
   
   $('[name=residents]')
             .typeahead({
-                minLength: 2,
+                minLength: 1,
                 source: residentnameslist,
                 updater: function(item) { // http://stackoverflow.com/a/11747290/978369
                     var a = item.split(" [room ");
