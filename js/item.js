@@ -70,19 +70,6 @@ function addItemToList(itemId) {
         '</div>');
 }
 
-function getNextItemUniqueId() {
-    var maxId = -1;
-    for (var g in mapOfItems) {
-        if (!mapOfItems.hasOwnProperty(g)) { // Ensure we're only using fields we added.
-            continue;
-        }
-        if(g > maxId) {
-            maxId = g;
-        }
-    }
-    return ++maxId;
-}
-
 function setupRightSidebar(residentId) {
     displayResidentProfile(residentId);
     clearItemDetailsForm();
@@ -100,6 +87,19 @@ function setupRightSidebar(residentId) {
     showRightSidebar();
     setTableListMaxHeight();
     $("#itemName").focus();
+}
+
+function setupRightSidebarForNewItem(itemId) {
+    selectedItemIdList = [];
+    $("#residentName").val("").prop('disabled', false);
+    $("#room").val("").prop('disabled', false);
+    $("#itemName").val(mapOfItems[itemId][0]);
+    $("#itemId").val(mapOfItems[itemId][2]);
+    $("#returnDate").val(mapOfItems[itemId][1]);
+    $("#note").val(mapOfItems[itemId][3]);
+    $("#tableList").empty();
+    showRightSidebar();
+    $("#residentName").focus();
 }
 
 function displayResidentProfile(residentId) {
@@ -122,7 +122,18 @@ function isSelected(itemUniqueId) {
 
 function deleteAllSelectedItems(arrayOfItemUniqueIds) {
     //TODO: Also remove item from data model before removing from table.
+    for (i=0; i<Object.keys(mapOfResidents).length; i++){
+        if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+            residentId = i;
+        }
+    }
     for(var i = 0; i < arrayOfItemUniqueIds.length; i++){
+        mapOfItems[arrayOfItemUniqueIds[i]][1] = "";
+        for (k=0; k<mapOfResidentsToItems[residentId].length; k++){
+            if (mapOfResidentsToItems[residentId][k] == arrayOfItemUniqueIds[i]){
+                mapOfResidentsToItems[residentId].splice(k,1);
+            }
+        }
         var itemId = arrayOfItemUniqueIds[i];
         var rowId = "item-" + itemId;
         deleteRowFromDisplay(rowId);
@@ -153,19 +164,76 @@ function showFormForNewItem() {
 }
 
 function saveNewItemFromForm() {
-    if(isEditing) {
-        deleteAllSelectedItems(selectedItemIdList);
+    var check_Item_Availability = false;
+    var check_Resident_Availability = false;
+    if (selectedTab == "Residents"){
+        for (i=0; i<Object.keys(mapOfItems).length; i++){
+            if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val() && mapOfItems[i][1] == ""){
+                check_Item_Availability = true;
+                itemUniqueId = i;
+            }
+        }
+        for (i=0; i<Object.keys(mapOfResidents).length; i++){
+            if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+                residentId = i;
+            }
+        }
+        if (check_Item_Availability == true){
+            if ($("#returnDate").val() != ""){
+                if(isEditing) {
+                   deleteAllSelectedItems(selectedItemIdList);
+                }
+                isEditing = false;
+                mapOfItems[itemUniqueId][1] = $("#returnDate").val();
+                mapOfResidentsToItems[residentId].push(itemUniqueId);
+                addItemDetailsToList(itemUniqueId, true);
+                clearItemDetailsForm();
+                showOrHideListOptions(selectedItemIdList.length);
+            }
+            else{
+                alert("please enter all required details in the right format.")
+            }
+        }
+        else{
+            alert("the item doesn't exist.");
+        }
     }
-    var itemUniqueId = getItemDetailsFromForm();
-    if(itemUniqueId == -1) {
-        // Todo: implement more specific error message
-        alert("please enter all required details in the right format.");
-        return;
+    else{
+        for (i=0; i<Object.keys(mapOfItems).length; i++){
+            if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val()){
+                itemId = i;
+            }
+        }
+        for (i=0; i<Object.keys(mapOfResidents).length; i++){
+            if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+                check_Resident_Availability = true;
+                residentId = i;
+            }
+        }
+        if (check_Resident_Availability == true){
+            if ($("#returnDate").val() != ""){
+                if(isEditing) {
+                   deleteAllSelectedItems(selectedItemIdList);
+                }
+                isEditing = false;
+                mapOfItems[itemId][1] = $("#returnDate").val();
+                if (residentId in mapOfResidentsToItems){
+                    mapOfResidentsToItems[residentId].push(itemId);
+                }
+                else{
+                    mapOfResidentsToItems[residentId] = [itemId];
+                }
+                setupItemsList();
+                setupRightSidebar(residentId);
+            }
+            else{
+                alert("please enter all required details in the right format.")
+            }
+        }
+        else{
+            alert("the resident doesn't exist.");
+        }
     }
-    isEditing = false;
-    addItemDetailsToList(itemUniqueId, true);
-    clearItemDetailsForm();
-    showOrHideListOptions(selectedItemIdList.length);
 }
 
 function addItemDetailsToList(itemUniqueId, highlightRow){
@@ -183,26 +251,6 @@ function addItemDetailsToList(itemUniqueId, highlightRow){
     if(highlightRow) {
         temporarilyHighlightRow(rowId);
     }
-}
-
-function getItemDetailsFromForm() {
-    var itemName = $("#itemName").val();
-    var returnDate  = $("#returnDate").val();
-    var itemId = $("#itemId").val();
-    var note = $("#note").val();
-    if(!itemName || !returnDate || !itemId) {
-        return -1;
-    }
-    var itemUniqueId = getNextItemUniqueId();
-    var itemDetails = [itemName, returnDate, itemId, note, itemUniqueId];
-    mapOfItems[itemUniqueId] = itemDetails;
-    var residentToItemMapEntry = mapOfResidentsToItems[selectedResidentId];
-    if(residentToItemMapEntry) {
-        residentToItemMapEntry.push(itemUniqueId);
-    } else {
-        mapOfResidentsToItems[selectedResidentId] = [itemUniqueId];
-    }
-    return itemUniqueId;
 }
 
 function showItemDetailsForEditing(itemUniqueId) {
