@@ -39,7 +39,7 @@ function setupGuestsList(searchStr) {
         var inputArray=inputString.split(" ");
         if (inputArray.length == 1){
             for (var r in mapOfGuests) {
-                if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                if (!mapOfGuests.hasOwnProperty(r)) {
                     continue;
                 }
                 if (isInGuestInfo(r,inputArray[0]) && isNotCheckedOut(r)){
@@ -50,7 +50,7 @@ function setupGuestsList(searchStr) {
         }
         else if (inputArray.length==2){
             for (var r in mapOfGuests) {
-                if (!mapOfGuests.hasOwnProperty(r)) { // Ensure we're only using fields we added.
+                if (!mapOfGuests.hasOwnProperty(r)) {
                     continue;
                 }
                 if (isInGuestInfo(r,inputArray[0]) && isInGuestInfo(r,inputArray[1]) &&isNotCheckedOut(r)){
@@ -83,7 +83,7 @@ function addGuestToTabList(guestUniqueId) {
 function getNextGuestUniqueId() {
     var maxId = -1;
     for (var g in mapOfGuests) {
-        if (!mapOfGuests.hasOwnProperty(g)) { // Ensure we're only using fields we added.
+        if (!mapOfGuests.hasOwnProperty(g)) {
             continue;
         }
         if(g > maxId) {
@@ -131,7 +131,6 @@ function isSelected(guestUniqueId) {
 }
 
 function deleteAllSelectedGuests(arrayOfGuestUniqueIds) {
-    //TODO: Also remove guest from data model before removing from table.
     for (i=0; i<Object.keys(mapOfResidents).length; i++){
         if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
             residentId = i;
@@ -150,6 +149,9 @@ function deleteAllSelectedGuests(arrayOfGuestUniqueIds) {
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedguestUniqueIdList.length);
+    if (selectedTab == "Guests"){
+        setupGuestsList();
+    }
 }
 
 function checkInAllSelectedGuests(arrayOfGuestUniqueIds) {
@@ -166,6 +168,9 @@ function checkInAllSelectedGuests(arrayOfGuestUniqueIds) {
         $(textSelector).html(checkedInString);
         temporarilyHighlightText(textSelector);
         // temporarilyHighlightRow(rowId);
+    }
+    if (selectedTab == "Guests"){
+        setupGuestsList();
     }
 }
 
@@ -185,6 +190,9 @@ function checkOutAllSelectedGuests(arrayOfGuestUniqueIds) {
     }
     clearAllTableSelections();
     showOrHideListOptions(selectedguestUniqueIdList.length);
+    if (selectedTab == "Guests"){
+        setupGuestsList();
+    }
 }
 
 function clearAllTableSelections() {
@@ -206,19 +214,21 @@ function showFormForNewGuest() {
 
 function saveNewGuestFromForm() {
     if(isEditing) {
-        deleteAllSelectedGuests(selectedguestUniqueIdList);
+        var guestUniqueId = getGuestDetailsFromForm(selectedguestUniqueIdList[0], true);
+        isEditing = false;
+        setupRightSidebar(selectedResidentId);
     }
-    var guestUniqueId = getGuestDetailsFromForm();
-    if(guestUniqueId == -1) {
-        alert("please enter all required details in the right format.");
-        return;
+    else{
+        var guestUniqueId = getGuestDetailsFromForm(-1, false);
+        if(guestUniqueId == -1) {
+            alert("please enter all required details in the right format.");
+            return;
+        }
+        addGuestDetailsToList(guestUniqueId, true);
+        clearGuestDetailsForm();
+        showOrHideListOptions(selectedguestUniqueIdList.length);
     }
-    isEditing = false;
-    addGuestDetailsToList(guestUniqueId, true);
-    clearGuestDetailsForm();
-    showOrHideListOptions(selectedguestUniqueIdList.length);
     if (selectedTab == "Guests"){
-        // addGuestToTabList(guestUniqueId);
         setupGuestsList();
     }
 }
@@ -249,7 +259,7 @@ function setDropdown(value) {
     $("#guestStatusDropdownLabel").val(value);
 }
 
-function getGuestDetailsFromForm() {
+function getGuestDetailsFromForm(guestId, check) {
     var guestName = $("#guestName").val();
     var checkIn  = $("#checkIn").val();
     var status = $("#guestStatusDropdownLabel").val();
@@ -262,16 +272,22 @@ function getGuestDetailsFromForm() {
     if(!daysLeft && duration) {
         daysLeft = duration;
     }
-
     if(!guestName || !checkIn || !status || !duration || !daysLeft) {
         return -1;
     }
-    var guestUniqueId = getNextGuestUniqueId();
+    if (check == true){
+        var guestUniqueId = guestId;
+    }
+    else{
+        var guestUniqueId = getNextGuestUniqueId();
+    }
     var guestDetails = [guestName, checkIn, status, duration, daysLeft, guestNote, guestUniqueId];
     mapOfGuests[guestUniqueId] = guestDetails;
     var residentToGuestMapEntry = mapOfResidentsToGuests[selectedResidentId];
     if(residentToGuestMapEntry) {
-        residentToGuestMapEntry.push(guestUniqueId);
+        if (check == false){
+            residentToGuestMapEntry.push(guestUniqueId);
+        }
     } else {
         mapOfResidentsToGuests[selectedResidentId] = [guestUniqueId];
     }
@@ -330,7 +346,6 @@ function deselectGuest(guestUniqueId) {
     if(selectedguestUniqueIdList.length != 0) {
         for(var i = 0; i < selectedguestUniqueIdList.length; i++) {
             if(selectedguestUniqueIdList[i] == guestUniqueId) {
-                // This is a faster way to delete item from the middle (in JavaScript) when he ordering of the items isn't relevant
                 selectedguestUniqueIdList[i] = selectedguestUniqueIdList[selectedguestUniqueIdList.length - 1];
                 selectedguestUniqueIdList.pop();
             }
