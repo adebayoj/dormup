@@ -122,7 +122,18 @@ function isSelected(guestUniqueId) {
 
 function deleteAllSelectedGuests(arrayOfGuestUniqueIds) {
     //TODO: Also remove guest from data model before removing from table.
+    for (i=0; i<Object.keys(mapOfResidents).length; i++){
+        if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
+            residentId = i;
+        }
+    }
     for(var i = 0; i < arrayOfGuestUniqueIds.length; i++){
+        delete mapOfGuests[arrayOfGuestUniqueIds[i]];
+        for (k=0; k<mapOfResidentsToGuests[residentId].length; k++){
+            if (mapOfResidentsToGuests[residentId][k] == arrayOfGuestUniqueIds[i]){
+                mapOfResidentsToGuests[residentId].splice(k,1);
+            }
+        }
         var guestUniqueId = arrayOfGuestUniqueIds[i];
         var rowId = "guest-" + guestUniqueId;
         deleteRowFromDisplay(rowId);
@@ -196,6 +207,9 @@ function saveNewGuestFromForm() {
     addGuestDetailsToList(guestUniqueId, true);
     clearGuestDetailsForm();
     showOrHideListOptions(selectedguestUniqueIdList.length);
+    if (selectedTab == "Guests"){
+        addGuestToTabList(guestUniqueId);
+    }
 }
 
 function addGuestDetailsToList(guestUniqueId, highlightRow){
