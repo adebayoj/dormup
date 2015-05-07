@@ -386,26 +386,36 @@ $(document).ready(function(){
         if (a === -1)
         {
             var thing = "";
-            thing = mapOfItems[m][0];
+            thing = mapOfItems[m][0] + "&" + mapOfItems[m][2] ;
             all_items_marked.push(thing);
-
         }
         else
         {
              var thing = "";
-             thing = mapOfItems[m][0] + " [Unavailable]"
+             thing = mapOfItems[m][0] +  "&" + mapOfItems[m][2]  + " [Unavailable]";
              all_items_marked.push(thing);
         }
     } 
+    console.log(all_items_marked);
     var countries = all_items_marked;
      $('[name=countries]')
             .typeahead({
-                minLength: 2,
-                source: countries
+                minLength: 1,
+                source: countries,
+                updater:function(item){
+                    var a = item.split("&");
+                    var item_name = a[0];
+                    var second_part = a[1];
+                    var item_id = second_part.split(" [Unavailable]")[0];
+                    $("#itemId").val(item_id);
+                    $("#returnDate").focus();
+                    return item_name;
+                }
+
             });
 
-
-     //functions for autocomplete for the items. 
+    //console.log(all_items_marked);
+     //functions for autocomplete for the residents 
     var residentnameslist = [];
     for (var m in mapOfResidents){
         residentnameslist.push(mapOfResidents[m][0] + " " + mapOfResidents[m][1] + " [room " + 
