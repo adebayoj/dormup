@@ -177,6 +177,13 @@ function saveNewItemFromForm() {
     }
     if (check_Item_Existence == false){
         alert("the item doesn't exist.");
+        return;
+    }
+    if (!isEditing){
+        if (mapOfItems[itemUniqueId][1] != ""){
+            alert("the item isn't available.");
+            return;
+        }
     }
     for (i=0; i<Object.keys(mapOfResidents).length; i++){
         if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
@@ -186,25 +193,25 @@ function saveNewItemFromForm() {
     }
     if (check_Resident_Availability == false){
         alert("the resident doesn't exist.");
-    }
-    if (!isEditing){
-        if (mapOfItems[itemUniqueId][1] == ""){
-            check_Item_Availability = true;
-        }
-        else{
-            alert("the item isn't available.");
-        }
+        return;
     }
     if ($("#returnDate").val() != ""){
         mapOfItems[itemUniqueId][1] = $("#returnDate").val();
         mapOfItems[itemUniqueId][3] = $("#note").val();
         if (!isEditing){
-            mapOfResidentsToItems[residentId].push(itemUniqueId);
+            var residentToPkgMapEntry = mapOfResidentsToItems[residentId];
+            if(residentToPkgMapEntry){
+                mapOfResidentsToItems[residentId].push(itemUniqueId);
+            }
+            else{
+                mapOfResidentsToItems[residentId] = [itemUniqueId];
+            }
         }
         setupRightSidebar(residentId);
     }
     else{
-        alert("please enter all required details in the right format.")
+        alert("please enter all required details in the right format.");
+        return;
     }
     isEditing = false;
     if (selectedTab == "Items"){
