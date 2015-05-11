@@ -1,6 +1,7 @@
 var selectedItemIdList = [];
 var selectedTabItem = -1;
 var selectedTab = "Residents";
+var itemAutocomplete;
 
 function isInItemInfo(itemMapID, singleString){
     var itemInfo=mapOfItems[itemMapID];
@@ -121,9 +122,10 @@ function isSelected(itemUniqueId) {
 }
 
 function deleteAllSelectedItems(arrayOfItemUniqueIds) {
+    var residentId = -1;
     for (i=0; i<Object.keys(mapOfResidents).length; i++){
         if ((mapOfResidents[i][0] + " " + mapOfResidents[i][1]) == $("#residentName").val() && mapOfResidents[i][2] == $("#room").val()){
-            var residentId = i;
+            residentId = i;
         }
     }
     for(var i = 0; i < arrayOfItemUniqueIds.length; i++){
@@ -142,6 +144,7 @@ function deleteAllSelectedItems(arrayOfItemUniqueIds) {
     if (selectedTab == "Items"){
         setupItemsList();
     }
+    updateItemAutocomplete();
 }
 
 function returnAllSelectedItems(arrayOfItemUniqueIds) {
@@ -217,6 +220,7 @@ function saveNewItemFromForm() {
     if (selectedTab == "Items"){
         setupItemsList();
     }
+    updateItemAutocomplete();
 }
 
 function addItemDetailsToList(itemUniqueId, highlightRow){
@@ -306,7 +310,47 @@ function deselectTheSelectAllCheckBox() {
     $("#item-select-all").prop('checked', false);
 }
 
+function updateItemAutocomplete() {
+    var checkedoutitems = [];
+    var all_items_marked = [];
+    for (var m in mapOfResidentsToItems){
+        for (var i=0;i<mapOfResidentsToItems[m].length;i++){
+            checkedoutitems.push(mapOfResidentsToItems[m][i]);
+        }
+    } 
+    for (var m in mapOfItems){
+        var a = checkedoutitems.indexOf(parseInt(m));
+        if (a == -1)
+        {
+            var displayedText = mapOfItems[m][0] + " <" + mapOfItems[m][2] + ">";
+            all_items_marked.push(displayedText);
+        }
+        else
+        {
+             var displayedText = mapOfItems[m][0] +  " <" + mapOfItems[m][2]  + "> [Unavailable]";
+             all_items_marked.push(displayedText);
+        }
+    }
+    if(!itemAutocomplete){
+        itemAutocomplete = $('[name=countries]').typeahead({
+                            minLength: 1,
+                            source: all_items_marked,
+                            updater:function(item){
+                                var a = item.split(" <");
+                                var item_name = a[0];
+                                var item_id = a[1].split("> [Unavailable]")[0];
+                                $("#itemId").val(item_id);
+                                $("#returnDate").focus();
+                                return item_name;
+                            }
+                        });    
+    } else {
+        itemAutocomplete.data('typeahead').source = all_items_marked;
+    }    
+}
+
 $(document).ready(function(){
+    updateItemAutocomplete();
     setupResidentList();
     hideRightSidebar();
 
@@ -379,50 +423,6 @@ $(document).ready(function(){
         showOrHideListOptions(selectedItemIdList.length);
     });
 
-
-    //functions for autocomplete for the items. 
-    var checkedoutitems = [];
-    var all_items_marked = [];
-    for (var m in mapOfResidentsToItems){
-        for (var i=0;i<mapOfResidentsToItems[m].length;i++){
-            checkedoutitems.push(mapOfResidentsToItems[m][i]);
-        }
-    } 
-    for (var m in mapOfItems){
-        var a = checkedoutitems.indexOf(parseInt(m));
-        if (a === -1)
-        {
-            var thing = "";
-            thing = mapOfItems[m][0] + "&" + mapOfItems[m][2] ;
-            all_items_marked.push(thing);
-        }
-        else
-        {
-             var thing = "";
-             thing = mapOfItems[m][0] +  "&" + mapOfItems[m][2]  + " [Unavailable]";
-             all_items_marked.push(thing);
-        }
-    } 
-    console.log(all_items_marked);
-    var countries = all_items_marked;
-     $('[name=countries]')
-            .typeahead({
-                minLength: 1,
-                source: countries,
-                updater:function(item){
-                    var a = item.split("&");
-                    var item_name = a[0];
-                    var second_part = a[1];
-                    var item_id = second_part.split(" [Unavailable]")[0];
-                    $("#itemId").val(item_id);
-                    $("#returnDate").focus();
-                    return item_name;
-                }
-
-            });
-
-    //console.log(all_items_marked);
-     //functions for autocomplete for the residents 
     var residentnameslist = [];
     for (var m in mapOfResidents){
         residentnameslist.push(mapOfResidents[m][0] + " " + mapOfResidents[m][1] + " [room " + 

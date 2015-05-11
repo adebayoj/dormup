@@ -1,29 +1,29 @@
 /* Insert JavaScript here */
 var mapOfResidents = {    
-    0:["Argiro","Lentza",51],
-    1:["Athina","Lentza",22],
-    2:["Bruce","Lee",25],
-    3:["Cecilia","Testart",30],
-    4:["George","Avramopoulos",15],
-    5:["Homer","Simpson",13],
-    6:["Jackie","Chen",17],
-    7:["James","Smith",14],
-    8:["Jet","Lee",19],
+    0:["Argiro","Lentza",1],
+    1:["Athina","Lentza",2],
+    2:["Bruce","Lee",3],
+    3:["Cecilia","Testart",4],
+    4:["George","Avramopoulos",13],
+    5:["Homer","Simpson",7],
+    6:["Jackie","Chen",14],
+    7:["James","Smith",8],
+    8:["Jet","Lee",15],
     9:["Julius","Adebayo",10],
-    10:["Konstantinos","Karamanlis",26],
-    11:["Konstantinos","Mentzelos",205],
-    12:["Leigh","Fisk",32],
-    13:["Munther","Dahler",33],
-    14:["Nina","Kevler",11],
-    15:["Ope","John",42],
-    16:["Paul","Peter",41],
-    17:["Peter","Jones",40],
-    18:["Qudus","Kayan",35],
-    19:["Shane","Allen",37],
-    20:["Stella","Wang",255],
-    21:["Yan","Ki",43],
-    22:["Yusuf","Kayan",28],
-    23:["Zulu","Jimoh",44]
+    10:["Konstantinos","Karamanlis",5],
+    11:["Konstantinos","Mentzelos",16],
+    12:["Leigh","Fisk",17],
+    13:["Munther","Dahler",6],
+    14:["Nina","Kevler",9],
+    15:["Ope","John",24],
+    16:["Paul","Peter",18],
+    17:["Peter","Jones",11],
+    18:["Qudus","Kayan",12],
+    19:["Shane","Allen",21],
+    20:["Stella","Wang",20],
+    21:["Yan","Ki",22],
+    22:["Yusuf","Kayan",19],
+    23:["Zulu","Jimoh",23]
 };
 
 var mapOfGuests = {
@@ -41,18 +41,33 @@ var mapOfResidentsToGuests = {
 
 var mapOfItems = {
   // Name, return date (yyyy-mm-dd), ID, note
-    0:["Movie - Titanic","2015-04-25","00123", "Broken case"],
-    1:["Spare key","2015-04-18", "00012", ""],
-    2:["Movie - Starwars 1", "2015-04-20", "00145", ""],
-    3:["Vacuum cleaner", "2015-04-18", "00139", ""],
-    4:["Basketball - Wilson", "", "00023", ""],
-    5:["Baseball Bat", "", "00001", ""],
-    6:["Movie - Harry Porter", "", "02345", ""],
+    0:["Baseball Bat", "2015-05-15", "00001", ""],
+    1:["Basketball - Wilson", "2015-04-29", "00023", ""],
+    2:["Movie - Starwars 1","2015-04-25","00123", "Broken case"],
+    3:["Movie - Starwars 2","", "00012", ""],
+    4:["Movie - Titanic", "2015-04-20", "00145", ""],
+    5:["Movie - Tomb Raider", "", "02345", ""],
+    6:["Spare key - Room 1","", "00043", ""],
+    7:["Spare key - Room 2","2015-05-13", "00044", ""],
+    8:["Spare key - Room 3","2015-05-12", "00045", ""],
+    9:["Spare key - Room 4","", "00046", ""],
+    10:["Spare key - Room 5","", "00047", ""],
+    11:["Spare key - Room 6","", "00048", ""],
+    12:["Spare key - Room 7","", "00049", ""],
+    13:["Spare key - Room 8","", "00050", ""],
+    14:["Spare key - Room 9","", "00051", ""],
+    15:["Spare key - Room 10","", "00052", ""],
+    16:["Spare key - Room 11","", "00053", ""],
+    17:["Spare key - Room 12","", "00054", ""],
+    18:["Vacuum cleaner", "2015-04-18", "00139", ""],
+    19:["Vacuum cleaner", "", "00140", ""]
 }
 
 var mapOfResidentsToItems = {
     0:[0,1,2],
-    1:[3]
+    1:[4,7],
+    2:[8],
+    3:[18]
 };
 
 var mapOfPkgs = {
