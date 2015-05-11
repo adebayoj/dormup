@@ -61,13 +61,24 @@ function setupItemsList(searchStr) {
     
 }
 
+function isItemOverdue(returnDateString) {
+    var today = new Date();
+    var returnDate = new Date(returnDateString);
+    returnDate.setDate(returnDate.getDate()+1); // Adding one more day because javaScript date begins from zero.
+    return (returnDate < today);
+}
+
 function addItemToList(itemId) {
     var items = mapOfItems[itemId];
     var rowId = getTabItemRowId(itemId);
+    var displayDate = '<div class="col-sm-4"><p>' + items[1] + '</p></div>';
+    if(isItemOverdue(items[1])) {
+        displayDate = '<div class="col-sm-4"><p class="red-text">' + items[1] + '</p></div>'
+    }
     $("#residentList").append(
         '<div class="row" id="' + rowId + '">' +
             '<div class="col-sm-8"><p>' + items[0] + '</p></div>' +
-            '<div class="col-sm-4"><p>' + items[1] + '</p></div>' +
+            displayDate +
         '</div>');
 }
 
@@ -79,7 +90,7 @@ function setupRightSidebar(residentId) {
     var arrayOfItemUniqueIds = mapOfResidentsToItems[residentId];
     if(arrayOfItemUniqueIds) {
         for(var i = 0; i < arrayOfItemUniqueIds.length; i++) {
-            itemUniqueId = arrayOfItemUniqueIds[i];
+            var itemUniqueId = arrayOfItemUniqueIds[i];
             addItemDetailsToList(itemUniqueId, false);
         }    
     }
@@ -172,6 +183,7 @@ function saveNewItemFromForm() {
     var check_Item_Availability = false;
     var check_Resident_Availability = false;
     var check_Item_Existence = false;
+    var itemUniqueId = -1
     for (i=0; i<Object.keys(mapOfItems).length; i++){
         if (mapOfItems[i][0] == $("#itemName").val() && mapOfItems[i][2] == $("#itemId").val()){
             check_Item_Existence = true;
@@ -211,6 +223,7 @@ function saveNewItemFromForm() {
             }
         }
         setupRightSidebar(residentId);
+        temporarilyHighlightRow(getItemRowId(itemUniqueId));
     }
     else{
         alert("please enter all required details in the right format.");
@@ -227,12 +240,16 @@ function addItemDetailsToList(itemUniqueId, highlightRow){
     var item = mapOfItems[itemUniqueId];
     var rowId = "item-" + itemUniqueId;
     var checkboxId = getCheckboxId(itemUniqueId);
+    var displayDate = '<div class="col-sm-3"><p>' + item[1] + '</p></div>';
+    if(isItemOverdue(item[1])) {
+        displayDate = '<div class="col-sm-3"><p class="red-text">' + item[1] + '</p></div>';
+    }
     $("#tableList").prepend(
         '<div class="row" id="' + rowId + '" style="display:none">' +
             '<div class="col-sm-1"><input type="checkbox" name="item-checkbox" id=' + checkboxId + '></div>' +
             '<div class="col-sm-3"><p>' + item[0] + '</p></div>' +
             '<div class="col-sm-3"><p>' + item[2] + '</p></div>' +
-            '<div class="col-sm-3"><p>' + item[1] + '</p></div>' +
+            displayDate +
         '</div>');
     $("#" + rowId).slideDown();
     if(highlightRow) {
@@ -338,7 +355,7 @@ function updateItemAutocomplete() {
                             updater:function(item){
                                 var a = item.split(" <");
                                 var item_name = a[0];
-                                var item_id = a[1].split("> [Unavailable]")[0];
+                                var item_id = a[1].split(">")[0];
                                 $("#itemId").val(item_id);
                                 $("#returnDate").focus();
                                 return item_name;

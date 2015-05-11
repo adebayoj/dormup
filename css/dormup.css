@@ -18,6 +18,9 @@ body {
 .largeButton{
 	font-size: 30px;
 }
+.red-text{
+	color: red;
+}
 
 .smallButton {
 	background-color:#7892c2;
@@ -190,12 +193,12 @@ body {
 	font-size: 12px;
 }
 
-#residentList .row.selected-row, #tableList .row.selected-row, #tableList .row.selected-row * {
-	background-color: #BBDEFB;
-}
-
 #residentList .row.hovered-row, #tableList .row.hovered-row, #tableList .row.hovered-row * {
 	background-color: #cccccc;
+}
+
+#residentList .row.selected-row, #tableList .row.selected-row, #tableList .row.selected-row * {
+	background-color: #BBDEFB;
 }
 
 .row.selected-row {
